@@ -2,7 +2,11 @@
 
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
 
+    <!-- BACKGROUND -->
+
     <rect  x="0" y="0" width="800" height="600" style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(0,0,0)" />
+
+    <!-- JOINTS -->
 
     <rect  x="50" y="525" width="50" height="10" style="fill:black;stroke-width:3;stroke:rgb(0,0,0)" />
 
@@ -12,10 +16,14 @@
 
     <circle cx="750" cy="530" r="10" stroke="black" stroke-width="3" fill="white" />
     
+    
+    <!-- FLOORS -->
 
     <rect  x="100" y="230" width="600" height="60" style="stroke-width:3;stroke:rgb(0,0,0)" fill="#990000"/>  
 
     <rect  x="100" y="500" width="600" height="60" style="stroke-width:3;stroke:rgb(0,0,0)" fill="#990000" />
+
+    <!-- WHEELS -->
 
     <circle cx="630" cy="550" r="40" stroke="black" stroke-width="3" fill="black" />
 
@@ -26,10 +34,13 @@
     <circle cx="170" cy="550" r="30" stroke="black" stroke-width="3" fill="gray" />
 
     
+    <!-- AXIS 
 
    <rect  x="100" y="230" width="30" height="330" style="stroke-width:3;stroke:rgb(0,0,0)" fill="#800000"/>
 
    <rect  x="670" y="230" width="30" height="330" style="stroke-width:3;stroke:rgb(0,0,0)" fill="#800000"/>
+    -->
+    <!-- AXIS -->
 
     <g transform="rotate(20,345,245)">
 

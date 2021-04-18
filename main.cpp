@@ -1,27 +1,28 @@
 #include <iostream>
+#include <string>
+#include "car_trailer.h"
 
-#include "my_fraction.h"
-#include "cxx_examples.h"
-
+#include <fstream>
+#include <streambuf>
+#include <sstream>
 using namespace std;
 
 int main() {
 
+    Oselin_Wheel frontwheel;
+    frontwheel.x = 630;
+    frontwheel.y = 550;
+    frontwheel.radius = 40;
+    frontwheel.strokecolor = "black";
+    frontwheel.innercolor = "gray";
+    frontwheel.outercolor = "black";
+    frontwheel.stroke = 3;
 
-    MyFraction * frac = my_init(3,5);
+    cout << "2testout" << endl;
 
-    cout << "MyFraction: " << frac->a << " / " << frac->b << endl;
-
-    cout << "say_hello: " << cxx_examples::say_hello("Peppo") << endl;
-
-    try {
-        cout << "negative square_root: " << cxx_examples::square_root(-1.0) << endl;
-    } catch (exception& ex) {
-        cout << "something bad happened!" << ex.what() << endl;
-        cout << "I caught the exception, will continue" << endl;
-    };
-
-    cout << "end of the program!" << endl;
-
+    OselinDevice dev;
+    ofstream MyFile("test.svg");
+    MyFile << oselin_to_svg(dev);
+    MyFile.close();
     return 0;
 }
