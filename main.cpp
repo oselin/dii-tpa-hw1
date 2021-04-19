@@ -90,7 +90,16 @@ void savesvg(string svg){
     else cout << "You must create or load a drawing before!\n" << endl;
 }
 
-void loadsvg(){}
+void loadsvg(string filename){
+    ifstream file(filename);
+    stringstream buffer;
+    buffer << file.rdbuf();
+    string s = buffer.str();
+
+    cout << "I read this: " << endl;
+    cout << s << endl;
+
+}
 
 int main() {
 
@@ -101,8 +110,13 @@ int main() {
         switch (a)
         {
         case 'l':       //LOADING FROM FILE
-            loadsvg();
+        {            
+            string temp;
+            cout << "path/filename: ";
+            cin >> temp;
+            loadsvg(temp);
             break;
+        }
         case 'c':       //CREATING AN SVG
             svg = createsvg(device);
             break;
