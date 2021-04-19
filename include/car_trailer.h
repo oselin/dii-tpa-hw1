@@ -64,11 +64,11 @@ std::string oselin_axistoSVG(Oselin_Axis, Oselin_Axis);
 
 std::string oselin_jointtoSVG(Oselin_Joint);
 
-std::string oselin_to_svg(OselinDevice *, float, float);
+std::string oselin_to_svg(OselinDevice *, float, float, int);
 
 //PARAMETERS: 
 void oselin_trigonometry(OselinDevice *, float, float, float);
 
-int oselin_init(OselinDevice *, float, float);
-
+int oselin_init(OselinDevice *, float, float, float, float, float, int, int, float);
+  
 #endif //CAR_TRAILER_H

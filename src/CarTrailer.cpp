@@ -12,129 +12,135 @@ using namespace std;/*
  */
 
 
-int oselin_init(OselinDevice *dev, float width, float height){
-    if (dev->length > width || dev->height > height){
-        
-        cout << "OSELIN::INIT - ERROR CODE 1" << endl;
-        return 1;
+int oselin_init(OselinDevice *dev, float svgwidth, float svgheight, float radius, float carlength, float carheight, int ncar, int height, float margin){
+    
+    if (svgwidth < dev->length){
+        cout << "INIT:: WIDTH ERROR" << endl;
+    }
+    if (ncar ==1 && height == 2){
+        cout << "INIT:: STRUCTURAL ERROR" << endl;
     }
     return 0;
 }
 
+void trigfloors(OselinDevice *dev, float width, float height, string m){
+
+    Oselin_Floor *f; int mode;
+    if (m == "down") {
+        mode = 0;
+        f= &dev->downfloor;
+    }
+    else {
+        mode = 1;
+        f = &dev->upfloor;
+    }
+
+    f->x = (width-dev->length)/2;
+    f->y = (height-2*DOWNOFFSET) - mode*dev->height;
+    f->width = dev->length;
+    f->height = height/10;
+    f->stroke = f->height/20;
+
+}
+
+void trigwheel(OselinDevice *dev, float height, float radius, string m){
+    int mode;
+    Oselin_Wheel *wheel;
+    if (m=="rear") {
+        mode = 0;
+        wheel = &dev->rearwheel;
+        }
+    else {
+        mode = 1;
+        wheel = &dev->frontwheel;
+        }
+    float wheeloffset = dev->length/12;
+    //REAR WHEEL
+    wheel->x = dev->downfloor.x + pow(-1,mode)* wheeloffset + mode*dev->length;
+    wheel->y = height-DOWNOFFSET;
+    wheel->radius = radius;
+    wheel->stroke = radius/10;
+}
+
+void trigjoint(OselinDevice *dev, float radius,string m){
+
+    Oselin_Joint *joint; int mode;
+    if (m =="rear"){
+        mode = 0;
+        joint = &dev->rearjoint;
+    }
+    else{
+        mode = 1;
+        joint = &dev->frontjoint;
+    }
+    
+    joint->body.width = DOWNOFFSET;
+    joint->body.height = DOWNOFFSET/5;
+    joint->body.x = dev->downfloor.x + (mode-1)*DOWNOFFSET + mode*dev->length;
+    joint->body.y = dev->downfloor.y+DOWNOFFSET/2;
+    joint->body.stroke = joint->body.height/20;
+
+    joint->head.x = joint->body.x + mode*joint->body.width;
+    joint->head.y = joint->body.y + joint->body.height/2;
+    joint->head.radius = radius/4;
+    joint->head.stroke = radius/10;
+    joint->head.innercolor = "";
+    joint->head.outercolor = "white";
+}
+
+void trigaxis(OselinDevice *dev, float radius, string m){
+
+    Oselin_Axis *axis; int mode;
+    if (m =="rear"){
+        mode = 0;
+        axis = &dev->rearaxis;
+    }
+    else{
+        mode = 1;
+        axis = &dev->frontaxis;
+    }
+
+    axis->body.x = dev->length*(mode+1)/3 + dev->upfloor.x;
+    axis->body.y = dev->upfloor.y;
+    axis->body.height = dev->height + dev->downfloor.height;
+    axis->body.width = dev->height/10;
+    axis->body.stroke = axis->body.width/20;
+    
+    axis->topscrew.innercolor = "";
+    axis->topscrew.outercolor = "white";
+    axis->topscrew.radius = axis->body.width /3;
+    axis->topscrew.stroke = radius/10;
+    axis->topscrew.x = axis->body.width/2 + axis->body.x;
+    axis->topscrew.y = axis->body.width/2 + axis->body.y;
+    
+    
+    axis->bottomscrew.innercolor = "";
+    axis->bottomscrew.outercolor = "white";
+    axis->bottomscrew.radius = axis->body.width /3;
+    axis->bottomscrew.stroke = radius/10;
+    axis->bottomscrew.x = axis->body.width/2 + axis->body.x;
+    axis->bottomscrew.y = -axis->body.width/2 + axis->body.y + axis->body.height;
+    axis->rotationpoint[0] = axis->body.x + axis->body.width/2;
+    axis->rotationpoint[1] = axis->body.y + axis->body.height/2;
+     
+}
 
 void oselin_trigonometry(OselinDevice *dev, float width, float height, float r){
 
-    //DOWNFLOOR
-    dev->downfloor.x = (width-dev->length)/2;
-    dev->downfloor.y = (height-2*DOWNOFFSET);
-    dev->downfloor.width = dev->length;
-    dev->downfloor.height = dev->downfloor.width/10;
-    dev->downfloor.stroke = dev->downfloor.height/20;
+    r = r *40/16;
+    
+    trigfloors(dev, width, height, "down");
+    trigfloors(dev, width, height, "up");
 
-    //UPFLOOR
-    dev->upfloor.x = (width-dev->length)/2;
-    dev->upfloor.y = (height-2*DOWNOFFSET)-dev->height;
-    dev->upfloor.width = dev->length;
-    dev->upfloor.height = dev->upfloor.width/10;
-    dev->upfloor.stroke = dev->upfloor.height/20;
+    trigwheel(dev, height, r, "rear");
+    trigwheel(dev, height, r, "front");
 
-    //REAR WHEEL
-    dev->rearwheel.x = dev->downfloor.x + WHEELOFFSET;
-    dev->rearwheel.y = height-DOWNOFFSET;
-    dev->rearwheel.radius = r;
-    dev->rearwheel.stroke = r/10;
+    trigjoint(dev, r, "rear");
+    trigjoint(dev, r, "front");
     
+    trigaxis(dev, r, "rear");
+    trigaxis(dev, r, "front");
     
-    //FRONT WHEEL
-    dev->frontwheel.x = dev->downfloor.x + dev->length - WHEELOFFSET;
-    dev->frontwheel.y = height-DOWNOFFSET;
-    dev->frontwheel.radius = r;
-    dev->frontwheel.stroke = r/10;
-
-
-    //REAR JOINT
-    dev->rearjoint.body.x = dev->downfloor.x - DOWNOFFSET;
-    dev->rearjoint.body.y = dev->downfloor.y+DOWNOFFSET/2;
-    dev->rearjoint.body.width = DOWNOFFSET;
-    dev->rearjoint.body.height = DOWNOFFSET/5;
-    dev->rearjoint.body.stroke = dev->rearjoint.body.height/20;
-    dev->rearjoint.head.x = dev->rearjoint.body.x;
-    dev->rearjoint.head.y = dev->rearjoint.body.y + dev->rearjoint.body.height/2;
-    dev->rearjoint.head.radius = r/4;
-    dev->rearjoint.head.stroke = r/10;
-    dev->rearjoint.head.innercolor = "";
-    dev->rearjoint.head.outercolor = "white";
-
-
-
-    //FRONT JOINT
-    dev->frontjoint.body.x = dev->downfloor.x + dev->length;
-    dev->frontjoint.body.y = dev->downfloor.y+DOWNOFFSET/2;
-    dev->frontjoint.body.width = DOWNOFFSET;
-    dev->frontjoint.body.height = DOWNOFFSET/5;
-    dev->frontjoint.body.stroke = dev->frontjoint.body.height/20;
-    dev->frontjoint.head.x = dev->frontjoint.body.x + dev->frontjoint.body.width;
-    dev->frontjoint.head.y = dev->frontjoint.body.y + dev->rearjoint.body.height/2;
-    dev->frontjoint.head.radius = r/4;
-    dev->frontjoint.head.stroke = r/10;
-    dev->frontjoint.head.innercolor = "";
-    dev->frontjoint.head.outercolor = "white";
-
-    
-    //REAR AXIS
-    dev->rearaxis.body.x = dev->length/3 + dev->upfloor.x;
-    dev->rearaxis.body.y = dev->upfloor.y;
-    dev->rearaxis.body.height = dev->height + dev->downfloor.height;
-    dev->rearaxis.body.width = dev->height/10;
-    dev->rearaxis.body.stroke = dev->rearaxis.body.width/20;
-    
-    dev->rearaxis.topscrew.innercolor = "";
-    dev->rearaxis.topscrew.outercolor = "white";
-    dev->rearaxis.topscrew.radius = dev->rearaxis.body.width /3;
-    dev->rearaxis.topscrew.stroke = r/10;
-    dev->rearaxis.topscrew.x = dev->rearaxis.body.width/2 + dev->rearaxis.body.x;
-    dev->rearaxis.topscrew.y = dev->rearaxis.body.width/2 + dev->rearaxis.body.y;
-    
-    
-    dev->rearaxis.bottomscrew.innercolor = "";
-    dev->rearaxis.bottomscrew.outercolor = "white";
-    dev->rearaxis.bottomscrew.radius = dev->rearaxis.body.width /3;
-    dev->rearaxis.bottomscrew.stroke = r/10;
-    dev->rearaxis.bottomscrew.x = dev->rearaxis.body.width/2 + dev->rearaxis.body.x;
-    dev->rearaxis.bottomscrew.y = -dev->rearaxis.body.width/2 + dev->rearaxis.body.y + dev->rearaxis.body.height;
-    dev->rearaxis.rotationpoint[0] = dev->rearaxis.body.x + dev->rearaxis.body.width/2;
-    dev->rearaxis.rotationpoint[1] = dev->rearaxis.body.y + dev->rearaxis.body.height/2;
-        
-    //dev->rearaxis.rotationpoint [0] = dev->rearaxis.body.x + dev->rearaxis.body.width/2;
-    //dev->rearaxis.rotationpoint [1] = dev->rearaxis.body.y + dev->rearaxis.body.width/2;
-    
-    
-    
-    //FRONT AXIS
-    dev->frontaxis.body.x = dev->length*2/3 + dev->upfloor.x;
-    dev->frontaxis.body.y = dev->upfloor.y;
-    dev->frontaxis.body.height = dev->height + dev->downfloor.height;
-    dev->frontaxis.body.width = dev->height/10;
-    dev->frontaxis.body.stroke = dev->frontaxis.body.width/20;
-    
-    dev->frontaxis.topscrew.innercolor = "";
-    dev->frontaxis.topscrew.outercolor = "white";
-    dev->frontaxis.topscrew.radius = dev->frontaxis.body.width /3;
-    dev->frontaxis.topscrew.stroke = r/10;
-    dev->frontaxis.topscrew.x = dev->frontaxis.body.width/2 + dev->frontaxis.body.x;
-    dev->frontaxis.topscrew.y = dev->frontaxis.body.width/2 + dev->frontaxis.body.y;
- 
-    dev->frontaxis.bottomscrew.innercolor = "";
-    dev->frontaxis.bottomscrew.outercolor = "white";
-    dev->frontaxis.bottomscrew.radius = dev->frontaxis.body.width /3;
-    dev->frontaxis.bottomscrew.stroke = r/10;
-    dev->frontaxis.bottomscrew.x = dev->frontaxis.body.width/2 + dev->frontaxis.body.x;
-    dev->frontaxis.bottomscrew.y = -dev->frontaxis.body.width/2 + dev->frontaxis.body.y + dev->frontaxis.body.height;
-    dev->frontaxis.rotationpoint[0] = dev->frontaxis.body.x + dev->frontaxis.body.width/2;
-    dev->frontaxis.rotationpoint[1] = dev->frontaxis.body.y + dev->frontaxis.body.height/2;
-    
-    //dev->frontaxis.rotationpoint [1] = dev->frontaxis.body.x + dev->frontaxis.body.width/2;
-    //dev->frontaxis.rotationpoint [2] = dev->frontaxis.body.y + dev->frontaxis.body.width/2;
 }
 
 
@@ -199,7 +205,7 @@ string oselin_jointtoSVG(Oselin_Joint joint){
 }
 
 
-string oselin_to_svg(OselinDevice *device, float width, float height){
+string oselin_to_svg(OselinDevice *device, float width, float height, int nfloors){
 
     string svg;
 
@@ -215,16 +221,16 @@ string oselin_to_svg(OselinDevice *device, float width, float height){
     svg += "\n" + oselin_jointtoSVG(device->frontjoint);
 
     svg += "\n" + oselin_floortoSVG(device->downfloor);
-
-    svg += "\n" + oselin_floortoSVG(device->upfloor);
-
+   
     svg += "\n" + oselin_wheeltoSVG(device->frontwheel);
 
     svg += "\n" + oselin_wheeltoSVG(device->rearwheel);
-
-    svg += "\n" + oselin_axistoSVG(device->rearaxis);
-
-    svg += "\n" + oselin_axistoSVG(device->frontaxis);
+    
+    if (nfloors>1) {
+        svg += "\n" + oselin_floortoSVG(device->upfloor);
+        svg += "\n" + oselin_axistoSVG(device->rearaxis);
+        svg += "\n" + oselin_axistoSVG(device->frontaxis);
+    }
 
 
     svg += "\n</svg>";

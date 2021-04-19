@@ -12,27 +12,62 @@ int main() {
     OselinDevice *device, dev;
 
     device = &dev;
-    float width, height, radius;
 
+    /**
+     * CHOSEN PARAEMTERS:
+     * @param SVG WIDTH
+     * @param SVG HEIGHT
+     * @param WHEEL'S RADIUS -> 16" 17" 18"
+     * @param CAR-PER-TRAILER ->1 OR 2 PER TRAILER
+     * @param HEIGHT -> 1 OR 2 FLOORS
+     * @param CAR'S LENGTH -> TRAILER LENGTH = CAR-PER-TRAILER * CAR'S LENGTH
+     * @param CAR'S HEIGHT -> TRAILER HEIGHT = CAR'S HEIGHT * HEIGHT
+     * */
+
+    float svgwidth, svgheight, radius, carlength, carheight;
+    int ncars = 0, height = 1;
+    
+    
+    //1-- 800
     cout << "SVG width: ";
-    //cin >>  width;
-    width = 800;
+    //cin >>  svgwidth;
+    svgwidth = 800;
+    
+    //2-- 600
     cout << "SVG height: ";
-    //cin >> height;
-    height = 600;
-    cout << "Trailer's length: ";
-    //cin >> device->length;
-    device->length = 600;
-    cout << "Trailer's height: ";
-    //cin >> device->height;
-    device->height = 270;
+    //cin >> svgheight;
+    svgheight = 600;
+    //3--
+    cout << "CAR LENGTH: ";
+    //cin >>  carlength;
+    carlength = 200;
+    //4--
+    cout << "CAR HEIGHT: ";
+    //cin >>  carheight;
+    carheight = 100;
+    //5--
+    cout << "WHEEL RADIUS [16, 17, 18]: ";
+    cin >>  radius;
 
-    radius = 40;
+    //6--
+    cout << "Cars-per-trailer [1, 2]: ";
+    cin >> ncars;
+
+    //7--
+    cout << "Number of floors [1, 2]: ";
+    cin >> height;
+
     //CONSTRAINS:
-    oselin_init(device,width, height);
-    oselin_trigonometry(device, width, height, radius);
+    
+    float margin = svgwidth/10;
+    device->length = carlength * ncars + (ncars+1)*margin;
+    device->height = carheight * height + 100;
+    oselin_init(device, svgwidth, svgheight, radius, carlength, carheight, ncars, height, margin);
+    oselin_trigonometry(device, svgwidth, svgheight, radius);
+
     ofstream MyFile("test.svg");
-    MyFile << oselin_to_svg(device,width,height);
+    MyFile << oselin_to_svg(device, svgwidth, svgheight, height);
     MyFile.close();
+
     return 0;
 }
