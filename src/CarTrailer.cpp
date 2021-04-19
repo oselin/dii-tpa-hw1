@@ -128,7 +128,7 @@ void trigaxis(OselinDevice *dev, float radius, string m){
 void oselin_trigonometry(OselinDevice *dev, float width, float height, float r){
 
     r = r *40/16;
-    
+
     trigfloors(dev, width, height, "down");
     trigfloors(dev, width, height, "up");
 
@@ -165,9 +165,6 @@ string oselin_wheeltoSVG(Oselin_Wheel wheel){
         str += " fill= '" + wheel.innercolor + "'";
         str += " />";   
     }
-
-   
-
     return str;
 }
 
