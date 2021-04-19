@@ -9,20 +9,30 @@ using namespace std;
 
 int main() {
 
-    Oselin_Wheel frontwheel;
-    frontwheel.x = 630;
-    frontwheel.y = 550;
-    frontwheel.radius = 40;
-    frontwheel.strokecolor = "black";
-    frontwheel.innercolor = "gray";
-    frontwheel.outercolor = "black";
-    frontwheel.stroke = 3;
+    OselinDevice *device, dev;
 
-    cout << "2testout" << endl;
+    device = &dev;
+    float width, height, radius;
 
-    OselinDevice dev;
+    cout << "SVG width: ";
+    //cin >>  width;
+    width = 800;
+    cout << "SVG height: ";
+    //cin >> height;
+    height = 600;
+    cout << "Trailer's length: ";
+    //cin >> device->length;
+    device->length = 600;
+    cout << "Trailer's height: ";
+    //cin >> device->height;
+    device->height = 270;
+
+    radius = 40;
+    //CONSTRAINS:
+    oselin_init(device,width, height);
+    oselin_trigonometry(device, width, height, radius);
     ofstream MyFile("test.svg");
-    MyFile << oselin_to_svg(dev);
+    MyFile << oselin_to_svg(device,width,height);
     MyFile.close();
     return 0;
 }

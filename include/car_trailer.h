@@ -2,14 +2,9 @@
 #ifndef CAR_TRAILER_H
 #define CAR_TRAILER_H
 
-
+#define WHEELOFFSET 70
+#define DOWNOFFSET 50
 #include <string>
-
-struct OselinDevice{
-    double constr;
-    float width;
-    float height;
-};
 
 struct Oselin_Wheel{
 
@@ -17,9 +12,9 @@ struct Oselin_Wheel{
     float y;
     float radius;
     float stroke;
-    std::string strokecolor;
-    std::string outercolor;
-    std::string innercolor;
+    std::string strokecolor = "black";
+    std::string outercolor  = "black";
+    std::string innercolor  = "gray";
 
 };
 
@@ -29,8 +24,8 @@ struct Oselin_Floor{
     float width;
     float height;
     float stroke;
-    std::string strokecolor;
-    std::string fillingcolor;
+    std::string strokecolor  = "black";
+    std::string fillingcolor = "#990000";
 };
 
 struct Oselin_Joint{
@@ -42,23 +37,38 @@ struct Oselin_Joint{
 
 struct Oselin_Axis{
     Oselin_Floor body;
-
-    float angle;
+    Oselin_Wheel bottomscrew;
+    Oselin_Wheel topscrew;
+    float angle = 20;
+    float rotationpoint[2];
 };
 
-std::string oselin_stringwheels(Oselin_Wheel, Oselin_Wheel);
+struct OselinDevice{
+    float length;
+    float height;
+    Oselin_Floor downfloor;
+    Oselin_Floor upfloor;
+    Oselin_Wheel frontwheel;
+    Oselin_Wheel rearwheel;
+    Oselin_Joint rearjoint;
+    Oselin_Joint frontjoint;
+    Oselin_Axis rearaxis;
+    Oselin_Axis frontaxis;
+};
 
-std::string oselin_stringfloors(Oselin_Floor, Oselin_Floor);
+std::string oselin_wheeltoSVG(Oselin_Wheel);
 
-std::string oselin_stringaxis(Oselin_Axis, Oselin_Axis);
+std::string oselin_floortoSVG(Oselin_Floor);
 
-std::string oselin_stringjoints(Oselin_Joint, Oselin_Joint);
+std::string oselin_axistoSVG(Oselin_Axis, Oselin_Axis);
 
-void oselin_trigonometry();
+std::string oselin_jointtoSVG(Oselin_Joint);
 
-int oselin_init();
+std::string oselin_to_svg(OselinDevice *, float, float);
 
-std::string oselin_to_svg(OselinDevice);
+//PARAMETERS: 
+void oselin_trigonometry(OselinDevice *, float, float, float);
 
+int oselin_init(OselinDevice *, float, float);
 
 #endif //CAR_TRAILER_H
