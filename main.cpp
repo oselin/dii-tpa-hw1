@@ -7,12 +7,26 @@
 #include <sstream>
 using namespace std;
 
-int main() {
+char menu(){
+    string com; char inp;
+    
+    com += "Welcome to the SVG TRAILER CREATOR\n";
+    com += "----------------------------------\n";
+    com += "Here's what you can do:\n";
+    com += "[l] - load SVG drawing from file\n";
+    com += "[c] - create a new trailer\n";
+    com += "[s] - save SVG draving to file\n";
+    com += "[e] - exit";
+    com += "\n\n";
+    com += "What do you want to do?: ";
 
-    OselinDevice *device, dev;
+    cout << com << endl;
+    cin >> inp;
+    return inp;
 
-    device = &dev;
+}
 
+string createsvg(OselinDevice *device){
     /**
      * CHOSEN PARAEMTERS:
      * @param SVG WIDTH
@@ -23,16 +37,13 @@ int main() {
      * @param CAR'S LENGTH -> TRAILER LENGTH = CAR-PER-TRAILER * CAR'S LENGTH
      * @param CAR'S HEIGHT -> TRAILER HEIGHT = CAR'S HEIGHT * HEIGHT
      * */
-
     float svgwidth, svgheight, radius, carlength, carheight;
-    int ncars = 0, height = 1;
-    
-    
+    int ncars = 0, height = 1; 
+       
     //1-- 800
     cout << "SVG width: ";
     //cin >>  svgwidth;
     svgwidth = 800;
-    
     //2-- 600
     cout << "SVG height: ";
     //cin >> svgheight;
@@ -62,13 +73,48 @@ int main() {
     float margin = svgwidth/10;
     device->length = carlength * ncars + (ncars+1)*margin;
     device->height = carheight * height + 100;
+
     oselin_init(device, svgwidth, svgheight, radius, carlength, carheight, ncars, height, margin);
     oselin_trigonometry(device, svgwidth, svgheight, radius);
 
-    //SAVING TO FILE
-    ofstream MyFile("test.svg");
-    MyFile << oselin_to_svg(device, svgwidth, svgheight, height);
-    MyFile.close();
+    return oselin_to_svg(device, svgwidth, svgheight, height);
+}
+
+void savesvg(string svg){
+    if (svg != ""){
+        ofstream MyFile("test.svg");
+        MyFile << svg;
+        MyFile.close();
+        cout << "SAVED!\n" << endl;
+    }
+    else cout << "You must create or load a drawing before!\n" << endl;
+}
+
+void loadsvg(){}
+
+int main() {
+
+    OselinDevice *device = new OselinDevice;
+    string svg;
+    char a = menu();
+    while (a != 'e'){
+        switch (a)
+        {
+        case 'l':       //LOADING FROM FILE
+            loadsvg();
+            break;
+        case 'c':       //CREATING AN SVG
+            svg = createsvg(device);
+            break;
+        case 's':       //SAVING TO FILE
+            savesvg(svg);
+            break;
+        default:
+            break;
+        }
+        a = menu();
+    }
 
     return 0;
 }
+

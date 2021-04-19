@@ -31,11 +31,11 @@ struct Oselin_Floor{
 struct Oselin_Joint{
 
     Oselin_Floor body;
-    
     Oselin_Wheel head;
 };
 
 struct Oselin_Axis{
+    
     Oselin_Floor body;
     Oselin_Wheel bottomscrew;
     Oselin_Wheel topscrew;
@@ -44,6 +44,7 @@ struct Oselin_Axis{
 };
 
 struct OselinDevice{
+   
     float length;
     float height;
     Oselin_Floor downfloor;

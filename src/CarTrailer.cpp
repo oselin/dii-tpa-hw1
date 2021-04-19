@@ -168,7 +168,6 @@ string oselin_wheeltoSVG(Oselin_Wheel wheel){
     return str;
 }
 
-
 string oselin_floortoSVG(Oselin_Floor floor){
     string str = "\n<rect  ";
     str += "x='" + to_string(floor.x) + "'";
@@ -182,7 +181,6 @@ string oselin_floortoSVG(Oselin_Floor floor){
     return str;
 }
 
-
 string oselin_axistoSVG(Oselin_Axis steel){
     string str = "\n<g transform='rotate(";
     str += to_string(steel.angle) + "," + to_string(steel.rotationpoint[0]) + "," + to_string(steel.rotationpoint[1]);
@@ -194,33 +192,23 @@ string oselin_axistoSVG(Oselin_Axis steel){
     return str;
 }
 
-
 string oselin_jointtoSVG(Oselin_Joint joint){
     string str;
     str = oselin_floortoSVG(joint.body) + oselin_wheeltoSVG(joint.head);
     return str;
 }
 
-
 string oselin_to_svg(OselinDevice *device, float width, float height, int nfloors){
 
     string svg;
 
-    svg = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width= '"
-    
-    + to_string(width) + " '  height= '"
-
-    + to_string(height) + "' >";
-
-
+    svg = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width= '";
+    svg += to_string(width) + " '  height= '";
+    svg += to_string(height) + "' >";
     svg += "\n" + oselin_jointtoSVG(device->rearjoint);
-
     svg += "\n" + oselin_jointtoSVG(device->frontjoint);
-
     svg += "\n" + oselin_floortoSVG(device->downfloor);
-   
     svg += "\n" + oselin_wheeltoSVG(device->frontwheel);
-
     svg += "\n" + oselin_wheeltoSVG(device->rearwheel);
     
     if (nfloors>1) {
@@ -228,8 +216,6 @@ string oselin_to_svg(OselinDevice *device, float width, float height, int nfloor
         svg += "\n" + oselin_axistoSVG(device->rearaxis);
         svg += "\n" + oselin_axistoSVG(device->frontaxis);
     }
-
-
     svg += "\n</svg>";
 
     return svg;
