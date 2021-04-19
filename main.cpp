@@ -65,6 +65,7 @@ int main() {
     oselin_init(device, svgwidth, svgheight, radius, carlength, carheight, ncars, height, margin);
     oselin_trigonometry(device, svgwidth, svgheight, radius);
 
+    //SAVING TO FILE
     ofstream MyFile("test.svg");
     MyFile << oselin_to_svg(device, svgwidth, svgheight, height);
     MyFile.close();
