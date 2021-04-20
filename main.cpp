@@ -42,12 +42,12 @@ string createsvg(OselinDevice *device){
        
     //1-- 800
     cout << "SVG width: ";
-    //cin >>  svgwidth;
-    svgwidth = 800;
+    //cin >>  device->svgwidth;
+    device->svgwidth = 800;
     //2-- 600
     cout << "SVG height: ";
-    //cin >> svgheight;
-    svgheight = 600;
+    //cin >> device->svgheight;
+    device->svgheight = 600;
     //3--
     cout << "CAR LENGTH: ";
     //cin >>  carlength;
@@ -70,14 +70,17 @@ string createsvg(OselinDevice *device){
 
     //CONSTRAINS:
     
-    float margin = svgwidth/10;
+    float margin = device->svgwidth/10;
     device->length = carlength * ncars + (ncars+1)*margin;
     device->height = carheight * height + 100;
 
-    oselin_init(device, svgwidth, svgheight, radius, carlength, carheight, ncars, height, margin);
-    oselin_trigonometry(device, svgwidth, svgheight, radius);
+    oselin_init(device, radius, carlength, carheight, ncars, height, margin);
 
-    return oselin_to_svg(device, svgwidth, svgheight, height);
+    cout << device->svgwidth << endl;
+    cout << device->svgheight << endl;
+    oselin_trigonometry(device, radius);
+
+    return oselin_to_svg(device, height);
 }
 
 void savesvg(string svg){
@@ -95,7 +98,10 @@ void loadsvg(string filename){
     stringstream buffer;
     buffer << file.rdbuf();
     string s = buffer.str();
-    oselin_parsing(s);
+    OselinDevice device = oselin_parsing(s);
+
+    savesvg(oselin_to_svg(&device, 2));
+
 
 }
 

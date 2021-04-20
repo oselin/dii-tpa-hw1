@@ -44,7 +44,9 @@ struct Oselin_Axis{
 };
 
 struct OselinDevice{
-   
+
+    float svgwidth;
+    float svgheight;
     float length;
     float height;
     Oselin_Floor downfloor;
@@ -65,13 +67,13 @@ std::string oselin_axistoSVG(Oselin_Axis, Oselin_Axis);
 
 std::string oselin_jointtoSVG(Oselin_Joint);
 
-std::string oselin_to_svg(OselinDevice *, float, float, int);
+std::string oselin_to_svg(OselinDevice *, int);
 
 //PARAMETERS: 
-void oselin_trigonometry(OselinDevice *, float, float, float);
+void oselin_trigonometry(OselinDevice *, float);
 
-int oselin_init(OselinDevice *, float, float, float, float, float, int, int, float);
+int oselin_init(OselinDevice *, float, float, float, int, int, float);
 
-OselinDevice * oselin_parsing(std::string);
+OselinDevice oselin_parsing(std::string);
 
 #endif //CAR_TRAILER_H

@@ -12,9 +12,9 @@ using namespace std;/*
  */
 
 
-int oselin_init(OselinDevice *dev, float svgwidth, float svgheight, float radius, float carlength, float carheight, int ncar, int height, float margin){
+int oselin_init(OselinDevice *dev, float radius, float carlength, float carheight, int ncar, int height, float margin){
     
-    if (svgwidth < dev->length){
+    if (dev->svgwidth < dev->length){
         cout << "INIT:: WIDTH ERROR" << endl;
     }
     if (ncar ==1 && height == 2){
@@ -23,7 +23,7 @@ int oselin_init(OselinDevice *dev, float svgwidth, float svgheight, float radius
     return 0;
 }
 
-void trigfloors(OselinDevice *dev, float width, float height, string m){
+void trigfloors(OselinDevice *dev,  string m){
 
     Oselin_Floor *f; int mode;
     if (m == "down") {
@@ -34,16 +34,16 @@ void trigfloors(OselinDevice *dev, float width, float height, string m){
         mode = 1;
         f = &dev->upfloor;
     }
-
-    f->x = (width-dev->length)/2;
-    f->y = (height-2*DOWNOFFSET) - mode*dev->height;
+    cout << dev->svgwidth << endl;
+    f->x = (dev->svgwidth-dev->length)/2;
+    f->y = (dev->svgheight-2*DOWNOFFSET) - mode*dev->height;
     f->width = dev->length;
-    f->height = height/10;
+    f->height = dev->svgheight/10;
     f->stroke = f->height/20;
 
 }
 
-void trigwheel(OselinDevice *dev, float height, float radius, string m){
+void trigwheel(OselinDevice *dev,  float radius, string m){
     int mode;
     Oselin_Wheel *wheel;
     if (m=="rear") {
@@ -57,7 +57,7 @@ void trigwheel(OselinDevice *dev, float height, float radius, string m){
     float wheeloffset = dev->length/12;
     //REAR WHEEL
     wheel->x = dev->downfloor.x + pow(-1,mode)* wheeloffset + mode*dev->length;
-    wheel->y = height-DOWNOFFSET;
+    wheel->y = dev->svgheight-DOWNOFFSET;
     wheel->radius = radius;
     wheel->stroke = radius/10;
 }
@@ -125,15 +125,15 @@ void trigaxis(OselinDevice *dev, float radius, string m){
      
 }
 
-void oselin_trigonometry(OselinDevice *dev, float width, float height, float r){
+void oselin_trigonometry(OselinDevice *dev, float r){
 
     r = r *40/16;
 
-    trigfloors(dev, width, height, "down");
-    trigfloors(dev, width, height, "up");
+    trigfloors(dev, "down");
+    trigfloors(dev, "up");
 
-    trigwheel(dev, height, r, "rear");
-    trigwheel(dev, height, r, "front");
+    trigwheel(dev, r, "rear");
+    trigwheel(dev, r, "front");
 
     trigjoint(dev, r, "rear");
     trigjoint(dev, r, "front");
@@ -142,7 +142,6 @@ void oselin_trigonometry(OselinDevice *dev, float width, float height, float r){
     trigaxis(dev, r, "front");
     
 }
-
 
 string oselin_wheeltoSVG(Oselin_Wheel wheel){
     string str;
@@ -198,13 +197,13 @@ string oselin_jointtoSVG(Oselin_Joint joint){
     return str;
 }
 
-string oselin_to_svg(OselinDevice *device, float width, float height, int nfloors){
+string oselin_to_svg(OselinDevice *device, int nfloors){
 
     string svg;
 
-    svg = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width= '";
-    svg += to_string(width) + " '  height= '";
-    svg += to_string(height) + "' >";
+    svg = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width='";
+    svg += to_string(device->svgwidth) + " '  height='";
+    svg += to_string(device->svgheight) + "' >";
     svg += "\n<!--#1-->";
     svg += "\n" + oselin_jointtoSVG(device->rearjoint);
     svg += "\n<!--#2-->";
@@ -230,8 +229,8 @@ string oselin_to_svg(OselinDevice *device, float width, float height, int nfloor
 }
 
 string checkpoint(int i){
-    if (i!=8){
-        return "<!--#" + to_string(i+1) + "-->";
+    if (i<9){
+        return "<!--#" + to_string(i) + "-->";
     }
     else return "</svg>";
 }
@@ -257,6 +256,7 @@ Oselin_Floor parsingfloor(string svg){
     f.fillingcolor = buffering(svg, "fill='",'\'');
     f.stroke = stof(buffering(svg, "stroke-width:",';'));
     f.strokecolor = buffering(svg, "stroke:", '\'');
+    
     return f;    
 }
 
@@ -289,7 +289,6 @@ Oselin_Joint parsingjoint(string svg){
     return j;
 }
 
-
 Oselin_Axis parsingaxis(string svg){
 
     Oselin_Axis a;
@@ -300,13 +299,26 @@ Oselin_Axis parsingaxis(string svg){
     string circlebottom = svg.substr(index,svg.find(">") - index);
     string circletop = svg.substr(index2,svg.find(">",index2) - index2);
 
+    string rotation = "<g transform='rotate(";
+    a.angle = stof(buffering(svg,rotation,','));
+    rotation += to_string(a.angle) + ',';
+
+    for (int i=0;i<2;i++){
+        if (!i) a.rotationpoint[i] = stof(buffering(svg, rotation, ','));
+        else a.rotationpoint[i] = stof(buffering(svg, rotation, ')'));
+        rotation += to_string(a.rotationpoint[i]) + ',';
+    }
     a.body = parsingfloor(rect);
     a.bottomscrew = parsingwheel(circlebottom,0);
     a.topscrew  = parsingwheel(circletop,0);
+
+    return a;
     
 }
 
-OselinDevice * oselin_parsing(string svg){
+OselinDevice oselin_parsing(string svg){
+
+    OselinDevice  device;
     int pieces[7][2];
     for (int i=1;i<9;i++){
         int index = svg.find(checkpoint(i));
@@ -314,8 +326,20 @@ OselinDevice * oselin_parsing(string svg){
         pieces[i-1][0] = index+11;
         pieces[i-1][1] = len-11;
     }
-    parsingfloor(svg.substr(pieces[0][0], pieces[0][1]));
-    parsingwheel(svg.substr(pieces[3][0], pieces[3][1]),1);
-    parsingjoint(svg.substr(pieces[0][0], pieces[0][1]));
-    parsingaxis(svg.substr(pieces[6][0], pieces[6][1]));
+
+    device.svgwidth = stof(buffering(svg.substr(0,pieces[0][0]),"width='",'\''));
+    device.svgheight = stof(buffering(svg.substr(0,pieces[0][0]),"height='",'\''));
+
+    device.rearjoint = parsingjoint(svg.substr(pieces[0][0], pieces[0][1]));
+    device.frontjoint = parsingjoint(svg.substr(pieces[1][0], pieces[1][1]));
+    device.downfloor = parsingfloor(svg.substr(pieces[2][0], pieces[2][1]));
+    device.frontwheel = parsingwheel(svg.substr(pieces[3][0], pieces[3][1]),1);
+    device.rearwheel = parsingwheel(svg.substr(pieces[4][0], pieces[4][1]),1);
+    device.upfloor = parsingfloor(svg.substr(pieces[5][0], pieces[5][1]));
+    device.rearaxis = parsingaxis(svg.substr(pieces[6][0], pieces[6][1]));
+    device.frontaxis = parsingaxis(svg.substr(pieces[7][0], pieces[7][1]));
+
+    device.length = device.downfloor.width;
+    device.height = 10 * device.downfloor.height;
+    return device;
 }
