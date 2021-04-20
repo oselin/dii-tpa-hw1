@@ -111,8 +111,8 @@ int main() {
         {            
             string temp;
             cout << "path/filename: ";
-            cin >> temp;
-            loadsvg(temp);
+            //cin >> temp;
+            loadsvg("test.svg");
             break;
         }
         case 'c':       //CREATING AN SVG

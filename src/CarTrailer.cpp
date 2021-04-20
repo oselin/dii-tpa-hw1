@@ -147,21 +147,21 @@ void oselin_trigonometry(OselinDevice *dev, float width, float height, float r){
 string oselin_wheeltoSVG(Oselin_Wheel wheel){
     string str;
     str += "\n<circle";
-    str += " cx= '" + to_string(wheel.x) + "'";
-    str += " cy= '" + to_string(wheel.y) + "'";
-    str += " r= '" + to_string(wheel.radius) + "'";
-    str += " stroke= '" + wheel.strokecolor + "'";
-    str += " stroke-width= '" + to_string(wheel.stroke) + "'";
-    str += " fill= '" + wheel.outercolor + "'";
+    str += " cx='" + to_string(wheel.x) + "'";
+    str += " cy='" + to_string(wheel.y) + "'";
+    str += " r='" + to_string(wheel.radius) + "'";
+    str += " stroke='" + wheel.strokecolor + "'";
+    str += " stroke-width='" + to_string(wheel.stroke) + "'";
+    str += " fill='" + wheel.outercolor + "'";
     str += " />";
 
     if (wheel.innercolor != ""){
         str += "\n<circle";
-        str += " cx= '" + to_string(wheel.x) + "'";
-        str += " cy= '" + to_string(wheel.y) + "'";
-        str += " r= '" + to_string(wheel.radius*3/4) + "'";
-        str += " stroke= '" + wheel.strokecolor + "'";
-        str += " stroke-width= '" + to_string(wheel.stroke) + "'";
+        str += " cx='" + to_string(wheel.x) + "'";
+        str += " cy='" + to_string(wheel.y) + "'";
+        str += " r='" + to_string(wheel.radius*3/4) + "'";
+        str += " stroke='" + wheel.strokecolor + "'";
+        str += " stroke-width='" + to_string(wheel.stroke) + "'";
         str += " fill= '" + wheel.innercolor + "'";
         str += " />";   
     }
@@ -174,9 +174,9 @@ string oselin_floortoSVG(Oselin_Floor floor){
     str += " y='" + to_string(floor.y) + "'";
     str += " width='" + to_string(floor.width) + "'";
     str += " height='" + to_string(floor.height) + "'";
-    str += " style='stroke-width: " + to_string(floor.stroke) + ";";
+    str += " style='stroke-width:" + to_string(floor.stroke) + ";";
     str += " stroke:" + floor.strokecolor + "'";
-    str += " fill= '" + floor.fillingcolor + "'";
+    str += " fill='" + floor.fillingcolor + "'";
     str += " />";
     return str;
 }
@@ -230,82 +230,92 @@ string oselin_to_svg(OselinDevice *device, float width, float height, int nfloor
 }
 
 string checkpoint(int i){
-    return "<!--#" + to_string(i) + "-->";
+    if (i!=8){
+        return "<!--#" + to_string(i+1) + "-->";
+    }
+    else return "</svg>";
 }
 
-string buffering(string svg, int i){
-    int temp=0;
-    string buffer;
-    cout << svg[i] << endl;
-    ++i;
-    while (temp!=2){
-        cout << buffer << endl;
-        switch (svg[i])
-        {
-        case ' ':
-            break;
-        case '=':
-            break;
-        case '\'':
-            cout << "' detected: " << temp << endl;
-            temp++;
-            break;
-        default:
-            buffer+=svg[i];
-            break;
-        }
+string buffering(string svg, string param, char symb){
+    
+    string buffer = "";
+    int i = svg.find(param) + param.length();
+    while (svg[i] != symb){
+        buffer += svg[i];
         i++;
     }
     return buffer;
 }
 
 Oselin_Floor parsingfloor(string svg){
-    cout << "in parsingfloor" << endl;
-    string buffer;
-    for (int i=0;i<svg.length();i++){
-        switch (svg[i])
-        {
-        case 'x':
-            cout << "x case detected" << endl;
-            cout << buffering(svg,i);
-            break;
-        case 'y':
-            break;
-        case 'w':
-            break;
-        case 'h':
-            break;
-        case 's':
-            break;
-        case 'f':
-            break;
-        
-        default:
-            break;
-        }
-    }
+    Oselin_Floor f;
 
+    f.x = stof(buffering(svg, "x='",'\''));
+    f.y = stof(buffering(svg, "y='",'\''));
+    f.width = stof(buffering(svg, "width='",'\''));
+    f.height = stof(buffering(svg, "height='",'\''));
+    f.fillingcolor = buffering(svg, "fill='",'\'');
+    f.stroke = stof(buffering(svg, "stroke-width:",';'));
+    f.strokecolor = buffering(svg, "stroke:", '\'');
+    return f;    
 }
 
-Oselin_Wheel parsingwheel(string svg){
+Oselin_Wheel parsingwheel(string svg, int doublecolor){
+    Oselin_Wheel w;
+    w.x = stof(buffering(svg, "cx='",'\''));
+    w.y = stof(buffering(svg, "cy='",'\''));
+    w.radius = stof(buffering(svg, "r='",'\''));
+    w.stroke = stof(buffering(svg, "stroke-width='",'\''));
+    w.strokecolor = buffering(svg, "stroke='",'\'');
+    w.outercolor = buffering(svg, "fill='",'\'');
+
+    if (doublecolor) w.innercolor = buffering(svg, "fill= '",'\'');
+    else w.innercolor = "";
+
+    return w;
 
 }
 
 Oselin_Joint parsingjoint(string svg){
 
+    Oselin_Joint j;
+    
+    string rect = svg.substr(svg.find("<rect"),svg.find(">")-svg.find("<rect"));
+    string circle = svg.substr(svg.find("<circle"),svg.find(">")-svg.find("<circle"));
+
+    j.body = parsingfloor(rect);
+    j.head = parsingwheel(circle,0);
+    
+    return j;
 }
+
 
 Oselin_Axis parsingaxis(string svg){
 
+    Oselin_Axis a;
+    
+    string rect = svg.substr(svg.find("<rect"),svg.find(">")-svg.find("<rect"));
+    int index = svg.find("<circle");
+    int index2 = svg.find("<circle",index+1);
+    string circlebottom = svg.substr(index,svg.find(">") - index);
+    string circletop = svg.substr(index2,svg.find(">",index2) - index2);
+
+    a.body = parsingfloor(rect);
+    a.bottomscrew = parsingwheel(circlebottom,0);
+    a.topscrew  = parsingwheel(circletop,0);
+    
 }
 
 OselinDevice * oselin_parsing(string svg){
     int pieces[7][2];
-    for (int i=1;i<7;i++){
+    for (int i=1;i<9;i++){
         int index = svg.find(checkpoint(i));
         int len = svg.find(checkpoint(i+1)) - index;
-        pieces[i-1][0] = index+10;
-        pieces[i-1][1] = len-10;
+        pieces[i-1][0] = index+11;
+        pieces[i-1][1] = len-11;
     }
-    cout << pieces << endl;
+    parsingfloor(svg.substr(pieces[0][0], pieces[0][1]));
+    parsingwheel(svg.substr(pieces[3][0], pieces[3][1]),1);
+    parsingjoint(svg.substr(pieces[0][0], pieces[0][1]));
+    parsingaxis(svg.substr(pieces[6][0], pieces[6][1]));
 }
