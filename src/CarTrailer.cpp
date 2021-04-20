@@ -205,18 +205,107 @@ string oselin_to_svg(OselinDevice *device, float width, float height, int nfloor
     svg = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width= '";
     svg += to_string(width) + " '  height= '";
     svg += to_string(height) + "' >";
+    svg += "\n<!--#1-->";
     svg += "\n" + oselin_jointtoSVG(device->rearjoint);
+    svg += "\n<!--#2-->";
     svg += "\n" + oselin_jointtoSVG(device->frontjoint);
+    svg += "\n<!--#3-->";
     svg += "\n" + oselin_floortoSVG(device->downfloor);
+    svg += "\n<!--#4-->";
     svg += "\n" + oselin_wheeltoSVG(device->frontwheel);
+    svg += "\n<!--#5-->";
     svg += "\n" + oselin_wheeltoSVG(device->rearwheel);
     
     if (nfloors>1) {
+        svg += "\n<!--#6-->";
         svg += "\n" + oselin_floortoSVG(device->upfloor);
+        svg += "\n<!--#7-->";
         svg += "\n" + oselin_axistoSVG(device->rearaxis);
+        svg += "\n<!--#8-->";
         svg += "\n" + oselin_axistoSVG(device->frontaxis);
     }
     svg += "\n</svg>";
 
     return svg;
+}
+
+string checkpoint(int i){
+    return "<!--#" + to_string(i) + "-->";
+}
+
+string buffering(string svg, int i){
+    int temp=0;
+    string buffer;
+    cout << svg[i] << endl;
+    ++i;
+    while (temp!=2){
+        cout << buffer << endl;
+        switch (svg[i])
+        {
+        case ' ':
+            break;
+        case '=':
+            break;
+        case '\'':
+            cout << "' detected: " << temp << endl;
+            temp++;
+            break;
+        default:
+            buffer+=svg[i];
+            break;
+        }
+        i++;
+    }
+    return buffer;
+}
+
+Oselin_Floor parsingfloor(string svg){
+    cout << "in parsingfloor" << endl;
+    string buffer;
+    for (int i=0;i<svg.length();i++){
+        switch (svg[i])
+        {
+        case 'x':
+            cout << "x case detected" << endl;
+            cout << buffering(svg,i);
+            break;
+        case 'y':
+            break;
+        case 'w':
+            break;
+        case 'h':
+            break;
+        case 's':
+            break;
+        case 'f':
+            break;
+        
+        default:
+            break;
+        }
+    }
+
+}
+
+Oselin_Wheel parsingwheel(string svg){
+
+}
+
+Oselin_Joint parsingjoint(string svg){
+
+}
+
+Oselin_Axis parsingaxis(string svg){
+
+}
+
+OselinDevice * oselin_parsing(string svg){
+    int pieces[7][2];
+    for (int i=1;i<7;i++){
+        int index = svg.find(checkpoint(i));
+        int len = svg.find(checkpoint(i+1)) - index;
+        pieces[i-1][0] = index+10;
+        pieces[i-1][1] = len-10;
+    }
+    cout << pieces << endl;
 }

@@ -95,9 +95,7 @@ void loadsvg(string filename){
     stringstream buffer;
     buffer << file.rdbuf();
     string s = buffer.str();
-
-    cout << "I read this: " << endl;
-    cout << s << endl;
+    oselin_parsing(s);
 
 }
 
