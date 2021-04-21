@@ -6,6 +6,13 @@
 #define DOWNOFFSET 50
 #include <string>
 
+struct Parameters{
+    float svgwidth;
+    float svgheight;
+    int nfloors = 2;
+    float radius;
+};
+
 struct Oselin_Wheel{
 
     float x;
@@ -45,8 +52,7 @@ struct Oselin_Axis{
 
 struct OselinDevice{
 
-    float svgwidth;
-    float svgheight;
+    Parameters param;
     float length;
     float height;
     Oselin_Floor downfloor;
@@ -67,13 +73,13 @@ std::string oselin_axistoSVG(Oselin_Axis, Oselin_Axis);
 
 std::string oselin_jointtoSVG(Oselin_Joint);
 
-std::string oselin_to_svg(OselinDevice *, int);
+std::string oselin_to_svg(OselinDevice *);
 
 //PARAMETERS: 
-void oselin_trigonometry(OselinDevice *, float);
+void oselin_trigonometry(OselinDevice *);
 
-int oselin_init(OselinDevice *, float, float, float, int, int, float);
+int oselin_init(OselinDevice *, float, float, int, float);
 
-OselinDevice oselin_parsing(std::string);
+void oselin_parsing(OselinDevice *, std::string);
 
 #endif //CAR_TRAILER_H

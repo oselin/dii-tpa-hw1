@@ -12,12 +12,12 @@ using namespace std;/*
  */
 
 
-int oselin_init(OselinDevice *dev, float radius, float carlength, float carheight, int ncar, int height, float margin){
+int oselin_init(OselinDevice *dev, float carlength, float carheight, int ncar, float margin){
     
-    if (dev->svgwidth < dev->length){
+    if (dev->param.svgwidth < dev->length){
         cout << "INIT:: WIDTH ERROR" << endl;
     }
-    if (ncar ==1 && height == 2){
+    if (ncar ==1 && dev->param.nfloors == 2){
         cout << "INIT:: STRUCTURAL ERROR" << endl;
     }
     return 0;
@@ -34,16 +34,16 @@ void trigfloors(OselinDevice *dev,  string m){
         mode = 1;
         f = &dev->upfloor;
     }
-    cout << dev->svgwidth << endl;
-    f->x = (dev->svgwidth-dev->length)/2;
-    f->y = (dev->svgheight-2*DOWNOFFSET) - mode*dev->height;
+    cout << dev->param.svgwidth << endl;
+    f->x = (dev->param.svgwidth-dev->length)/2;
+    f->y = (dev->param.svgheight-2*DOWNOFFSET) - mode*dev->height;
     f->width = dev->length;
-    f->height = dev->svgheight/10;
+    f->height = dev->param.svgheight/10;
     f->stroke = f->height/20;
 
 }
 
-void trigwheel(OselinDevice *dev,  float radius, string m){
+void trigwheel(OselinDevice *dev, string m){
     int mode;
     Oselin_Wheel *wheel;
     if (m=="rear") {
@@ -57,12 +57,12 @@ void trigwheel(OselinDevice *dev,  float radius, string m){
     float wheeloffset = dev->length/12;
     //REAR WHEEL
     wheel->x = dev->downfloor.x + pow(-1,mode)* wheeloffset + mode*dev->length;
-    wheel->y = dev->svgheight-DOWNOFFSET;
-    wheel->radius = radius;
-    wheel->stroke = radius/10;
+    wheel->y = dev->param.svgheight-DOWNOFFSET;
+    wheel->radius = dev->param.radius;
+    wheel->stroke = dev->param.radius/10;
 }
 
-void trigjoint(OselinDevice *dev, float radius,string m){
+void trigjoint(OselinDevice *dev, string m){
 
     Oselin_Joint *joint; int mode;
     if (m =="rear"){
@@ -82,13 +82,13 @@ void trigjoint(OselinDevice *dev, float radius,string m){
 
     joint->head.x = joint->body.x + mode*joint->body.width;
     joint->head.y = joint->body.y + joint->body.height/2;
-    joint->head.radius = radius/4;
-    joint->head.stroke = radius/10;
+    joint->head.radius = dev->param.radius/4;
+    joint->head.stroke = dev->param.radius/10;
     joint->head.innercolor = "";
     joint->head.outercolor = "white";
 }
 
-void trigaxis(OselinDevice *dev, float radius, string m){
+void trigaxis(OselinDevice *dev, string m){
 
     Oselin_Axis *axis; int mode;
     if (m =="rear"){
@@ -109,7 +109,7 @@ void trigaxis(OselinDevice *dev, float radius, string m){
     axis->topscrew.innercolor = "";
     axis->topscrew.outercolor = "white";
     axis->topscrew.radius = axis->body.width /3;
-    axis->topscrew.stroke = radius/10;
+    axis->topscrew.stroke = dev->param.radius/10;
     axis->topscrew.x = axis->body.width/2 + axis->body.x;
     axis->topscrew.y = axis->body.width/2 + axis->body.y;
     
@@ -117,7 +117,7 @@ void trigaxis(OselinDevice *dev, float radius, string m){
     axis->bottomscrew.innercolor = "";
     axis->bottomscrew.outercolor = "white";
     axis->bottomscrew.radius = axis->body.width /3;
-    axis->bottomscrew.stroke = radius/10;
+    axis->bottomscrew.stroke = dev->param.radius/10;
     axis->bottomscrew.x = axis->body.width/2 + axis->body.x;
     axis->bottomscrew.y = -axis->body.width/2 + axis->body.y + axis->body.height;
     axis->rotationpoint[0] = axis->body.x + axis->body.width/2;
@@ -125,21 +125,21 @@ void trigaxis(OselinDevice *dev, float radius, string m){
      
 }
 
-void oselin_trigonometry(OselinDevice *dev, float r){
+void oselin_trigonometry(OselinDevice *dev){
 
-    r = r *40/16;
+    dev->param.radius = dev->param.radius *40/16;
 
     trigfloors(dev, "down");
     trigfloors(dev, "up");
 
-    trigwheel(dev, r, "rear");
-    trigwheel(dev, r, "front");
+    trigwheel(dev, "rear");
+    trigwheel(dev, "front");
 
-    trigjoint(dev, r, "rear");
-    trigjoint(dev, r, "front");
+    trigjoint(dev, "rear");
+    trigjoint(dev, "front");
     
-    trigaxis(dev, r, "rear");
-    trigaxis(dev, r, "front");
+    trigaxis(dev, "rear");
+    trigaxis(dev, "front");
     
 }
 
@@ -197,13 +197,13 @@ string oselin_jointtoSVG(Oselin_Joint joint){
     return str;
 }
 
-string oselin_to_svg(OselinDevice *device, int nfloors){
+string oselin_to_svg(OselinDevice *device){
 
     string svg;
 
     svg = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width='";
-    svg += to_string(device->svgwidth) + " '  height='";
-    svg += to_string(device->svgheight) + "' >";
+    svg += to_string(device->param.svgwidth) + " '  height='";
+    svg += to_string(device->param.svgheight) + "' >";
     svg += "\n<!--#1-->";
     svg += "\n" + oselin_jointtoSVG(device->rearjoint);
     svg += "\n<!--#2-->";
@@ -215,7 +215,7 @@ string oselin_to_svg(OselinDevice *device, int nfloors){
     svg += "\n<!--#5-->";
     svg += "\n" + oselin_wheeltoSVG(device->rearwheel);
     
-    if (nfloors>1) {
+    if (device->param.nfloors>1) {
         svg += "\n<!--#6-->";
         svg += "\n" + oselin_floortoSVG(device->upfloor);
         svg += "\n<!--#7-->";
@@ -298,7 +298,6 @@ Oselin_Axis parsingaxis(string svg){
     int index2 = svg.find("<circle",index+1);
     string circlebottom = svg.substr(index,svg.find(">") - index);
     string circletop = svg.substr(index2,svg.find(">",index2) - index2);
-
     string rotation = "<g transform='rotate(";
     a.angle = stof(buffering(svg,rotation,','));
     rotation += to_string(a.angle) + ',';
@@ -316,9 +315,8 @@ Oselin_Axis parsingaxis(string svg){
     
 }
 
-OselinDevice oselin_parsing(string svg){
+void oselin_parsing(OselinDevice * device, string svg){
 
-    OselinDevice  device;
     int pieces[7][2];
     for (int i=1;i<9;i++){
         int index = svg.find(checkpoint(i));
@@ -326,20 +324,16 @@ OselinDevice oselin_parsing(string svg){
         pieces[i-1][0] = index+11;
         pieces[i-1][1] = len-11;
     }
-
-    device.svgwidth = stof(buffering(svg.substr(0,pieces[0][0]),"width='",'\''));
-    device.svgheight = stof(buffering(svg.substr(0,pieces[0][0]),"height='",'\''));
-
-    device.rearjoint = parsingjoint(svg.substr(pieces[0][0], pieces[0][1]));
-    device.frontjoint = parsingjoint(svg.substr(pieces[1][0], pieces[1][1]));
-    device.downfloor = parsingfloor(svg.substr(pieces[2][0], pieces[2][1]));
-    device.frontwheel = parsingwheel(svg.substr(pieces[3][0], pieces[3][1]),1);
-    device.rearwheel = parsingwheel(svg.substr(pieces[4][0], pieces[4][1]),1);
-    device.upfloor = parsingfloor(svg.substr(pieces[5][0], pieces[5][1]));
-    device.rearaxis = parsingaxis(svg.substr(pieces[6][0], pieces[6][1]));
-    device.frontaxis = parsingaxis(svg.substr(pieces[7][0], pieces[7][1]));
-
-    device.length = device.downfloor.width;
-    device.height = 10 * device.downfloor.height;
-    return device;
+    device->param.svgwidth = stof(buffering(svg.substr(0,pieces[0][0]),"width='",'\''));
+    device->param.svgheight = stof(buffering(svg.substr(0,pieces[0][0]),"height='",'\''));
+    device->rearjoint = parsingjoint(svg.substr(pieces[0][0], pieces[0][1]));
+    device->frontjoint = parsingjoint(svg.substr(pieces[1][0], pieces[1][1]));
+    device->downfloor = parsingfloor(svg.substr(pieces[2][0], pieces[2][1]));
+    device->frontwheel = parsingwheel(svg.substr(pieces[3][0], pieces[3][1]),1);
+    device->rearwheel = parsingwheel(svg.substr(pieces[4][0], pieces[4][1]),1);
+    device->upfloor = parsingfloor(svg.substr(pieces[5][0], pieces[5][1]));
+    device->rearaxis = parsingaxis(svg.substr(pieces[6][0], pieces[6][1]));
+    device->frontaxis = parsingaxis(svg.substr(pieces[7][0], pieces[7][1]));
+    device->length = device->downfloor.width;
+    device->height = 10 * device->downfloor.height;
 }
