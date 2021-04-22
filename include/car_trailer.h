@@ -78,8 +78,9 @@ std::string oselin_to_svg(OselinDevice *);
 //PARAMETERS: 
 void oselin_trigonometry(OselinDevice *);
 
-int oselin_init(OselinDevice *, float, float, int, float);
+int oselin_init(OselinDevice *, float, float, int);
 
 void oselin_parsing(OselinDevice *, std::string);
 
+void errors(int);
 #endif //CAR_TRAILER_H

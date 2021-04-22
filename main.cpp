@@ -26,6 +26,32 @@ char menu(){
 
 }
 
+float questionloop(string question, int questiontype){
+    float myvar = 0;
+    switch (questiontype)
+    {
+    case 1:
+        while ((myvar != 16)  && (myvar != 17) && (myvar != 18)){
+            cout << question;
+            cin >> myvar;
+        }
+        break;
+    case 2:
+        while (myvar != 1 && myvar != 2){
+            cout << question;
+            cin >> myvar;
+        }
+        break;
+    
+    default:
+        while (myvar<=0){
+            cout << question;
+            cin >> myvar;
+        }
+        break;
+    }
+    return myvar;
+}
 string createsvg(OselinDevice *device){
     /**
      * CHOSEN PARAEMTERS:
@@ -41,46 +67,27 @@ string createsvg(OselinDevice *device){
     int ncars = 0; 
        
     //1-- 800
-    cout << "SVG width: ";
-    //cin >>  device->svgwidth;
-    device->param.svgwidth = 800;
-    //2-- 600
-    cout << "SVG height: ";
-    //cin >> device->svgheight;
-    device->param.svgheight = 600;
-    //3--
-    cout << "CAR LENGTH: ";
-    //cin >>  carlength;
-    carlength = 200;
-    //4--
-    cout << "CAR HEIGHT: ";
-    //cin >>  carheight;
-    carheight = 100;
-    //5--
-    cout << "WHEEL RADIUS [16, 17, 18]: ";
-    cin >>  device->param.radius;
-
-    //6--
-    cout << "Cars-per-trailer [1, 2]: ";
-    cin >> ncars;
-
-    //7--
-    cout << "Number of floors [1, 2]: ";
-    cin >> device->param.nfloors;
+    device->param.svgwidth = questionloop("SVG width: ", 0);
+    device->param.svgheight = questionloop("SVG height: ", 0);
+    carlength = questionloop("Car lenght: ", 0);
+    carheight = questionloop("Car height: ", 0);
+    device->param.radius = questionloop("Wheel radius [16,17,18]: ", 1);
+    ncars = static_cast<int>(questionloop("Cars-per-trailer [1,2]: ", 2));
+    device->param.nfloors = questionloop("Number of floors [1,2]: ", 2);
 
     //CONSTRAINS:
     
     float margin = device->param.svgwidth/10;
     device->length = carlength * ncars + (ncars+1)*margin;
     device->height = carheight * device->param.nfloors + 100;
+    if (oselin_init(device, carlength, carheight, ncars)){
+        oselin_trigonometry(device);
+        return oselin_to_svg(device);
+    }
+    
+    return "";
 
-    oselin_init(device, carlength, carheight, ncars, margin);
-
-    cout << device->param.svgwidth << endl;
-    cout << device->param.svgheight << endl;
-    oselin_trigonometry(device);
-
-    return oselin_to_svg(device);
+    
 }
 
 void savesvg(string svg){
@@ -93,7 +100,7 @@ void savesvg(string svg){
         MyFile.close();
         cout << "SAVED!\n" << endl;
     }
-    else cout << "You must create or load a drawing before!\n" << endl;
+    else errors(3);
 }
 
 void loadsvg(OselinDevice *dev, string filename){

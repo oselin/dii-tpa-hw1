@@ -11,16 +11,53 @@ using namespace std;/*
  *
  */
 
+void errors(int c){
 
-int oselin_init(OselinDevice *dev, float carlength, float carheight, int ncar, float margin){
-    
+    switch (c)
+    {
+    case 0:
+        cout << "INIT: WIDTH ERROR" << endl;
+        break;
+    case 1:
+        cout << "INIT: STRUCTURAL ERROR" << endl;
+        break;
+    case 2:
+        cout << "INIT: CAR DIMENSIONS ERROR" << endl;
+        break;
+    case 3:
+        cout << "You must create/load a device first!" << endl;
+        break;
+    case 4:
+        cout << "INIT: HEIGHT ERROR" << endl;
+        break;
+    default:
+        break;
+    }
+    cout << "GOING BACK TO MAIN MENU" << endl;
+}
+
+int oselin_init(OselinDevice *dev, float carlength, float carheight, int ncar){
+    cout << carlength << endl;
+    cout << carheight << endl;
     if (dev->param.svgwidth < dev->length){
-        cout << "INIT:: WIDTH ERROR" << endl;
+        errors(0);
+        return 0;
     }
+
+    if (dev->param.svgheight < dev->height + 2 * carlength){
+        errors(4);
+        return 0;
+    }
+
     if (ncar ==1 && dev->param.nfloors == 2){
-        cout << "INIT:: STRUCTURAL ERROR" << endl;
+        errors(1);
+        return 0;
     }
-    return 0;
+    if (carlength < (carheight*4/5)){
+        errors(2);
+        return 0;
+    }
+    return 1;
 }
 
 void trigfloors(OselinDevice *dev,  string m){
