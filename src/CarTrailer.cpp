@@ -41,7 +41,7 @@ void errors(int c){
 
 int oselin_init(OselinDevice *dev, float carlength, float carheight, int ncar, int nfloors, float radius){
 
-    float margin = dev->param.svgwidth/10;
+    float margin = carlength/2;
     int tempcar, tempfloor;
     float tempradius, templength, tempheight;
 
@@ -54,7 +54,7 @@ int oselin_init(OselinDevice *dev, float carlength, float carheight, int ncar, i
     if (radius != -1) tempradius = radius;
     else tempradius = dev->param.radius;
 
-    if (carlength != -1) templength = carlength * tempcar + (tempcar+1)*margin;
+    if (carlength != -1) templength = carlength * tempcar + (tempcar+3)*margin;
     else templength = dev->length;
     if (carheight != -1) tempheight = carheight * tempfloor + 100;
     else tempheight = dev->height;
@@ -108,9 +108,9 @@ void trigfloors(OselinDevice *dev,  string m){
         f = &dev->upfloor;
     }
     f->width = dev->length;
-    f->height = dev->param.svgheight/10;
+    f->height = dev->length/15;
     f->stroke = f->height/20;
-    f->x = (dev->param.svgwidth-dev->length)/2;
+    f->x = 0;
     f->y = dev->param.svgheight - (dev->param.svgheight - dev->height)/2 - mode*dev->height;
    
 
@@ -151,13 +151,13 @@ void trigjoint(OselinDevice *dev, string m){
     joint->body.width = DOWNOFFSET;
     joint->body.height = DOWNOFFSET/5;
     joint->body.x = dev->downfloor.x + (mode-1)*DOWNOFFSET + mode*dev->length;
-    joint->body.y = dev->downfloor.y+DOWNOFFSET/2;
+    joint->body.y = dev->downfloor.y+ dev->downfloor.height/2 - joint->body.height/2;
     joint->body.stroke = joint->body.height/20;
 
     joint->head.x = joint->body.x + mode*joint->body.width;
     joint->head.y = joint->body.y + joint->body.height/2;
-    joint->head.radius = dev->param.radius/4;
-    joint->head.stroke = dev->param.radius/10;
+    joint->head.radius = dev->param.radius/3;
+    joint->head.stroke =  dev->param.radius/10;
     joint->head.innercolor = "";
     joint->head.outercolor = "white";
 
@@ -203,10 +203,9 @@ void trigaxis(OselinDevice *dev, string m){
 
 void oselin_trigonometry(OselinDevice *dev){
 
-    dev->param.radius = dev->param.radius *40/16;
-
     trigfloors(dev, "down");
 
+    dev->param.radius = dev->downfloor.height / 40 * 2 * dev->param.radius;
     trigwheel(dev, "rear");
     trigwheel(dev, "front");
 
@@ -218,14 +217,18 @@ void oselin_trigonometry(OselinDevice *dev){
         trigaxis(dev, "rear");
         trigaxis(dev, "front");
     }
+
+    dev->absx = dev->rearjoint.head.x;
+    dev->absy = dev->rearjoint.head.y;
+    dev->abslength = dev->length + 2*dev->rearjoint.length - 2* dev->rearjoint.head.radius;
     
 }
 
 //STRING TO SVG: SUPPORTING FUNCTIONS
-string oselin_wheeltoSVG(Oselin_Wheel wheel){
+string oselin_wheeltoSVG(Oselin_Wheel wheel, float offset){
     string str;
     str += "\n<circle";
-    str += " cx='" + to_string(wheel.x) + "'";
+    str += " cx='" + to_string(offset + wheel.x) + "'";
     str += " cy='" + to_string(wheel.y) + "'";
     str += " r='" + to_string(wheel.radius) + "'";
     str += " stroke='" + wheel.strokecolor + "'";
@@ -235,7 +238,7 @@ string oselin_wheeltoSVG(Oselin_Wheel wheel){
 
     if (wheel.innercolor != ""){
         str += "\n<circle";
-        str += " cx='" + to_string(wheel.x) + "'";
+        str += " cx='" + to_string(offset + wheel.x) + "'";
         str += " cy='" + to_string(wheel.y) + "'";
         str += " r='" + to_string(wheel.radius*3/4) + "'";
         str += " stroke='" + wheel.strokecolor + "'";
@@ -246,9 +249,9 @@ string oselin_wheeltoSVG(Oselin_Wheel wheel){
     return str;
 }
 
-string oselin_floortoSVG(Oselin_Floor floor){
+string oselin_floortoSVG(Oselin_Floor floor, float offset){
     string str = "\n<rect  ";
-    str += "x='" + to_string(floor.x) + "'";
+    str += "x='" + to_string(offset + floor.x) + "'";
     str += " y='" + to_string(floor.y) + "'";
     str += " width='" + to_string(floor.width) + "'";
     str += " height='" + to_string(floor.height) + "'";
@@ -259,20 +262,20 @@ string oselin_floortoSVG(Oselin_Floor floor){
     return str;
 }
 
-string oselin_axistoSVG(Oselin_Axis steel){
+string oselin_axistoSVG(Oselin_Axis steel, float offset){
     string str = "\n<g transform='rotate(";
-    str += to_string(steel.angle) + "," + to_string(steel.rotationpoint[0]) + "," + to_string(steel.rotationpoint[1]);
+    str += to_string(steel.angle) + "," + to_string(offset + steel.rotationpoint[0]) + "," + to_string(steel.rotationpoint[1]);
     str += ")'>";
-    str += oselin_floortoSVG(steel.body);
+    str += oselin_floortoSVG(steel.body, offset);
     
-    str += oselin_wheeltoSVG(steel.bottomscrew) + oselin_wheeltoSVG(steel.topscrew);
+    str += oselin_wheeltoSVG(steel.bottomscrew, offset) + oselin_wheeltoSVG(steel.topscrew, offset);
     str += "\n</g>";
     return str;
 }
 
-string oselin_jointtoSVG(Oselin_Joint joint){
+string oselin_jointtoSVG(Oselin_Joint joint, float offset){
     string str;
-    str = oselin_floortoSVG(joint.body) + oselin_wheeltoSVG(joint.head);
+    str = oselin_floortoSVG(joint.body, offset) + oselin_wheeltoSVG(joint.head, offset);
     return str;
 }
 
@@ -288,7 +291,7 @@ string oselin_texttosvg(Oselin_Floor el){
     }
     string svg = "";
     svg += "<text x='" + to_string(el.x + el.width/2) + '\'';
-    svg += " y='" + to_string(el.y + el.height/2 - 20) + '\'';
+    svg += " y='" + to_string(el.y + el.height/2 - 10) + '\'';
     svg += " fill='black' ";
     svg += "dominant-baseline='middle' text-anchor='middle' ";
     svg += "transform='rotate(" + to_string(angle) + ',' + to_string(el.x + el.width/2) +',' + to_string(el.y + el.height/2) +")'>";
@@ -306,7 +309,7 @@ string oselin_measures(OselinDevice dev){
         m.x = dev.upfloor.x - dev.rearjoint.length * 5/4;
         m.y = dev.upfloor.y;
         m.width = 4;
-        m.height = dev.height + dev.param.svgheight/10;
+        m.height = dev.height + dev.downfloor.height;
         m.fillingcolor = "black";
         m.stroke = 0;
         m.strokecolor = "";
@@ -329,16 +332,16 @@ string oselin_measures(OselinDevice dev){
         m13.stroke = 0;
         m13.strokecolor = "";
 
-        measures += "\n" + oselin_floortoSVG(m);
-        measures += "\n" + oselin_floortoSVG(m12);
-        measures += "\n" + oselin_floortoSVG(m13);
+        measures += "\n" + oselin_floortoSVG(m, 0);
+        measures += "\n" + oselin_floortoSVG(m12, 0);
+        measures += "\n" + oselin_floortoSVG(m13, 0);
         measures += "\n" + oselin_texttosvg(m);
     }
     //TOTAL LENGTH
     Oselin_Floor m2;
     m2.x = dev.downfloor.x;
-    if (dev.param.nfloors > 1) m2.y = dev.upfloor.y - dev.param.svgwidth/20;
-    else m2.y = dev.downfloor.y - dev.param.svgwidth/20;
+    if (dev.param.nfloors > 1) m2.y = dev.upfloor.y - 3 * dev.downfloor.height;
+    else m2.y = dev.downfloor.y - 3 * dev.downfloor.height;
     m2.width = dev.length;
     m2.height = 4;
     m2.fillingcolor = "black";
@@ -349,7 +352,7 @@ string oselin_measures(OselinDevice dev){
     m14.x = m2.x;
     m14.y = m2.y*0.95;
     m14.width = 1;
-    m14.height = dev.param.svgwidth/15;
+    m14.height = 4 * dev.downfloor.height;
     m14.fillingcolor = "black";
     m14.stroke = 0;
     m14.strokecolor = "";
@@ -358,14 +361,14 @@ string oselin_measures(OselinDevice dev){
     m15.x = m2.x + m2.width;
     m15.y = m2.y*0.95;
     m15.width = 1;
-    m15.height = dev.param.svgwidth/15;
+    m15.height = 4 * dev.downfloor.height;
     m15.fillingcolor = "black";
     m15.stroke = 0;
     m15.strokecolor = "";
 
-    measures += "\n" + oselin_floortoSVG(m2);
-    measures += "\n" + oselin_floortoSVG(m14);
-    measures += "\n" + oselin_floortoSVG(m15);
+    measures += "\n" + oselin_floortoSVG(m2, 0);
+    measures += "\n" + oselin_floortoSVG(m14, 0);
+    measures += "\n" + oselin_floortoSVG(m15, 0);
     measures += "\n" + oselin_texttosvg(m2);
 
     //OUTER RADIUS
@@ -396,9 +399,9 @@ string oselin_measures(OselinDevice dev){
     m11.stroke = 0;
     m11.strokecolor = "";
 
-    measures += "\n" + oselin_floortoSVG(m3);
-    measures += "\n" + oselin_floortoSVG(m10);
-    measures += "\n" + oselin_floortoSVG(m11);
+    measures += "\n" + oselin_floortoSVG(m3, 0);
+    measures += "\n" + oselin_floortoSVG(m10, 0);
+    measures += "\n" + oselin_floortoSVG(m11, 0);
     measures += "\n" + oselin_texttosvg(m3);
 
     if (dev.param.nfloors > 1){
@@ -430,9 +433,9 @@ string oselin_measures(OselinDevice dev){
         m7.stroke = 0;
         m7.strokecolor = "";
 
-        measures += "\n" + oselin_floortoSVG(m4);
-        measures += "\n" + oselin_floortoSVG(m6);
-        measures += "\n" + oselin_floortoSVG(m7);
+        measures += "\n" + oselin_floortoSVG(m4, 0);
+        measures += "\n" + oselin_floortoSVG(m6, 0);
+        measures += "\n" + oselin_floortoSVG(m7, 0);
         measures += "\n" + oselin_texttosvg(m4);
     }
     //JOINT LENGTH
@@ -463,9 +466,9 @@ string oselin_measures(OselinDevice dev){
     m9.stroke = 0;
     m9.strokecolor = "";
 
-    measures += "\n" + oselin_floortoSVG(m5);
-    measures += "\n" + oselin_floortoSVG(m8);
-    measures += "\n" + oselin_floortoSVG(m9);
+    measures += "\n" + oselin_floortoSVG(m5, 0);
+    measures += "\n" + oselin_floortoSVG(m8, 0);
+    measures += "\n" + oselin_floortoSVG(m9, 0);
     measures += "\n" + oselin_texttosvg(m5);
 
     //FLOOR HEIGHT
@@ -496,9 +499,9 @@ string oselin_measures(OselinDevice dev){
     m18.stroke = 0;
     m18.strokecolor = "";
 
-    measures += "\n" + oselin_floortoSVG(m16);
-    measures += "\n" + oselin_floortoSVG(m17);
-    measures += "\n" + oselin_floortoSVG(m18);
+    measures += "\n" + oselin_floortoSVG(m16, 0);
+    measures += "\n" + oselin_floortoSVG(m17, 0);
+    measures += "\n" + oselin_floortoSVG(m18, 0);
     measures += "\n" + oselin_texttosvg(m16);
     
     
@@ -506,40 +509,41 @@ string oselin_measures(OselinDevice dev){
     return measures;
 }
 
-string oselin_to_svg(OselinDevice *device, bool with_measures){
+string oselin_to_svg(OselinDevice *device, bool with_header, bool with_measures, float offset = 0){
 
     string svg;
-
+    if (with_header){
     svg = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width='";
     svg += to_string(device->param.svgwidth) + " '  height='";
     svg += to_string(device->param.svgheight) + "' >";
 
-    svg += "<rect  x='0.000000' y='0.000000' width='800.000000' height='800.000000' style='stroke-width:0.0; stroke:' fill='white' />";
+    svg += "<rect  x='0.000000' y='0.000000' width='" + to_string(device->param.svgwidth) + "' height='" + to_string(device->param.svgheight) + "' style='stroke-width:0.0; stroke:' fill='white' />";
+    }
     svg += "\n<!--#1-->";
-    svg += "\n" + oselin_jointtoSVG(device->rearjoint);
+    svg += "\n" + oselin_jointtoSVG(device->rearjoint, offset);
     svg += "\n<!--#2-->";
-    svg += "\n" + oselin_jointtoSVG(device->frontjoint);
+    svg += "\n" + oselin_jointtoSVG(device->frontjoint, offset);
     svg += "\n<!--#3-->";
-    svg += "\n" + oselin_floortoSVG(device->downfloor);
+    svg += "\n" + oselin_floortoSVG(device->downfloor, offset);
     svg += "\n<!--#4-->";
-    svg += "\n" + oselin_wheeltoSVG(device->frontwheel);
+    svg += "\n" + oselin_wheeltoSVG(device->frontwheel, offset);
     svg += "\n<!--#5-->";
-    svg += "\n" + oselin_wheeltoSVG(device->rearwheel);
+    svg += "\n" + oselin_wheeltoSVG(device->rearwheel, offset);
     
     if (device->param.nfloors > 1) {
         svg += "\n<!--#6-->";
-        svg += "\n" + oselin_floortoSVG(device->upfloor);
+        svg += "\n" + oselin_floortoSVG(device->upfloor, offset);
         svg += "\n<!--#7-->";
-        svg += "\n" + oselin_axistoSVG(device->rearaxis);
+        svg += "\n" + oselin_axistoSVG(device->rearaxis, offset);
         svg += "\n<!--#8-->";
-        svg += "\n" + oselin_axistoSVG(device->frontaxis);
+        svg += "\n" + oselin_axistoSVG(device->frontaxis, offset);
     }
     
     if (with_measures){
         svg += oselin_measures((*device));
     }
 
-    svg += "\n</svg>";
+    
 
     return svg;
 }
@@ -648,7 +652,7 @@ void oselin_parsing(OselinDevice * device, string svg){
     device->downfloor = parsingfloor(svg.substr(pieces[2][0], pieces[2][1]),0);
     device->frontwheel = parsingwheel(svg.substr(pieces[3][0], pieces[3][1]),1);
     device->rearwheel = parsingwheel(svg.substr(pieces[4][0], pieces[4][1]),1);
-    
+
     if (pieces[5][1] > 0){
         device->upfloor = parsingfloor(svg.substr(pieces[5][0], pieces[5][1]),0);
         device->rearaxis = parsingaxis(svg.substr(pieces[6][0], pieces[6][1]));

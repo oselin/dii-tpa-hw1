@@ -57,6 +57,9 @@ struct OselinDevice{
     Parameters param;
     float length;
     float height;
+    float abslength;
+    float absx;
+    float absy;
     Oselin_Floor downfloor;
     Oselin_Floor upfloor;
     Oselin_Wheel frontwheel;
@@ -67,7 +70,7 @@ struct OselinDevice{
     Oselin_Axis frontaxis;
 };
 
-std::string oselin_to_svg(OselinDevice *, bool);
+std::string oselin_to_svg(OselinDevice *, bool, bool, float);
 
 void oselin_trigonometry(OselinDevice *);
 
