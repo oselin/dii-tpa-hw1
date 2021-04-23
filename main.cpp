@@ -109,7 +109,6 @@ void loadsvg(OselinDevice *dev, string filename){
     stringstream buffer;
     buffer << file.rdbuf();
     string s = buffer.str();
-    cout << "1" << endl;
     oselin_parsing(dev, s);
 }
 
@@ -166,7 +165,7 @@ int main(int argc, string argv) {
             cout << "path/filename: ";
             cin >> temp;
             loadsvg(device, temp);
-            svg = oselin_to_svg(device, false);
+            svg = oselin_to_svg(device, true);
             break;
         }
         case 'c':       //CREATING AN SVG

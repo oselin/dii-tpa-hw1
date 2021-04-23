@@ -206,7 +206,6 @@ void oselin_trigonometry(OselinDevice *dev){
     dev->param.radius = dev->param.radius *40/16;
 
     trigfloors(dev, "down");
-    trigfloors(dev, "up");
 
     trigwheel(dev, "rear");
     trigwheel(dev, "front");
@@ -214,8 +213,11 @@ void oselin_trigonometry(OselinDevice *dev){
     trigjoint(dev, "rear");
     trigjoint(dev, "front");
     
-    trigaxis(dev, "rear");
-    trigaxis(dev, "front");
+    if (dev->param.nfloors > 1){
+        trigfloors(dev, "up");
+        trigaxis(dev, "rear");
+        trigaxis(dev, "front");
+    }
     
 }
 
@@ -298,122 +300,50 @@ string oselin_texttosvg(Oselin_Floor el){
 string oselin_measures(OselinDevice dev){
     string measures;
 
-    Oselin_Floor m;
-    m.x = dev.upfloor.x - dev.rearjoint.length * 5/4;
-    m.y = dev.upfloor.y;
-    m.width = 4;
-    m.height = dev.height + dev.param.svgheight/10;
-    m.fillingcolor = "black";
-    m.stroke = 0;
-    m.strokecolor = "";
+    if (dev.param.nfloors > 1){
+    //TOTAL HEIGHT
+        Oselin_Floor m;
+        m.x = dev.upfloor.x - dev.rearjoint.length * 5/4;
+        m.y = dev.upfloor.y;
+        m.width = 4;
+        m.height = dev.height + dev.param.svgheight/10;
+        m.fillingcolor = "black";
+        m.stroke = 0;
+        m.strokecolor = "";
 
+        Oselin_Floor m12;
+        m12.x = m.x - dev.rearjoint.length/4;
+        m12.y = m.y;
+        m12.width = dev.rearjoint.length*6/4;
+        m12.height = 1;
+        m12.fillingcolor = "black";
+        m12.stroke = 0;
+        m12.strokecolor = "";
+
+        Oselin_Floor m13;
+        m13.x = m.x - dev.rearjoint.length/4;
+        m13.y = m.y + m.height;
+        m13.width = dev.rearjoint.length*6/4;
+        m13.height = 1;
+        m13.fillingcolor = "black";
+        m13.stroke = 0;
+        m13.strokecolor = "";
+
+        measures += "\n" + oselin_floortoSVG(m);
+        measures += "\n" + oselin_floortoSVG(m12);
+        measures += "\n" + oselin_floortoSVG(m13);
+        measures += "\n" + oselin_texttosvg(m);
+    }
+    //TOTAL LENGTH
     Oselin_Floor m2;
-    m2.x = dev.upfloor.x;
-    m2.y = dev.upfloor.y - dev.param.svgwidth/20;
+    m2.x = dev.downfloor.x;
+    if (dev.param.nfloors > 1) m2.y = dev.upfloor.y - dev.param.svgwidth/20;
+    else m2.y = dev.downfloor.y - dev.param.svgwidth/20;
     m2.width = dev.length;
     m2.height = 4;
     m2.fillingcolor = "black";
     m2.stroke = 0;
     m2.strokecolor = "";
-
-    Oselin_Floor m3;
-    m3.x = dev.rearwheel.x - dev.rearwheel.radius;
-    m3.y = dev.rearwheel.y + 2*dev.rearwheel.radius;
-    m3.width = 2* dev.rearwheel.radius;
-    m3.height = 4;
-    m3.fillingcolor = "black";
-    m3.stroke = 0;
-    m3.strokecolor = "";
-
-    Oselin_Floor m4;
-    m4.x = dev.upfloor.x + dev.length + 5/4*dev.frontjoint.length;
-    m4.y = dev.upfloor.y + dev.upfloor.height;
-    m4.width = 4;
-    m4.height = dev.height - dev.upfloor.height;
-    m4.fillingcolor = "black";
-    m4.stroke = 0;
-    m4.strokecolor = "";
-
-    Oselin_Floor m5;
-    m5.x = dev.upfloor.x + dev.length;
-    m5.y = dev.frontwheel.y + 2*dev.frontwheel.radius;
-    m5.width = dev.frontjoint.length;
-    m5.height = 4;
-    m5.fillingcolor = "black";
-    m5.stroke = 0;
-    m5.strokecolor = "";
-
-    Oselin_Floor m6;
-    m6.x = dev.upfloor.x + dev.length;
-    m6.y = dev.upfloor.y + dev.upfloor.height;
-    m6.width = dev.frontjoint.length * 5/4;
-    m6.height = 1;
-    m6.fillingcolor = "black";
-    m6.stroke = 0;
-    m6.strokecolor = "";
-
-    Oselin_Floor m7;
-    m7.x = dev.upfloor.x + dev.length;
-    m7.y = dev.downfloor.y;
-    m7.width = dev.frontjoint.length * 5/4;
-    m7.height = 1;
-    m7.fillingcolor = "black";
-    m7.stroke = 0;
-    m7.strokecolor = "";
-
-    Oselin_Floor m8;
-    m8.x = m6.x;
-    m8.y = dev.downfloor.y + dev.downfloor.height;
-    m8.width = 1;
-    m8.height = 2*dev.rearwheel.radius;
-    m8.fillingcolor = "black";
-    m8.stroke = 0;
-    m8.strokecolor = "";
-
-    Oselin_Floor m9;
-    m9.x = m6.x + dev.frontjoint.length;
-    m9.y = dev.downfloor.y + dev.downfloor.height/2;
-    m9.width = 1;
-    m9.height = 2*dev.rearwheel.radius + dev.downfloor.height/2;
-    m9.fillingcolor = "black";
-    m9.stroke = 0;
-    m9.strokecolor = "";
-
-    Oselin_Floor m10;
-    m10.x = m3.x;
-    m10.y = dev.downfloor.y + dev.downfloor.height;
-    m10.width = 1;
-    m10.height = 2*dev.rearwheel.radius;
-    m10.fillingcolor = "black";
-    m10.stroke = 0;
-    m10.strokecolor = "";
-
-    Oselin_Floor m11;
-    m11.x = m3.x + 2*dev.frontwheel.radius;
-    m11.y = dev.downfloor.y + dev.downfloor.height;
-    m11.width = 1;
-    m11.height = 2*dev.rearwheel.radius;
-    m11.fillingcolor = "black";
-    m11.stroke = 0;
-    m11.strokecolor = "";
-
-    Oselin_Floor m12;
-    m12.x = m.x - dev.rearjoint.length/4;
-    m12.y = m.y;
-    m12.width = dev.rearjoint.length*6/4;
-    m12.height = 1;
-    m12.fillingcolor = "black";
-    m12.stroke = 0;
-    m12.strokecolor = "";
-
-    Oselin_Floor m13;
-    m13.x = m.x - dev.rearjoint.length/4;
-    m13.y = m.y + m.height;
-    m13.width = dev.rearjoint.length*6/4;
-    m13.height = 1;
-    m13.fillingcolor = "black";
-    m13.stroke = 0;
-    m13.strokecolor = "";
 
     Oselin_Floor m14;
     m14.x = m2.x;
@@ -433,29 +363,145 @@ string oselin_measures(OselinDevice dev){
     m15.stroke = 0;
     m15.strokecolor = "";
 
-    measures += "\n" + oselin_floortoSVG(m);
     measures += "\n" + oselin_floortoSVG(m2);
-    measures += "\n" + oselin_floortoSVG(m3);
-    measures += "\n" + oselin_floortoSVG(m4);
-    measures += "\n" + oselin_floortoSVG(m5);
-    measures += "\n" + oselin_floortoSVG(m6);
-    measures += "\n" + oselin_floortoSVG(m7);
-    measures += "\n" + oselin_floortoSVG(m8);
-    measures += "\n" + oselin_floortoSVG(m9);
-    measures += "\n" + oselin_floortoSVG(m10);
-    measures += "\n" + oselin_floortoSVG(m11);
-    measures += "\n" + oselin_floortoSVG(m12);
-    measures += "\n" + oselin_floortoSVG(m13);
     measures += "\n" + oselin_floortoSVG(m14);
     measures += "\n" + oselin_floortoSVG(m15);
-
-    
-    
-    measures += "\n" + oselin_texttosvg(m);
     measures += "\n" + oselin_texttosvg(m2);
+
+    //OUTER RADIUS
+    Oselin_Floor m3;
+    m3.x = dev.rearwheel.x - dev.rearwheel.radius;
+    m3.y = dev.rearwheel.y + 2*dev.rearwheel.radius;
+    m3.width = 2* dev.rearwheel.radius;
+    m3.height = 4;
+    m3.fillingcolor = "black";
+    m3.stroke = 0;
+    m3.strokecolor = "";
+
+    Oselin_Floor m10;
+    m10.x = m3.x;
+    m10.y = dev.downfloor.y + dev.downfloor.height;
+    m10.width = 1;
+    m10.height = 2*dev.rearwheel.radius;
+    m10.fillingcolor = "black";
+    m10.stroke = 0;
+    m10.strokecolor = "";
+
+    Oselin_Floor m11;
+    m11.x = m3.x + 2*dev.frontwheel.radius;
+    m11.y = dev.downfloor.y + dev.downfloor.height;
+    m11.width = 1;
+    m11.height = 2*dev.rearwheel.radius;
+    m11.fillingcolor = "black";
+    m11.stroke = 0;
+    m11.strokecolor = "";
+
+    measures += "\n" + oselin_floortoSVG(m3);
+    measures += "\n" + oselin_floortoSVG(m10);
+    measures += "\n" + oselin_floortoSVG(m11);
     measures += "\n" + oselin_texttosvg(m3);
-    measures += "\n" + oselin_texttosvg(m4);
+
+    if (dev.param.nfloors > 1){
+    //HEIGHT
+        Oselin_Floor m4;
+        m4.x = dev.upfloor.x + dev.length + 5/4*dev.frontjoint.length;
+        m4.y = dev.upfloor.y + dev.upfloor.height;
+        m4.width = 4;
+        m4.height = dev.height - dev.upfloor.height;
+        m4.fillingcolor = "black";
+        m4.stroke = 0;
+        m4.strokecolor = "";
+
+        Oselin_Floor m6;
+        m6.x = dev.upfloor.x + dev.length;
+        m6.y = dev.upfloor.y + dev.upfloor.height;
+        m6.width = dev.frontjoint.length * 5/4;
+        m6.height = 1;
+        m6.fillingcolor = "black";
+        m6.stroke = 0;
+        m6.strokecolor = "";
+
+        Oselin_Floor m7;
+        m7.x = dev.upfloor.x + dev.length;
+        m7.y = dev.downfloor.y;
+        m7.width = dev.frontjoint.length * 5/4;
+        m7.height = 1;
+        m7.fillingcolor = "black";
+        m7.stroke = 0;
+        m7.strokecolor = "";
+
+        measures += "\n" + oselin_floortoSVG(m4);
+        measures += "\n" + oselin_floortoSVG(m6);
+        measures += "\n" + oselin_floortoSVG(m7);
+        measures += "\n" + oselin_texttosvg(m4);
+    }
+    //JOINT LENGTH
+    Oselin_Floor m5;
+    m5.x = dev.downfloor.x + dev.length;
+    m5.y = dev.frontwheel.y + 2*dev.frontwheel.radius;
+    m5.width = dev.frontjoint.length;
+    m5.height = 4;
+    m5.fillingcolor = "black";
+    m5.stroke = 0;
+    m5.strokecolor = "";
+
+    Oselin_Floor m8;
+    m8.x = m5.x;
+    m8.y = dev.downfloor.y + dev.downfloor.height;
+    m8.width = 1;
+    m8.height = 2*dev.rearwheel.radius;
+    m8.fillingcolor = "black";
+    m8.stroke = 0;
+    m8.strokecolor = "";
+
+    Oselin_Floor m9;
+    m9.x = m5.x + dev.frontjoint.length;
+    m9.y = dev.downfloor.y + dev.downfloor.height/2;
+    m9.width = 1;
+    m9.height = 2*dev.rearwheel.radius + dev.downfloor.height/2;
+    m9.fillingcolor = "black";
+    m9.stroke = 0;
+    m9.strokecolor = "";
+
+    measures += "\n" + oselin_floortoSVG(m5);
+    measures += "\n" + oselin_floortoSVG(m8);
+    measures += "\n" + oselin_floortoSVG(m9);
     measures += "\n" + oselin_texttosvg(m5);
+
+    //FLOOR HEIGHT
+    Oselin_Floor m16;
+    m16.x = dev.downfloor.x - dev.rearjoint.length * 8/4;
+    m16.y = dev.downfloor.y;
+    m16.width = 4;
+    m16.height = dev.downfloor.height;
+    m16.fillingcolor = "black";
+    m16.stroke = 0;
+    m16.strokecolor = "";
+
+    Oselin_Floor m17;
+    m17.x = m16.x - dev.rearjoint.length/4;
+    m17.y = m16.y;
+    m17.width = dev.rearjoint.length*9/4;
+    m17.height = 1;
+    m17.fillingcolor = "black";
+    m17.stroke = 0;
+    m17.strokecolor = "";
+
+    Oselin_Floor m18;
+    m18.x = m16.x - dev.rearjoint.length/4;
+    m18.y = m16.y + dev.downfloor.height;
+    m18.width = dev.rearjoint.length*9/4;
+    m18.height = 1;
+    m18.fillingcolor = "black";
+    m18.stroke = 0;
+    m18.strokecolor = "";
+
+    measures += "\n" + oselin_floortoSVG(m16);
+    measures += "\n" + oselin_floortoSVG(m17);
+    measures += "\n" + oselin_floortoSVG(m18);
+    measures += "\n" + oselin_texttosvg(m16);
+    
+    
     
     return measures;
 }
@@ -480,7 +526,7 @@ string oselin_to_svg(OselinDevice *device, bool with_measures){
     svg += "\n<!--#5-->";
     svg += "\n" + oselin_wheeltoSVG(device->rearwheel);
     
-    if (device->upfloor.width>0) {
+    if (device->param.nfloors > 1) {
         svg += "\n<!--#6-->";
         svg += "\n" + oselin_floortoSVG(device->upfloor);
         svg += "\n<!--#7-->";
@@ -602,9 +648,14 @@ void oselin_parsing(OselinDevice * device, string svg){
     device->downfloor = parsingfloor(svg.substr(pieces[2][0], pieces[2][1]),0);
     device->frontwheel = parsingwheel(svg.substr(pieces[3][0], pieces[3][1]),1);
     device->rearwheel = parsingwheel(svg.substr(pieces[4][0], pieces[4][1]),1);
-    device->upfloor = parsingfloor(svg.substr(pieces[5][0], pieces[5][1]),0);
-    device->rearaxis = parsingaxis(svg.substr(pieces[6][0], pieces[6][1]));
-    device->frontaxis = parsingaxis(svg.substr(pieces[7][0], pieces[7][1]));
+    
+    if (pieces[5][1] > 0){
+        device->upfloor = parsingfloor(svg.substr(pieces[5][0], pieces[5][1]),0);
+        device->rearaxis = parsingaxis(svg.substr(pieces[6][0], pieces[6][1]));
+        device->frontaxis = parsingaxis(svg.substr(pieces[7][0], pieces[7][1]));
+        device->param.nfloors = 2;
+    }
+    else device->param.nfloors = 1;
     device->length = device->downfloor.width;
     device->height = 10 * device->downfloor.height;
 }
