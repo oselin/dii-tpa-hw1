@@ -37,7 +37,8 @@ struct Oselin_Floor{
 };
 
 struct Oselin_Joint{
-
+    
+    float length;
     Oselin_Floor body;
     Oselin_Wheel head;
 };
@@ -66,17 +67,8 @@ struct OselinDevice{
     Oselin_Axis frontaxis;
 };
 
-std::string oselin_wheeltoSVG(Oselin_Wheel);
+std::string oselin_to_svg(OselinDevice *, bool);
 
-std::string oselin_floortoSVG(Oselin_Floor);
-
-std::string oselin_axistoSVG(Oselin_Axis, Oselin_Axis);
-
-std::string oselin_jointtoSVG(Oselin_Joint);
-
-std::string oselin_to_svg(OselinDevice *);
-
-//PARAMETERS: 
 void oselin_trigonometry(OselinDevice *);
 
 int oselin_init(OselinDevice *, float, float, int, int, float);
@@ -85,7 +77,7 @@ void oselin_parsing(OselinDevice *, std::string);
 
 void errors(int);
 
-
+//SET FUNCTIONS
 int oselin_set_carlength(OselinDevice *, float);
 int oselin_set_carheight(OselinDevice *, float);
 int oselin_set_radius(OselinDevice *, float);

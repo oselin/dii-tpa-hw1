@@ -82,7 +82,7 @@ string createsvg(OselinDevice *device){
     
     if (!oselin_init(device, carlength, carheight, ncars, nfloors, radius)){
         oselin_trigonometry(device);
-        return oselin_to_svg(device);
+        return oselin_to_svg(device, true);
     }
     else device = new OselinDevice;
     
@@ -109,7 +109,7 @@ void loadsvg(OselinDevice *dev, string filename){
     stringstream buffer;
     buffer << file.rdbuf();
     string s = buffer.str();
-    cout << "1" <<endl;
+    cout << "1" << endl;
     oselin_parsing(dev, s);
 }
 
@@ -151,6 +151,7 @@ void setmenu(OselinDevice *dev){
         break;
     }
 }
+
 int main(int argc, string argv) {
     system("clear");
     OselinDevice *device = new OselinDevice;
@@ -165,7 +166,7 @@ int main(int argc, string argv) {
             cout << "path/filename: ";
             cin >> temp;
             loadsvg(device, temp);
-            svg = oselin_to_svg(device);
+            svg = oselin_to_svg(device, false);
             break;
         }
         case 'c':       //CREATING AN SVG
