@@ -70,6 +70,7 @@ int oselin_init(OselinDevice *dev, float carlength, float carheight, int ncar, i
         return 1;
     }
 
+
     if (ncar ==1 && tempfloor == 2){
         errors(1);
         return 1;
