@@ -16,50 +16,89 @@ void errors(int c){
     switch (c)
     {
     case 0:
-        cout << "INIT: WIDTH ERROR" << endl;
+        cout << "INIT: WIDTH ERROR, ";
         break;
     case 1:
-        cout << "INIT: STRUCTURAL ERROR" << endl;
+        cout << "INIT: STRUCTURAL ERROR, ";
         break;
     case 2:
-        cout << "INIT: CAR DIMENSIONS ERROR" << endl;
+        cout << "INIT: CAR DIMENSIONS ERROR, ";
         break;
     case 3:
-        cout << "You must create/load a device first!" << endl;
+        cout << "You must create/load a device first!, ";
         break;
     case 4:
-        cout << "INIT: HEIGHT ERROR" << endl;
+        cout << "INIT: HEIGHT ERROR, ";
+        break;
+    case 5:
+        cout << "INIT: NCARS TOO LONG, ";
+        break;
+    case 6:
+        cout << "INIT: NFLOORS TOO HIGH, ";
         break;
     default:
         break;
     }
     cout << "GOING BACK TO MAIN MENU" << endl;
 }
+int oselin_init(OselinDevice *dev, float carlength, float carheight, int ncar, int nfloors, float radius){
 
-int oselin_init(OselinDevice *dev, float carlength, float carheight, int ncar){
-    cout << carlength << endl;
-    cout << carheight << endl;
-    if (dev->param.svgwidth < dev->length){
+    float margin = dev->param.svgwidth/10;
+    int tempcar, tempfloor;
+    float tempradius, templength, tempheight;
+    if (ncar != -1) tempcar = ncar;
+    else tempcar = dev->param.ncars;
+
+    if (nfloors != -1) tempfloor = nfloors;
+    else tempfloor = dev->param.nfloors;
+
+    if (radius != -1) tempradius = radius;
+    else tempradius = dev->param.radius;
+
+    if (carlength != -1) templength = carlength * tempcar + (tempcar+1)*margin;
+    else templength = dev->length;
+    if (carheight != -1) tempheight = carheight * tempfloor + 100;
+    else tempheight = dev->height;
+
+    if (dev->param.svgwidth < templength){
         errors(0);
-        return 0;
+        return 1;
     }
 
-    if (dev->param.svgheight < dev->height + 2 * carlength){
+    if (dev->param.svgheight < tempheight*5/4){
         errors(4);
-        return 0;
+        return 1;
     }
 
-    if (ncar ==1 && dev->param.nfloors == 2){
+    if (ncar ==1 && tempfloor == 2){
         errors(1);
-        return 0;
+        return 1;
     }
-    if (carlength < (carheight*4/5)){
+    if (templength < (tempheight*4/5)){
         errors(2);
-        return 0;
+        return 1;
     }
-    return 1;
+    if (tempcar > 2){
+        errors(5);
+        return 1;
+    }
+    if (tempfloor > 2){
+        errors(6);
+        return 1;
+    }
+    
+    dev->param.ncars = tempcar;
+    dev->param.nfloors = tempfloor;
+    dev->param.radius = tempradius;
+    dev->length = templength;
+    dev->height = tempheight;
+    
+    return 0;
+
 }
 
+
+//TRIGONOMETRY SUPPORTING FUNCTIONS
 void trigfloors(OselinDevice *dev,  string m){
 
     Oselin_Floor *f; int mode;
@@ -71,7 +110,6 @@ void trigfloors(OselinDevice *dev,  string m){
         mode = 1;
         f = &dev->upfloor;
     }
-    cout << dev->param.svgwidth << endl;
     f->x = (dev->param.svgwidth-dev->length)/2;
     f->y = (dev->param.svgheight-2*DOWNOFFSET) - mode*dev->height;
     f->width = dev->length;
@@ -79,7 +117,6 @@ void trigfloors(OselinDevice *dev,  string m){
     f->stroke = f->height/20;
 
 }
-
 void trigwheel(OselinDevice *dev, string m){
     int mode;
     Oselin_Wheel *wheel;
@@ -98,7 +135,6 @@ void trigwheel(OselinDevice *dev, string m){
     wheel->radius = dev->param.radius;
     wheel->stroke = dev->param.radius/10;
 }
-
 void trigjoint(OselinDevice *dev, string m){
 
     Oselin_Joint *joint; int mode;
@@ -124,7 +160,6 @@ void trigjoint(OselinDevice *dev, string m){
     joint->head.innercolor = "";
     joint->head.outercolor = "white";
 }
-
 void trigaxis(OselinDevice *dev, string m){
 
     Oselin_Axis *axis; int mode;
@@ -180,6 +215,7 @@ void oselin_trigonometry(OselinDevice *dev){
     
 }
 
+//STRING TO SVG: SUPPORTING FUNCTIONS
 string oselin_wheeltoSVG(Oselin_Wheel wheel){
     string str;
     str += "\n<circle";
@@ -203,7 +239,6 @@ string oselin_wheeltoSVG(Oselin_Wheel wheel){
     }
     return str;
 }
-
 string oselin_floortoSVG(Oselin_Floor floor){
     string str = "\n<rect  ";
     str += "x='" + to_string(floor.x) + "'";
@@ -216,7 +251,6 @@ string oselin_floortoSVG(Oselin_Floor floor){
     str += " />";
     return str;
 }
-
 string oselin_axistoSVG(Oselin_Axis steel){
     string str = "\n<g transform='rotate(";
     str += to_string(steel.angle) + "," + to_string(steel.rotationpoint[0]) + "," + to_string(steel.rotationpoint[1]);
@@ -227,7 +261,6 @@ string oselin_axistoSVG(Oselin_Axis steel){
     str += "\n</g>";
     return str;
 }
-
 string oselin_jointtoSVG(Oselin_Joint joint){
     string str;
     str = oselin_floortoSVG(joint.body) + oselin_wheeltoSVG(joint.head);
@@ -265,13 +298,13 @@ string oselin_to_svg(OselinDevice *device){
     return svg;
 }
 
+//STRING PARSING: SUPPORTING FUNCTIONS
 string checkpoint(int i){
     if (i<9){
         return "<!--#" + to_string(i) + "-->";
     }
     else return "</svg>";
 }
-
 string buffering(string svg, string param, char symb){
     
     string buffer = "";
@@ -282,7 +315,6 @@ string buffering(string svg, string param, char symb){
     }
     return buffer;
 }
-
 Oselin_Floor parsingfloor(string svg){
     Oselin_Floor f;
 
@@ -296,7 +328,6 @@ Oselin_Floor parsingfloor(string svg){
     
     return f;    
 }
-
 Oselin_Wheel parsingwheel(string svg, int doublecolor){
     Oselin_Wheel w;
     w.x = stof(buffering(svg, "cx='",'\''));
@@ -312,7 +343,6 @@ Oselin_Wheel parsingwheel(string svg, int doublecolor){
     return w;
 
 }
-
 Oselin_Joint parsingjoint(string svg){
 
     Oselin_Joint j;
@@ -325,7 +355,6 @@ Oselin_Joint parsingjoint(string svg){
     
     return j;
 }
-
 Oselin_Axis parsingaxis(string svg){
 
     Oselin_Axis a;
@@ -373,4 +402,27 @@ void oselin_parsing(OselinDevice * device, string svg){
     device->frontaxis = parsingaxis(svg.substr(pieces[7][0], pieces[7][1]));
     device->length = device->downfloor.width;
     device->height = 10 * device->downfloor.height;
+}
+
+
+//MY_SET REQUIRED FUNCTIONS
+int oselin_set_carlength(OselinDevice *dev, float len){
+    return oselin_init(dev, len, -1, -1, -1, -1);
+}
+
+int oselin_set_carheight(OselinDevice *dev, float height){
+    return oselin_init(dev, -1, height, -1, -1, -1);
+}
+
+int oselin_set_radius(OselinDevice *dev, float r){
+    return oselin_init(dev, -1, -1, -1, -1, r);
+}
+
+int oselin_set_floornumb(OselinDevice *dev, int nfloors){
+    return oselin_init(dev, -1, -1, -1, nfloors, -1);
+}
+
+int oselin_set_carnumb(OselinDevice *dev, int ncars){
+    return oselin_init(dev, -1, -1, ncars, -1, -1);
+    
 }

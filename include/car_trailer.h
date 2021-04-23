@@ -9,8 +9,9 @@
 struct Parameters{
     float svgwidth;
     float svgheight;
-    int nfloors = 2;
     float radius;
+    int ncars;
+    int nfloors;
 };
 
 struct Oselin_Wheel{
@@ -78,9 +79,18 @@ std::string oselin_to_svg(OselinDevice *);
 //PARAMETERS: 
 void oselin_trigonometry(OselinDevice *);
 
-int oselin_init(OselinDevice *, float, float, int);
+int oselin_init(OselinDevice *, float, float, int, int, float);
 
 void oselin_parsing(OselinDevice *, std::string);
 
 void errors(int);
+
+
+int oselin_set_carlength(OselinDevice *, float);
+int oselin_set_carheight(OselinDevice *, float);
+int oselin_set_radius(OselinDevice *, float);
+int oselin_set_floornumb(OselinDevice *, int);
+int oselin_set_carnumb(OselinDevice *, int);
+
+
 #endif //CAR_TRAILER_H

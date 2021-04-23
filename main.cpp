@@ -16,6 +16,7 @@ char menu(){
     com += "[l] - load SVG drawing from file\n";
     com += "[c] - create a new trailer\n";
     com += "[s] - save SVG draving to file\n";
+    com += "[a] - change a parameter\n";
     com += "[e] - exit";
     com += "\n\n";
     com += "What do you want to do?: ";
@@ -52,6 +53,7 @@ float questionloop(string question, int questiontype){
     }
     return myvar;
 }
+
 string createsvg(OselinDevice *device){
     /**
      * CHOSEN PARAEMTERS:
@@ -63,27 +65,26 @@ string createsvg(OselinDevice *device){
      * @param CAR'S LENGTH -> TRAILER LENGTH = CAR-PER-TRAILER * CAR'S LENGTH
      * @param CAR'S HEIGHT -> TRAILER HEIGHT = CAR'S HEIGHT * HEIGHT
      * */
-    float  carlength, carheight;
-    int ncars = 0; 
+    float  carlength, carheight, radius;
+    int ncars = 0, nfloors = 2; 
        
     //1-- 800
     device->param.svgwidth = questionloop("SVG width: ", 0);
     device->param.svgheight = questionloop("SVG height: ", 0);
     carlength = questionloop("Car lenght: ", 0);
     carheight = questionloop("Car height: ", 0);
-    device->param.radius = questionloop("Wheel radius [16,17,18]: ", 1);
+    radius = questionloop("Wheel radius [16,17,18]: ", 1);
     ncars = static_cast<int>(questionloop("Cars-per-trailer [1,2]: ", 2));
-    device->param.nfloors = questionloop("Number of floors [1,2]: ", 2);
+    nfloors = questionloop("Number of floors [1,2]: ", 2);
 
     //CONSTRAINS:
     
-    float margin = device->param.svgwidth/10;
-    device->length = carlength * ncars + (ncars+1)*margin;
-    device->height = carheight * device->param.nfloors + 100;
-    if (oselin_init(device, carlength, carheight, ncars)){
+    
+    if (!oselin_init(device, carlength, carheight, ncars, nfloors, radius)){
         oselin_trigonometry(device);
         return oselin_to_svg(device);
     }
+    else device = new OselinDevice;
     
     return "";
 
@@ -112,8 +113,46 @@ void loadsvg(OselinDevice *dev, string filename){
     oselin_parsing(dev, s);
 }
 
-int main() {
+void setmenu(OselinDevice *dev){
+    int input = -1;
+    float newvalue;
+    string helpmenu = "Choose what to change:\n";
+    helpmenu += "[0] Set new car length\n";
+    helpmenu += "[1] Set new car height\n";
+    helpmenu += "[2] Set new radius\n";
+    helpmenu += "[3] Set new number of cars per trailer\n";
+    helpmenu += "[4] Set new number of floors\n";
 
+    while (input < 0 || input > 4){
+        cout << helpmenu << endl;
+        cin >> input;
+    }
+    cout << "New value: ";
+    cin >> newvalue;
+
+    switch (input)
+    {
+    case 0:
+        oselin_set_carlength(dev, newvalue);
+        break;
+    case 1:
+        oselin_set_carheight(dev, newvalue);
+        break;
+    case 2:
+        oselin_set_radius(dev, newvalue);
+        break;
+    case 3:
+        oselin_set_carnumb(dev, static_cast<int>(newvalue));
+        break;
+    case 4:
+        oselin_set_floornumb(dev, static_cast<int>(newvalue));
+        break;   
+    default:
+        break;
+    }
+}
+int main(int argc, string argv) {
+    system("clear");
     OselinDevice *device = new OselinDevice;
     string svg;
     char a = menu();
@@ -135,6 +174,8 @@ int main() {
         case 's':       //SAVING TO FILE
             savesvg(svg);
             break;
+        case 'a':
+            setmenu(device);
         default:
             break;
         }
