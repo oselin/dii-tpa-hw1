@@ -39,7 +39,7 @@ void errors(int c){
     cout << "GOING BACK TO MAIN MENU" << endl;
 }
 
-int oselin_init(OselinDevice *dev, float param[]){
+int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
 
     float carlength = param[0];
     float carheight = param[1];
@@ -65,14 +65,17 @@ int oselin_init(OselinDevice *dev, float param[]){
     if (carheight != -1) tempheight = carheight * tempfloor + 100;
     else tempheight = dev->param.height;
 
+    cout << templength;
     //CONSTRAINS
-    if (dev->param.svgwidth < templength){
-        errors(0);
-        return 1;
-    }
-    if (dev->param.svgheight < tempheight*5/4){
-        errors(4);
-        return 1;
+    if (!avoidsvg){
+        if (dev->param.svgwidth < templength){
+            errors(0);
+            return 1;
+        }
+        if (dev->param.svgheight < tempheight*5/4){
+            errors(4);
+            return 1;
+        }
     }
     if (ncar ==1 && tempfloor == 2){
         errors(1);
@@ -207,7 +210,8 @@ void trigaxis(OselinDevice *dev, string m){
      
 }
 
-void oselin_trigonometry(OselinDevice *dev){
+void oselin_trigonometry(OselinDevice *dev, bool automaticoffset){
+
 
     trigfloors(dev, "down");
 
@@ -228,6 +232,9 @@ void oselin_trigonometry(OselinDevice *dev){
     dev->absy = dev->rearjoint.head.y;
     dev->abslength = dev->param.length + 2*dev->rearjoint.length - 2* dev->rearjoint.head.radius;
     
+    if (automaticoffset){
+        dev->offset = (dev->param.svgwidth - dev->downfloor.width)/2;
+    }
 }
 
 //STRING TO SVG: SUPPORTING FUNCTIONS
@@ -281,11 +288,11 @@ string oselin_axistoSVG(Oselin_Axis steel, float offset){
 
 string oselin_jointtoSVG(Oselin_Joint joint, float offset){
     string str;
-    str = oselin_floortoSVG(joint.body, offset) + oselin_wheeltoSVG(joint.head, offset);
+    str = oselin_floortoSVG(joint.body,offset) + oselin_wheeltoSVG(joint.head, offset);
     return str;
 }
 
-string oselin_texttosvg(Oselin_Floor el){
+string oselin_texttosvg(Oselin_Floor el, float offset){
     float angle, val;
     if (el.width != 4){
         angle = 0;
@@ -296,11 +303,11 @@ string oselin_texttosvg(Oselin_Floor el){
         val = roundf(el.height * 100) / 100;
     }
     string svg = "";
-    svg += "<text x='" + to_string(el.x + el.width/2) + '\'';
+    svg += "<text x='" + to_string(offset + el.x + el.width/2) + '\'';
     svg += " y='" + to_string(el.y + el.height/2 - 10) + '\'';
     svg += " fill='black' ";
     svg += "dominant-baseline='middle' text-anchor='middle' ";
-    svg += "transform='rotate(" + to_string(angle) + ',' + to_string(el.x + el.width/2) +',' + to_string(el.y + el.height/2) +")'>";
+    svg += "transform='rotate(" + to_string(angle) + ',' + to_string(offset + el.x + el.width/2) +',' + to_string(el.y + el.height/2) +")'>";
     svg += to_string(val);
     svg += "</text>";
     return svg;
@@ -308,6 +315,7 @@ string oselin_texttosvg(Oselin_Floor el){
 
 string oselin_measures(OselinDevice dev){
     string measures;
+    float offset = dev.offset;
 
     if (dev.param.nfloors > 1){
     //TOTAL HEIGHT
@@ -338,10 +346,10 @@ string oselin_measures(OselinDevice dev){
         m13.stroke = 0;
         m13.strokecolor = "";
 
-        measures += "\n" + oselin_floortoSVG(m, 0);
-        measures += "\n" + oselin_floortoSVG(m12, 0);
-        measures += "\n" + oselin_floortoSVG(m13, 0);
-        measures += "\n" + oselin_texttosvg(m);
+        measures += "\n" + oselin_floortoSVG(m, offset);
+        measures += "\n" + oselin_floortoSVG(m12, offset);
+        measures += "\n" + oselin_floortoSVG(m13, offset);
+        measures += "\n" + oselin_texttosvg(m, offset);
     }
     //TOTAL LENGTH
     Oselin_Floor m2;
@@ -372,10 +380,10 @@ string oselin_measures(OselinDevice dev){
     m15.stroke = 0;
     m15.strokecolor = "";
 
-    measures += "\n" + oselin_floortoSVG(m2, 0);
-    measures += "\n" + oselin_floortoSVG(m14, 0);
-    measures += "\n" + oselin_floortoSVG(m15, 0);
-    measures += "\n" + oselin_texttosvg(m2);
+    measures += "\n" + oselin_floortoSVG(m2, offset);
+    measures += "\n" + oselin_floortoSVG(m14, offset);
+    measures += "\n" + oselin_floortoSVG(m15, offset);
+    measures += "\n" + oselin_texttosvg(m2, offset);
 
     //OUTER RADIUS
     Oselin_Floor m3;
@@ -405,10 +413,10 @@ string oselin_measures(OselinDevice dev){
     m11.stroke = 0;
     m11.strokecolor = "";
 
-    measures += "\n" + oselin_floortoSVG(m3, 0);
-    measures += "\n" + oselin_floortoSVG(m10, 0);
-    measures += "\n" + oselin_floortoSVG(m11, 0);
-    measures += "\n" + oselin_texttosvg(m3);
+    measures += "\n" + oselin_floortoSVG(m3, offset);
+    measures += "\n" + oselin_floortoSVG(m10, offset);
+    measures += "\n" + oselin_floortoSVG(m11, offset);
+    measures += "\n" + oselin_texttosvg(m3, offset);
 
     if (dev.param.nfloors > 1){
     //HEIGHT
@@ -439,10 +447,10 @@ string oselin_measures(OselinDevice dev){
         m7.stroke = 0;
         m7.strokecolor = "";
 
-        measures += "\n" + oselin_floortoSVG(m4, 0);
-        measures += "\n" + oselin_floortoSVG(m6, 0);
-        measures += "\n" + oselin_floortoSVG(m7, 0);
-        measures += "\n" + oselin_texttosvg(m4);
+        measures += "\n" + oselin_floortoSVG(m4, offset);
+        measures += "\n" + oselin_floortoSVG(m6, offset);
+        measures += "\n" + oselin_floortoSVG(m7, offset);
+        measures += "\n" + oselin_texttosvg(m4, offset);
     }
     //JOINT LENGTH
     Oselin_Floor m5;
@@ -472,10 +480,10 @@ string oselin_measures(OselinDevice dev){
     m9.stroke = 0;
     m9.strokecolor = "";
 
-    measures += "\n" + oselin_floortoSVG(m5, 0);
-    measures += "\n" + oselin_floortoSVG(m8, 0);
-    measures += "\n" + oselin_floortoSVG(m9, 0);
-    measures += "\n" + oselin_texttosvg(m5);
+    measures += "\n" + oselin_floortoSVG(m5, offset);
+    measures += "\n" + oselin_floortoSVG(m8, offset);
+    measures += "\n" + oselin_floortoSVG(m9, offset);
+    measures += "\n" + oselin_texttosvg(m5, offset);
 
     //FLOOR HEIGHT
     Oselin_Floor m16;
@@ -505,17 +513,17 @@ string oselin_measures(OselinDevice dev){
     m18.stroke = 0;
     m18.strokecolor = "";
 
-    measures += "\n" + oselin_floortoSVG(m16, 0);
-    measures += "\n" + oselin_floortoSVG(m17, 0);
-    measures += "\n" + oselin_floortoSVG(m18, 0);
-    measures += "\n" + oselin_texttosvg(m16);
+    measures += "\n" + oselin_floortoSVG(m16, offset);
+    measures += "\n" + oselin_floortoSVG(m17, offset);
+    measures += "\n" + oselin_floortoSVG(m18, offset);
+    measures += "\n" + oselin_texttosvg(m16, offset);
     
     
     
     return measures;
 }
 
-string oselin_to_svg(OselinDevice *device, bool with_header, bool with_measures, float offset = 0){
+void oselin_to_svg(OselinDevice *device, bool with_header, bool with_measures){
 
     string svg;
     if (with_header){
@@ -526,23 +534,23 @@ string oselin_to_svg(OselinDevice *device, bool with_header, bool with_measures,
     svg += "<rect  x='0.000000' y='0.000000' width='" + to_string(device->param.svgwidth) + "' height='" + to_string(device->param.svgheight) + "' style='stroke-width:0.0; stroke:' fill='white' />";
     }
     svg += "\n<!--#1-->";
-    svg += "\n" + oselin_jointtoSVG(device->rearjoint, offset);
+    svg += "\n" + oselin_jointtoSVG(device->rearjoint, device->offset);
     svg += "\n<!--#2-->";
-    svg += "\n" + oselin_jointtoSVG(device->frontjoint, offset);
+    svg += "\n" + oselin_jointtoSVG(device->frontjoint, device->offset);
     svg += "\n<!--#3-->";
-    svg += "\n" + oselin_floortoSVG(device->downfloor, offset);
+    svg += "\n" + oselin_floortoSVG(device->downfloor, device->offset);
     svg += "\n<!--#4-->";
-    svg += "\n" + oselin_wheeltoSVG(device->frontwheel, offset);
+    svg += "\n" + oselin_wheeltoSVG(device->frontwheel, device->offset);
     svg += "\n<!--#5-->";
-    svg += "\n" + oselin_wheeltoSVG(device->rearwheel, offset);
+    svg += "\n" + oselin_wheeltoSVG(device->rearwheel, device->offset);
     
     if (device->param.nfloors > 1) {
         svg += "\n<!--#6-->";
-        svg += "\n" + oselin_floortoSVG(device->upfloor, offset);
+        svg += "\n" + oselin_floortoSVG(device->upfloor, device->offset);
         svg += "\n<!--#7-->";
-        svg += "\n" + oselin_axistoSVG(device->rearaxis, offset);
+        svg += "\n" + oselin_axistoSVG(device->rearaxis, device->offset);
         svg += "\n<!--#8-->";
-        svg += "\n" + oselin_axistoSVG(device->frontaxis, offset);
+        svg += "\n" + oselin_axistoSVG(device->frontaxis, device->offset);
     }
     
     if (with_measures){
@@ -550,8 +558,7 @@ string oselin_to_svg(OselinDevice *device, bool with_header, bool with_measures,
     }
 
     
-
-    return svg;
+    device->svg = svg;
 }
 
 //STRING PARSING: SUPPORTING FUNCTIONS

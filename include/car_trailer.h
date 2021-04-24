@@ -61,6 +61,7 @@ struct OselinDevice{
     float abslength;
     float absx;
     float absy;
+    float offset;
     Oselin_Floor downfloor;
     Oselin_Floor upfloor;
     Oselin_Wheel frontwheel;
@@ -71,11 +72,11 @@ struct OselinDevice{
     Oselin_Axis frontaxis;
 };
 
-std::string oselin_to_svg(OselinDevice *, bool, bool, float);
+void oselin_to_svg(OselinDevice *, bool = true, bool = false);
 
-void oselin_trigonometry(OselinDevice *);
+void oselin_trigonometry(OselinDevice *, bool = true);
 
-int oselin_init(OselinDevice *, float[5]);
+int oselin_init(OselinDevice *, float[5], bool = false);
 
 void oselin_parsing(OselinDevice *, std::string);
 

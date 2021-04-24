@@ -8,9 +8,11 @@
 #include <signal.h>
 using namespace std;
 
+string questions[] = {"SVG width: ", "SVG height: ","Car lenght: ","Car height: ", "Wheel radius [16,17,18]: ","Cars-per-trailer [1,2]: ","Number of floors [1,2]: "};
+
 
 void displaymenu(){
-    string com = "Welcome to the SVG TRAILER CREATOR\n";
+    string com = "";
     com += "----------------------------------\n";
     com += "Here's what you can do:\n";
     com += "[1] - load SVG drawing from file\n";
@@ -33,9 +35,9 @@ void help(){
     
 }
 
-void load(OselinDevice *dev, int n_arg = 0, char *param[] = NULL){
+void load(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
     string filename;
-    if (n_arg != 0){
+    if (n_args != 0){
         filename = string(param[2]);
     }
     else{
@@ -53,17 +55,18 @@ void load(OselinDevice *dev, int n_arg = 0, char *param[] = NULL){
 void create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
 
     float parameters[5];
-    string questions[] = {"SVG width: ", "SVG height: ","Car lenght: ","Car height: ", "Wheel radius [16,17,18]: ","Cars-per-trailer [1,2]: ","Number of floors [1,2]: "};
-
+    
     if (n_args != 0){
-        for (int i=0;i<5;i++) parameters[i] = stof(param[i+2]);
+        dev->param.svgwidth  = stof(param[2]);
+        dev->param.svgheight = stof(param[3]);
+        for (int i=0;i<5;i++) parameters[i] = stof(param[i+4]);
     }
     else{
         for (int i=0; i<7; i++){
-            cout << questions[i] << endl;
+            cout << questions[i];
             if (i==0) cin >> dev->param.svgwidth;
             else if (i==1) cin >> dev->param.svgheight;
-            else cin >> parameters[i];
+            else cin >> parameters[i-2];
         }
     }
     
@@ -72,8 +75,24 @@ void create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
     }
 }
 
-void save(OselinDevice *dev){
-    if (dev->svg != ""){
+void save(OselinDevice *dev, int mode = 0){
+    char resp;
+    int saving = 0;
+    if (!mode){
+        cout << "Do you want measures on the drawing?[y/n] ";
+        cin >> resp;
+        if (resp == 'y' || resp == 'Y') {
+            oselin_to_svg(dev, true, true);
+            ++saving ;
+        }
+        else if (resp == 'n' || resp == 'N'){
+            oselin_to_svg(dev);
+            ++saving ;
+        }
+        else cout << "Aborting..." << endl;
+    }
+    else ++saving;
+    if (saving){
         string filename;
         cout << "File name for saving (with extension): ";
         cin >> filename;
@@ -82,6 +101,7 @@ void save(OselinDevice *dev){
         MyFile.close();
         cout << "SAVED!\n" << endl;
     }
+
 }
 
 void change(OselinDevice *dev){
@@ -103,51 +123,90 @@ void change(OselinDevice *dev){
 
     if (choice > -1 || choice < 5){
         array[choice] = newvalue;
-        oselin_set(dev,array);
+        if (!oselin_set(dev,array)){
+            oselin_trigonometry(dev);
+        }else cout << "The new parameter seems to be wrong. Aborting..." << endl;
     }
     else cout << "Aborting..." << endl;
 }
 
-void machine(OselinDevice *dev){
+void machine(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
+    int ntrailers;
+    float parameters[5];
+    if (n_args != 0){
+        for (int i=0;i<5;i++) parameters[i] = stof(param[i+2]);
+        ntrailers = atoi(param[7]);
+    }
+    else{
+        for (int i=0; i<5; i++){
+            cout << questions[i+2];
+            cin >> parameters[i];
+        }
+        
+        cout << "How many trailers? ";
+        cin >> ntrailers;
+    }
+    
+    if (!oselin_init(dev, parameters, true)){
+        dev->param.svgheight = 3 * dev->param.height;
+        oselin_trigonometry(dev, false);
+
+        dev->param.svgwidth = (ntrailers +1) * dev->abslength;
+        dev->offset = 0.5 * dev->abslength;
+        oselin_to_svg(dev);
+
+        for (int i=1; i< ntrailers; i++){
+            OselinDevice temp = (*dev);
+            temp.offset = (0.5 + i) * dev->abslength;
+
+            oselin_to_svg(&temp, false);
+
+            dev->svg += temp.svg;
+        }
+
+        save(dev, 1);
+        exit(0);
+    }
 
 }
 
 void mainloop(OselinDevice *dev){
 
-    int inloop = 1, choice;
+    int inloop = 1;
+    
+    cout << "Welcome to the SVG TRAILER CREATOR" << endl;
     do{
         displaymenu();
-
+        char choice;
         cout << "Your choice: " ;
         cin >> choice;
 
         switch (choice)
         {
-        case 1:
+        case '1':
             load(dev);
             break;
-        case 2:
-            create(dev,0);
+        case '2':
+            create(dev);
             break;
-        case 3:
+        case '3':
             save(dev);
             break;    
-        case 4:
+        case '4':
             change(dev);
             break;
-        case 5:
+        case '5':
             machine(dev);
-        case 6:
+        case '6':
             inloop = 0;
+            break;
         default:
+            cout << "Command not found." << endl;
             break;
         }
     }while(inloop);
 
 }
-
-
-
 
 int main(int argc, char * argv[]) {
 
@@ -171,6 +230,7 @@ int main(int argc, char * argv[]) {
             }
             else{
                 create(device, argc,argv);
+                mainloop(device);
             }
         }
         else if (string(argv[1]) == "-l" || string(argv[1]) == "--load"){
@@ -182,26 +242,26 @@ int main(int argc, char * argv[]) {
             }
             else{
                 load(device, argc,argv);
+                mainloop(device);
             }
         }
         else if (string(argv[1]) == "-m" || string(argv[1]) == "--machine"){
-            if (argc < 3){
+            if (argc < 8){
                 cout << "Missing some parameters. Please check and try again." << endl;
             }
-            else if (argc > 3){
+            else if (argc > 8){
                 cout << "Too many parameters. Please check and try again." << endl;
             }
             else{
-                load(device, argc,argv);
+                machine(device, argc,argv);
+                mainloop(device);
+            
             }
         }
         else if (string(argv[1]) == "-i" || string(argv[1]) == "--interface"){
             mainloop(device);
         }
-    
-}
-
-
+    }
     return 0;
 }
 
