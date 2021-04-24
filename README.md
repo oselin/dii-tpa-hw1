@@ -120,9 +120,9 @@ For example
 ./main -h
 
 -h | --help         allows you to read this awesome guide
--c | --create       create a trailer SVG            --create [SVG width] [SVG height] [Car length] [Car height] [Wheel radius] [Cars-per-trailer] [Floors]
--l | --load         load SVG from file              --load [path]
--m | --machine      draw a train of trailers        --machine [Number of trailers]
+-c | --create       create a trailer SVG                --create [SVG width] [SVG height] [Car length] [Car height] [Wheel radius] [Cars-per-trailer] [Floors]
+-l | --load         load SVG from file                  --load [path]
+-m | --machine      draw a train of trailers            --machine [Number of trailers]
 -i | --interface    use graphic menu (for lame people)
 ~~~
 
