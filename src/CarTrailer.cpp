@@ -50,6 +50,11 @@ int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
     float margin = carlength/2;
     int tempcar, tempfloor;
     float tempradius, templength, tempheight;
+ 
+    if (radius < 16 || radius > 18){
+        errors(0);
+        return 1;
+    }
 
     if (ncar != -1) tempcar = ncar;
     else tempcar = dev->param.ncars;
@@ -93,6 +98,7 @@ int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
         errors(6);
         return 1;
     }
+
     
     dev->param.ncars = tempcar;
     dev->param.nfloors = tempfloor;
