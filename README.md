@@ -29,7 +29,7 @@ This would be structurally unstable. By this, the configuration is not allowed.
 ![](output/twofloorstwocarsm.svg)
 
 ## Machines aviable as well
-These are combination of multiple devices, with the implementation of a car's .svg file. Credits to @GiacomoCorradini
+These are combination of multiple devices, with the implementation of a car's .svg file. A big thanks to **@GiacomoCorradini** and his awesome work.
 
 ![](output/machine.svg)
 
@@ -44,3 +44,28 @@ There are some constrains you need to deal with:
 - More than 2 floors are not allowed
 
 ## Commands
+
+Initialization of a trailer
+~~~C++
+OselinDevice *trailer;
+~~~
+
+All the data referred to trailer's dimensions and parameters are stored in the **OselinDevice** struct. Probably not the most efficient way to manage memory, but it definitely does the job.
+
+~~~C++
+oselin_init(OselinDevice *trailer, float params[], bool avoidsvg = false);
+~~~
+
+This function returns 0 if every single parameter given by the user respects the constrains, 1 otherwise. The boolean avoidsvg, if set to true, allows to bypass the svg width/height constrain check. It can be used for machine manipulations. However by default is set to false.
+
+~~~C++
+oselin_trigonometry(OselinDevice *trailer, bool automaticoffset=true);
+~~~
+
+This void function does all the math that allows the creation of SVG figures.
+
+~~~C++
+oselin_to_svg(OselinDevice *trailer, bool with_header=true, bool with_measures=false);
+~~~
+
+This function fills the .svg attribute of the trailer with drawing infos, svg-coded.
