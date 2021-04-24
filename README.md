@@ -43,7 +43,29 @@ There are some constrains you need to deal with:
 - More than 2 cars per trailer are not allowed
 - More than 2 floors are not allowed
 
-## Commands
+## Library's commands and structs
+~~~C++
+struct OselinDevice{
+
+    std::string svg;
+    Parameters param;
+    float abslength;
+    float absx;
+    float absy;
+    float offset;
+    Oselin_Floor downfloor;
+    Oselin_Floor upfloor;
+    Oselin_Wheel frontwheel;
+    Oselin_Wheel rearwheel;
+    Oselin_Joint rearjoint;
+    Oselin_Joint frontjoint;
+    Oselin_Axis rearaxis;
+    Oselin_Axis frontaxis;
+};
+~~~
+
+The struct above is used for representing a trailer. It has attributes, such as offset (for x coordinate), absolute x and y (position) or absolute lenght and substructures used for storing other data.
+
 
 Initialization of a trailer
 ~~~C++
@@ -69,3 +91,37 @@ oselin_to_svg(OselinDevice *trailer, bool with_header=true, bool with_measures=f
 ~~~
 
 This function fills the .svg attribute of the trailer with drawing infos, svg-coded.
+
+~~~C++
+oselin_parsing(OselinDevice *trailer, string importedsvg);
+~~~
+
+This functions parses an existing .svg file, imported as a string. It extrapolates all the parametes, feeding the OselinDevice struct.
+
+~~~C++
+oselin_set(OselinDevice *trailer, float newparam);
+~~~
+
+This function allows to change one of the trailer's parameters.
+
+## Trailer tool
+
+Once compiled this tool can be easily exploited for trailer's svg manipulation. It supports both command line and graphical commands.
+
+For command line usage:
+
+~~~C++
+./main <params>
+~~~
+
+For example
+
+~~~C++
+./main -h
+
+ -h | --help\t\t allows you to read this awesome guide
+-c | --create\t\t create a trailer SVG\t\t\t--create [SVG width] [SVG height] [Car length] [Car height] [Wheel radius] [Cars-per-trailer] [Floors]
+-l | --load\t\t load SVG from file\t\t\t--load [path]
+-m | --machine\t\t draw a train of trailers\t\t--machine [Number of trailers]
+-i | --interface\t use graphic menu (for lame people)
+~~~
