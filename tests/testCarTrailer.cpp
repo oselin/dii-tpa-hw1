@@ -3,13 +3,21 @@
 #include "car_trailer.h"
 
 
-TEST_CASE("init should succeed with non-zero denominator", "[fraction]") {
- 
+TEST_CASE("Init should return 1 if any error occurs", "[oselin_init]") {
+    
+    float c[5], d[4];
+    REQUIRE(oselin_init(NULL, c) == 1);
+    OselinDevice *dev;
+    REQUIRE(oselin_init(dev, d) == 1);
 }
 
 
-TEST_CASE("my_init on zero denominator should return NULL", "[fraction]") {
+TEST_CASE("trigonometry should call error function", "[oselin_trigonometry]") {
        
+       OselinDevice *dev = NULL;
+
+       oselin_trigonometry(dev);
+       REQUIRE(dev == NULL);
 }
 
 

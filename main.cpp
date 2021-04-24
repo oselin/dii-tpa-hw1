@@ -57,16 +57,33 @@ void create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
     float parameters[5];
     
     if (n_args != 0){
-        dev->param.svgwidth  = stof(param[2]);
-        dev->param.svgheight = stof(param[3]);
-        for (int i=0;i<5;i++) parameters[i] = stof(param[i+4]);
+        try
+        {
+            dev->param.svgwidth  = stof(param[2]);
+            dev->param.svgheight = stof(param[3]);
+            for (int i=0;i<5;i++) parameters[i] = stof(param[i+4]);
+        }
+        catch(const exception& e)
+        {
+            cout << "Something went wrong" << endl;
+            exit(1);
+        }
+        
+        
     }
     else{
         for (int i=0; i<7; i++){
             cout << questions[i];
-            if (i==0) cin >> dev->param.svgwidth;
-            else if (i==1) cin >> dev->param.svgheight;
-            else cin >> parameters[i-2];
+            try{
+                if (i==0) cin >> dev->param.svgwidth;
+                else if (i==1) cin >> dev->param.svgheight;
+                else cin >> parameters[i-2];
+            }
+            catch(const exception& e)
+            {
+                cout << "Something went wrong" << endl;
+                exit(1);
+            }
         }
     }
     

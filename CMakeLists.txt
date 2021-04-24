@@ -7,11 +7,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 
 # EXECUTABLE SECTION
-add_executable(mainEntry main.cpp)
-target_include_directories(mainEntry PRIVATE include)
+add_executable(main main.cpp)
+target_include_directories(main PRIVATE include)
 # Class A is not a library: its source file needs to be included in the target sources
-target_sources(mainEntry PRIVATE src/CarTrailer.cpp)
-target_link_libraries(mainEntry)
+target_sources(main PRIVATE src/CarTrailer.cpp)
+target_link_libraries(main)
 
 # TESTS SECTION
 # Basically makes CMake read the CMakeLists.txt file contained in tests

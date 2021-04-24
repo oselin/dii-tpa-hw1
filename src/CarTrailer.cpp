@@ -5,7 +5,6 @@
 #include <cmath>
 
 
-
 using namespace std;
 
 void errors(int c){
@@ -33,6 +32,8 @@ void errors(int c){
     case 6:
         cout << "INIT: NFLOORS TOO HIGH, ";
         break;
+    case 9:
+        exit(1);
     default:
         break;
     }
@@ -41,11 +42,24 @@ void errors(int c){
 
 int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
 
-    float carlength = param[0];
-    float carheight = param[1];
-    float radius    = param[2];
-    int ncar        = param[3];
-    int nfloors     = param[4];
+    if (dev == NULL){
+        return 1;
+    }
+
+    float carlength, carheight, radius;
+    int ncar, nfloors;
+
+    try{
+        carlength = param[0];
+        carheight = param[1];
+        radius    = param[2];
+        ncar      = param[3];
+        nfloors   = param[4];
+    }catch(const exception& e){
+
+        return 1;
+    }
+
 
     float margin = carlength/2;
     int tempcar, tempfloor;
@@ -218,6 +232,7 @@ void trigaxis(OselinDevice *dev, string m){
 
 void oselin_trigonometry(OselinDevice *dev, bool automaticoffset){
 
+    if (dev == NULL) errors(9);
 
     trigfloors(dev, "down");
 
