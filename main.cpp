@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "car_trailer.h"
+#include "./TpaHomework1/include/Car.h"
 
 #include <fstream>
 #include <streambuf>
@@ -10,6 +11,12 @@ using namespace std;
 
 string questions[] = {"SVG width: ", "SVG height: ","Car lenght: ","Car height: ", "Wheel radius [16,17,18]: ","Cars-per-trailer [1,2]: ","Number of floors [1,2]: "};
 
+void oselin_coca_implementation(coca_device * mach){
+    mach->car.width = 100;
+    mach->car.height = 50;
+    mach->car.cx = 0;
+    mach->car.cy;
+}
 
 void displaymenu(){
     string com = "";
@@ -174,6 +181,7 @@ void machine(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
 
         for (int i=1; i< ntrailers; i++){
             OselinDevice temp = (*dev);
+            coca_device *car = new coca_device;
             temp.offset = (0.5 + i) * dev->abslength;
 
             oselin_to_svg(&temp, false);
