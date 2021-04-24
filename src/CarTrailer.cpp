@@ -39,7 +39,13 @@ void errors(int c){
     cout << "GOING BACK TO MAIN MENU" << endl;
 }
 
-int oselin_init(OselinDevice *dev, float carlength, float carheight, int ncar, int nfloors, float radius){
+int oselin_init(OselinDevice *dev, float param[]){
+
+    float carlength = param[0];
+    float carheight = param[1];
+    float radius    = param[2];
+    int ncar        = param[3];
+    int nfloors     = param[4];
 
     float margin = carlength/2;
     int tempcar, tempfloor;
@@ -55,9 +61,9 @@ int oselin_init(OselinDevice *dev, float carlength, float carheight, int ncar, i
     else tempradius = dev->param.radius;
 
     if (carlength != -1) templength = carlength * tempcar + (tempcar+3)*margin;
-    else templength = dev->length;
+    else templength = dev->param.length;
     if (carheight != -1) tempheight = carheight * tempfloor + 100;
-    else tempheight = dev->height;
+    else tempheight = dev->param.height;
 
     //CONSTRAINS
     if (dev->param.svgwidth < templength){
@@ -88,8 +94,8 @@ int oselin_init(OselinDevice *dev, float carlength, float carheight, int ncar, i
     dev->param.ncars = tempcar;
     dev->param.nfloors = tempfloor;
     dev->param.radius = tempradius;
-    dev->length = templength;
-    dev->height = tempheight;
+    dev->param.length = templength;
+    dev->param.height = tempheight;
     
     return 0;
 
@@ -107,11 +113,11 @@ void trigfloors(OselinDevice *dev,  string m){
         mode = 1;
         f = &dev->upfloor;
     }
-    f->width = dev->length;
-    f->height = dev->length/15;
+    f->width = dev->param.length;
+    f->height = dev->param.length/15;
     f->stroke = f->height/20;
     f->x = 0;
-    f->y = dev->param.svgheight - (dev->param.svgheight - dev->height)/2 - mode*dev->height;
+    f->y = dev->param.svgheight - (dev->param.svgheight - dev->param.height)/2 - mode*dev->param.height;
    
 
 }
@@ -127,11 +133,11 @@ void trigwheel(OselinDevice *dev, string m){
         mode = 1;
         wheel = &dev->frontwheel;
         }
-    float wheeloffset = dev->length/12;
+    float wheeloffset = dev->param.length/12;
     //REAR WHEEL
     wheel->radius = dev->param.radius;
     wheel->stroke = dev->param.radius/10;
-    wheel->x = dev->downfloor.x + pow(-1,mode)* wheeloffset + mode*dev->length;
+    wheel->x = dev->downfloor.x + pow(-1,mode)* wheeloffset + mode*dev->param.length;
     wheel->y = dev->downfloor.y + dev->downfloor.height - wheel->radius/4;
     
 }
@@ -150,7 +156,7 @@ void trigjoint(OselinDevice *dev, string m){
     
     joint->body.width = DOWNOFFSET;
     joint->body.height = DOWNOFFSET/5;
-    joint->body.x = dev->downfloor.x + (mode-1)*DOWNOFFSET + mode*dev->length;
+    joint->body.x = dev->downfloor.x + (mode-1)*DOWNOFFSET + mode*dev->param.length;
     joint->body.y = dev->downfloor.y+ dev->downfloor.height/2 - joint->body.height/2;
     joint->body.stroke = joint->body.height/20;
 
@@ -176,10 +182,10 @@ void trigaxis(OselinDevice *dev, string m){
         axis = &dev->frontaxis;
     }
 
-    axis->body.x = dev->length*(mode+1)/3 + dev->upfloor.x;
+    axis->body.x = dev->param.length*(mode+1)/3 + dev->upfloor.x;
     axis->body.y = dev->upfloor.y;
-    axis->body.height = dev->height + dev->downfloor.height;
-    axis->body.width = dev->height/10;
+    axis->body.height = dev->param.height + dev->downfloor.height;
+    axis->body.width = dev->param.height/10;
     axis->body.stroke = axis->body.width/20;
     
     axis->topscrew.innercolor = "";
@@ -220,7 +226,7 @@ void oselin_trigonometry(OselinDevice *dev){
 
     dev->absx = dev->rearjoint.head.x;
     dev->absy = dev->rearjoint.head.y;
-    dev->abslength = dev->length + 2*dev->rearjoint.length - 2* dev->rearjoint.head.radius;
+    dev->abslength = dev->param.length + 2*dev->rearjoint.length - 2* dev->rearjoint.head.radius;
     
 }
 
@@ -309,7 +315,7 @@ string oselin_measures(OselinDevice dev){
         m.x = dev.upfloor.x - dev.rearjoint.length * 5/4;
         m.y = dev.upfloor.y;
         m.width = 4;
-        m.height = dev.height + dev.downfloor.height;
+        m.height = dev.param.height + dev.downfloor.height;
         m.fillingcolor = "black";
         m.stroke = 0;
         m.strokecolor = "";
@@ -342,7 +348,7 @@ string oselin_measures(OselinDevice dev){
     m2.x = dev.downfloor.x;
     if (dev.param.nfloors > 1) m2.y = dev.upfloor.y - 3 * dev.downfloor.height;
     else m2.y = dev.downfloor.y - 3 * dev.downfloor.height;
-    m2.width = dev.length;
+    m2.width = dev.param.length;
     m2.height = 4;
     m2.fillingcolor = "black";
     m2.stroke = 0;
@@ -407,16 +413,16 @@ string oselin_measures(OselinDevice dev){
     if (dev.param.nfloors > 1){
     //HEIGHT
         Oselin_Floor m4;
-        m4.x = dev.upfloor.x + dev.length + 5/4*dev.frontjoint.length;
+        m4.x = dev.upfloor.x + dev.param.length + 5/4*dev.frontjoint.length;
         m4.y = dev.upfloor.y + dev.upfloor.height;
         m4.width = 4;
-        m4.height = dev.height - dev.upfloor.height;
+        m4.height = dev.param.height - dev.upfloor.height;
         m4.fillingcolor = "black";
         m4.stroke = 0;
         m4.strokecolor = "";
 
         Oselin_Floor m6;
-        m6.x = dev.upfloor.x + dev.length;
+        m6.x = dev.upfloor.x + dev.param.length;
         m6.y = dev.upfloor.y + dev.upfloor.height;
         m6.width = dev.frontjoint.length * 5/4;
         m6.height = 1;
@@ -425,7 +431,7 @@ string oselin_measures(OselinDevice dev){
         m6.strokecolor = "";
 
         Oselin_Floor m7;
-        m7.x = dev.upfloor.x + dev.length;
+        m7.x = dev.upfloor.x + dev.param.length;
         m7.y = dev.downfloor.y;
         m7.width = dev.frontjoint.length * 5/4;
         m7.height = 1;
@@ -440,7 +446,7 @@ string oselin_measures(OselinDevice dev){
     }
     //JOINT LENGTH
     Oselin_Floor m5;
-    m5.x = dev.downfloor.x + dev.length;
+    m5.x = dev.downfloor.x + dev.param.length;
     m5.y = dev.frontwheel.y + 2*dev.frontwheel.radius;
     m5.width = dev.frontjoint.length;
     m5.height = 4;
@@ -660,29 +666,12 @@ void oselin_parsing(OselinDevice * device, string svg){
         device->param.nfloors = 2;
     }
     else device->param.nfloors = 1;
-    device->length = device->downfloor.width;
-    device->height = 10 * device->downfloor.height;
+    device->param.length = device->downfloor.width;
+    device->param.height = 10 * device->downfloor.height;
 }
 
 
 //MY_SET REQUIRED FUNCTIONS
-int oselin_set_carlength(OselinDevice *dev, float len){
-    return oselin_init(dev, len, -1, -1, -1, -1);
-}
-
-int oselin_set_carheight(OselinDevice *dev, float height){
-    return oselin_init(dev, -1, height, -1, -1, -1);
-}
-
-int oselin_set_radius(OselinDevice *dev, float r){
-    return oselin_init(dev, -1, -1, -1, -1, r);
-}
-
-int oselin_set_floornumb(OselinDevice *dev, int nfloors){
-    return oselin_init(dev, -1, -1, -1, nfloors, -1);
-}
-
-int oselin_set_carnumb(OselinDevice *dev, int ncars){
-    return oselin_init(dev, -1, -1, ncars, -1, -1);
-    
+int oselin_set(OselinDevice *dev, float array[]){
+    return oselin_init(dev, array);
 }

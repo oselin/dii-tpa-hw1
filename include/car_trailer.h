@@ -10,6 +10,8 @@ struct Parameters{
     float svgwidth;
     float svgheight;
     float radius;
+    float length;
+    float height;
     int ncars;
     int nfloors;
 };
@@ -54,9 +56,8 @@ struct Oselin_Axis{
 
 struct OselinDevice{
 
+    std::string svg;
     Parameters param;
-    float length;
-    float height;
     float abslength;
     float absx;
     float absy;
@@ -74,18 +75,14 @@ std::string oselin_to_svg(OselinDevice *, bool, bool, float);
 
 void oselin_trigonometry(OselinDevice *);
 
-int oselin_init(OselinDevice *, float, float, int, int, float);
+int oselin_init(OselinDevice *, float[5]);
 
 void oselin_parsing(OselinDevice *, std::string);
 
 void errors(int);
 
 //SET FUNCTIONS
-int oselin_set_carlength(OselinDevice *, float);
-int oselin_set_carheight(OselinDevice *, float);
-int oselin_set_radius(OselinDevice *, float);
-int oselin_set_floornumb(OselinDevice *, int);
-int oselin_set_carnumb(OselinDevice *, int);
+int oselin_set(OselinDevice *, float [5]);
 
 
 #endif //CAR_TRAILER_H
