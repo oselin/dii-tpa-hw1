@@ -72,13 +72,13 @@ Initialization of a trailer
 OselinDevice *trailer;
 ~~~
 
-All the data referred to trailer's dimensions and parameters are stored in the **OselinDevice** struct. Probably not the most efficient way to manage memory, but it definitely does the job.
+All the data referred to trailer's dimensions and parameters are stored in the `OselinDevice` struct. Probably not the most efficient way to manage memory, but it definitely does the job.
 
 ~~~C++
 oselin_init(OselinDevice *trailer, float params[], bool avoidsvg = false);
 ~~~
 
-This function returns 0 if every single parameter given by the user respects the constrains, 1 otherwise. The boolean avoidsvg, if set to true, allows to bypass the svg width/height constrain check. It can be used for machine manipulations. However by default is set to false.
+This function returns `0` if every single parameter given by the user respects the constrains, `1` otherwise. The boolean `avoidsvg`, if set to true, allows to bypass the svg width/height constrain check. It can be used for machine manipulations. However by default is set to false.
 
 ~~~C++
 oselin_trigonometry(OselinDevice *trailer, bool automaticoffset=true);
@@ -96,7 +96,7 @@ This function fills the .svg attribute of the trailer with drawing infos, svg-co
 oselin_parsing(OselinDevice *trailer, string importedsvg);
 ~~~
 
-This functions parses an existing .svg file, imported as a string. It extrapolates all the parametes, feeding the OselinDevice struct.
+This functions parses an existing .svg file, imported as a string. It extrapolates all the parametes, feeding the `OselinDevice` struct.
 
 ~~~C++
 oselin_set(OselinDevice *trailer, float newparam);
@@ -116,12 +116,28 @@ For command line usage:
 
 For example
 
-~~~C++
+~~~
 ./main -h
 
- -h | --help\t\t allows you to read this awesome guide
--c | --create\t\t create a trailer SVG\t\t\t--create [SVG width] [SVG height] [Car length] [Car height] [Wheel radius] [Cars-per-trailer] [Floors]
--l | --load\t\t load SVG from file\t\t\t--load [path]
--m | --machine\t\t draw a train of trailers\t\t--machine [Number of trailers]
--i | --interface\t use graphic menu (for lame people)
+-h | --help         allows you to read this awesome guide
+-c | --create       create a trailer SVG        --create [SVG width] [SVG height] [Car length] [Car height] [Wheel radius] [Cars-per-trailer] [Floors]
+-l | --load         load SVG from file          --load [path]
+-m | --machine      draw a train of trailers    --machine [Number of trailers]
+-i | --interface    use graphic menu (for lame people)
 ~~~
+
+Invoking `./main -i` you will enter in the graphical menu
+
+~~~
+Welcome to the SVG TRAILER CREATOR
+----------------------------------
+Here's what you can do:
+[1] - load SVG drawing from file
+[2] - create a new trailer
+[3] - save SVG draving to file
+[4] - change a parameter
+[5] - create a machine
+[6] - exit
+~~~
+
+Here's the functions `load`, `create`, `save`, `change` and `machine` can be called, which exploits the library's fuctions above illustrated to manipulate trailer structs and data.
