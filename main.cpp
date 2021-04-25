@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
 #include "car_trailer.h"
-#include "./TpaHomework1/include/Car.h"
+#include "Car.h"
+#include "machine_car_trailer.h"
 
 #include <fstream>
 #include <streambuf>
@@ -11,12 +12,6 @@ using namespace std;
 
 string questions[] = {"SVG width: ", "SVG height: ","Car lenght: ","Car height: ", "Wheel radius [16,17,18]: ","Cars-per-trailer [1,2]: ","Number of floors [1,2]: "};
 
-void oselin_coca_implementation(coca_device * mach){
-    mach->car.width = 100;
-    mach->car.height = 50;
-    mach->car.cx = 0;
-    mach->car.cy;
-}
 
 void displaymenu(){
     string com = "";
@@ -170,7 +165,6 @@ void machine(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
         cout << "How many trailers? ";
         cin >> ntrailers;
     }
-    
     if (!oselin_init(dev, parameters, true)){
         dev->param.svgheight = 3 * dev->param.height;
         oselin_trigonometry(dev, false);
@@ -178,19 +172,34 @@ void machine(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
         dev->param.svgwidth = (ntrailers +1) * dev->abslength;
         dev->offset = 0.5 * dev->abslength;
         oselin_to_svg(dev);
+        
+        // SOLUZIONE CON ARRAY DINAMICO DI PUNTATORI A STRUCT
+        
+        OselinDevice ** trailerarray;   
 
+        trailerarray = new OselinDevice* [ntrailers-1];  
         for (int i=1; i< ntrailers; i++){
-            OselinDevice temp = (*dev);
-            coca_device *car = new coca_device;
-            temp.offset = (0.5 + i) * dev->abslength;
-
-            oselin_to_svg(&temp, false);
-
-            dev->svg += temp.svg;
+            trailerarray[i] = oselin_init_acopyof(dev);
+            trailerarray[i]->offset = (0.5 + i) * dev->abslength;
+            oselin_to_svg(trailerarray[i], false);
         }
+        for (int i=1; i< ntrailers; i++) dev->svg += trailerarray[i]->svg;
+        
 
-        save(dev, 1);
-        exit(0);
+        coca_device ** cararray;
+
+        cararray = new coca_device* [parameters[4]*2*ntrailers];
+        for (int i=0; i< parameters[4]; i++){
+            for (int j=0; j< 2*ntrailers; j++){
+                float y = dev->absy - 2* dev->downfloor.height - (j%2)*dev->param.height;
+                float x = dev->absx - dev->param.margin + j*dev->abslength;
+                cararray[i*ntrailers + j] = oselin_coca_init(parameters, x, y);
+                dev->svg += oselin_coca_to_svg(cararray[i*ntrailers + j]);
+            }
+        }
+        save(dev,1);
+        delete[] cararray;
+        delete[] trailerarray;
     }
 
 }
@@ -279,7 +288,7 @@ int main(int argc, char * argv[]) {
             }
             else{
                 machine(device, argc,argv);
-                mainloop(device);
+                //mainloop(device);
             
             }
         }

@@ -14,6 +14,7 @@ struct Parameters{
     float height;
     int ncars;
     int nfloors;
+    float margin;
 };
 
 struct Oselin_Wheel{
@@ -84,6 +85,8 @@ void errors(int);
 
 //SET FUNCTIONS
 int oselin_set(OselinDevice *, float [5]);
+
+OselinDevice *oselin_init_acopyof(OselinDevice *);
 
 
 #endif //CAR_TRAILER_H

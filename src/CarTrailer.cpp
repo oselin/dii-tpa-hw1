@@ -61,7 +61,6 @@ int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
     }
 
 
-    float margin = carlength/2;
     int tempcar, tempfloor;
     float tempradius, templength, tempheight;
  
@@ -79,12 +78,13 @@ int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
     if (radius != -1) tempradius = radius;
     else tempradius = dev->param.radius;
 
-    if (carlength != -1) templength = carlength * tempcar + (tempcar+3)*margin;
+    if (carlength != -1) templength = carlength * tempcar + (tempcar+3)*carlength/2;
     else templength = dev->param.length;
     if (carheight != -1) tempheight = carheight * tempfloor + 100;
     else tempheight = dev->param.height;
 
-    cout << templength;
+    
+    dev->param.margin = carlength/2;
     //CONSTRAINS
     if (!avoidsvg){
         if (dev->param.svgwidth < templength){
@@ -702,4 +702,11 @@ void oselin_parsing(OselinDevice * device, string svg){
 //MY_SET REQUIRED FUNCTIONS
 int oselin_set(OselinDevice *dev, float array[]){
     return oselin_init(dev, array);
+}
+
+OselinDevice *oselin_init_acopyof(OselinDevice *dev){
+    OselinDevice *copy = new OselinDevice;
+
+    (*copy) = (*dev);
+    return copy;
 }
