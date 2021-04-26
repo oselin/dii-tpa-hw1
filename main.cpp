@@ -186,12 +186,13 @@ void machine(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
             trailerarray[i]->offset = (0.5 + i) * dev->abslength;
             oselin_to_svg(trailerarray[i], false);
         }
-        for (int i=1; i< ntrailers; i++) dev->svg += trailerarray[i]->svg;
+        
         
         
         coca_device ** cararray;
         cararray = new coca_device* [(int)parameters[4]*2*ntrailers];
         float x,y;
+
         for (int i=0; i < (int)parameters[4]; i++){
             for (int j=0; j< 2*ntrailers; j++){
                 
@@ -207,11 +208,12 @@ void machine(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
                 //cout << "x: " << x << " y: " << y << endl;
             }
         }
+        for (int i=1; i< ntrailers; i++) dev->svg += trailerarray[i]->svg;
         save(dev,1);
         delete[] cararray;
         delete[] trailerarray;
     }
-
+    
 }
 
 void mainloop(OselinDevice *dev){

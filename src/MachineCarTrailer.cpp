@@ -9,6 +9,28 @@ using namespace std;
 //bool are_equal(OselinMachine *, OselinMachine *);
 
 
+string new_coca_strg_ruote(coca_device* macch){
+    string ruo;
+    // Ruota sinistra
+    ruo = "\t<circle ";
+    ruo += "cx=\"" + to_string(macch->sx.centrox) + "\" cy=\"" + to_string(macch->sx.centroy) + "\" ";
+    ruo += "r=\"" + to_string(macch->sx.ruota) + "\" stroke=\"black\" stroke-width=\"3\" fill=\"black\"/>\n\n";
+    // Cerchione sinistra
+    ruo += "\t<circle ";
+    ruo += "cx=\"" + to_string(macch->sx.centrox) + "\" cy=\"" + to_string(macch->sx.centroy) + "\" ";
+    ruo += "r=\"" + to_string(macch->sx.cerchione) + "\" stroke=\"black\" stroke-width=\"3\" fill=\"gray\"/>\n\n";
+    // Ruota destra
+    ruo += "\t<circle ";
+    ruo += "cx=\"" + to_string(macch->dx.centrox) + "\" cy=\"" + to_string(macch->dx.centroy) + "\" ";
+    ruo += "r=\"" + to_string(macch->dx.ruota) + "\" stroke=\"black\" stroke-width=\"3\" fill=\"black\"/>\n\n";
+    // Cerchione destra
+    ruo += "\t<circle ";
+    ruo += "cx=\"" + to_string(macch->dx.centrox) + "\" cy=\"" + to_string(macch->dx.centroy) + "\" ";
+    ruo += "r=\"" + to_string(macch->dx.cerchione) + "\" stroke=\"black\" stroke-width=\"3\" fill=\"gray\"/>\n\n";
+
+    return ruo;
+}
+
 void oselin_coca_implementation(coca_device * macch, float param[5]){
     
     //coca_try_carrozzeria(coca_device * macch)
@@ -51,14 +73,21 @@ void oselin_coca_implementation(coca_device * macch, float param[5]){
         case 1:
             macch->sx.centrox = macch->car.cx + (macch->car.width / 5) - 5;
             macch->dx.centrox = macch->car.cx + macch->car.width - (macch->car.width / 5) + 5;
+            macch->sx.centroy = macch->car.cy + macch->car.height;
+            macch->dx.centroy = macch->car.cy + macch->car.height;
+
             break;
         case 2:
             macch->sx.centrox = macch->car.cx + (macch->car.width / 5);
             macch->dx.centrox = macch->car.cx + macch->car.width - (macch->car.width / 5);
+            macch->sx.centroy = macch->car.cy + macch->car.height;
+            macch->dx.centroy = macch->car.cy + macch->car.height;
             break;
         case 3:
             macch->sx.centrox = macch->car.cx + (macch->car.width / 5) +5;
             macch->dx.centrox = macch->car.cx + macch->car.width - (macch->car.width / 5) - 5;
+            macch->sx.centroy = macch->car.cy + macch->car.height;
+            macch->dx.centroy = macch->car.cy + macch->car.height;
             break;
 
         default:
@@ -74,7 +103,7 @@ string oselin_coca_to_svg(coca_device * macch){
 
     string svg;
     svg += coca_strg_carrozzeria(macch);
-    svg += coca_strg_ruote(macch);
+    svg += new_coca_strg_ruote(macch);
     svg += coca_strg_tetto(macch);
     svg += coca_strg_finestrini(macch);
     svg += coca_strg_spoiler(macch);
@@ -88,7 +117,7 @@ coca_device * oselin_coca_init(float param[6], float newx, float newy){
     for (int i=0;i<3;i++) newparam[i] = param[i];
     newparam[3] = newx;
     newparam[4] = newy;
-    
+
     oselin_coca_implementation(dev, newparam);
     return dev;
 }
