@@ -180,8 +180,8 @@ void machine(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
         
         OselinDevice ** trailerarray;   
 
-        trailerarray = new OselinDevice* [ntrailers-1];  
-        for (int i=1; i< ntrailers; i++){
+        trailerarray = new OselinDevice* [ntrailers];  
+        for (int i=0; i< ntrailers; i++){
             trailerarray[i] = oselin_init_acopyof(dev);
             trailerarray[i]->offset = (0.5 + i) * dev->abslength;
             oselin_to_svg(trailerarray[i], false);
@@ -197,18 +197,18 @@ void machine(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
             for (int j=0; j< 2*ntrailers; j++){
                 
                 y = dev->absy - 3* dev->downfloor.height - (i)*dev->param.height;
-                if (j==0 || j==1){
-                    x = dev->offset + dev->param.margin + (j%2) *  (dev->param.length - 2* dev->param.margin - parameters[0]);
-                }
-                else{
+                //if (j==0 || j==1){
+                  //  x = dev->offset + dev->param.margin + (j%2) *  (dev->param.length - 2* dev->param.margin - parameters[0]);
+                //}
+                //else{
                     x = trailerarray[j/2]->offset + trailerarray[j/2]->param.margin + (j%2) * (trailerarray[j/2]->param.length - 2* trailerarray[j/2]->param.margin - parameters[0]);
-                }
+                //}
                 cararray[i*ntrailers + j] = oselin_coca_init(parameters, x, y);
                 dev->svg += oselin_coca_to_svg(cararray[i*ntrailers + j]);
                 //cout << "x: " << x << " y: " << y << endl;
             }
         }
-        for (int i=1; i< ntrailers; i++) dev->svg += trailerarray[i]->svg;
+        for (int i=0; i< ntrailers; i++) dev->svg += trailerarray[i]->svg;
         save(dev,1);
         delete[] cararray;
         delete[] trailerarray;
