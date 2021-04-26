@@ -12,32 +12,38 @@ void errors(int c){
     switch (c)
     {
     case 0:
-        cout << "INIT: WIDTH ERROR, ";
+        cout << "INIT: WIDTH ERROR" << endl;
         break;
     case 1:
-        cout << "INIT: STRUCTURAL ERROR, ";
+        cout << "INIT: STRUCTURAL ERROR" << endl;
         break;
     case 2:
-        cout << "INIT: CAR DIMENSIONS ERROR, ";
+        cout << "INIT: CAR DIMENSIONS ERROR" << endl;
         break;
     case 3:
-        cout << "You must create/load a device first!, ";
+        cout << "You must create/load a device first!" << endl;
         break;
     case 4:
-        cout << "INIT: HEIGHT ERROR, ";
+        cout << "INIT: HEIGHT ERROR" << endl;
         break;
     case 5:
-        cout << "INIT: NCARS TOO LONG, ";
+        cout << "INIT: NCARS TOO LONG" << endl;
         break;
     case 6:
-        cout << "INIT: NFLOORS TOO HIGH, ";
+        cout << "INIT: NFLOORS TOO HIGH" << endl;
+        break;
+    case 7:
+        cout << "Check the parameters and try again" << endl;
+        break;
+    case 8:
+        cout << "Something went wrong. " << endl;
         break;
     case 9:
         exit(1);
     default:
         break;
     }
-    cout << "GOING BACK TO MAIN MENU" << endl;
+    //cout << "GOING BACK TO MAIN MENU" << endl;
 }
 
 int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
@@ -56,7 +62,7 @@ int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
         ncar      = param[3];
         nfloors   = param[4];
     }catch(const exception& e){
-
+        errors(8);
         return 1;
     }
 
@@ -65,7 +71,7 @@ int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
     float tempradius, templength, tempheight;
  
     if (radius < 16 || radius > 18){
-        errors(0);
+        errors(7);
         return 1;
     }
 
@@ -105,11 +111,11 @@ int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
         return 1;
     }
     if (tempcar > 2){
-        errors(5);
+        errors(7);
         return 1;
     }
     if (tempfloor > 2){
-        errors(6);
+        errors(7);
         return 1;
     }
 

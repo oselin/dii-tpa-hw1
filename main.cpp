@@ -67,7 +67,7 @@ void create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
         }
         catch(const exception& e)
         {
-            cout << "Something went wrong" << endl;
+            errors(8);
             exit(1);
         }
         
@@ -83,7 +83,7 @@ void create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
             }
             catch(const exception& e)
             {
-                cout << "Something went wrong" << endl;
+                errors(8);
                 exit(1);
             }
         }
