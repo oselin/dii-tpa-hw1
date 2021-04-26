@@ -32,7 +32,7 @@ void help(){
     cout << "-h | --help\t\t allows you to read this awesome guide" << endl;
     cout << "-c | --create\t\t create a trailer SVG\t\t\t--create [SVG width] [SVG height] [Car length] [Car height] [Wheel radius] [Cars-per-trailer] [Floors]" << endl;
     cout << "-l | --load\t\t load SVG from file\t\t\t--load [path]" << endl;
-    cout << "-m | --machine\t\t draw a train of trailers\t\t--machine [Number of trailers]" << endl;
+    cout << "-m | --machine\t\t draw a train of trailers\t\t--machine [Car length] [Car height] [Wheel radius] [Cars-per-trailer] [Floors] [Number of trailers]" << endl;
     cout << "-i | --interface\t use graphic menu (for lame people)" << endl;
     
 }
