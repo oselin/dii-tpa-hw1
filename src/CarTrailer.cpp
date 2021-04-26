@@ -182,7 +182,7 @@ void trigjoint(OselinDevice *dev, string m){
     joint->body.x = dev->downfloor.x + (mode-1)*DOWNOFFSET + mode*dev->param.length;
     joint->body.y = dev->downfloor.y+ dev->downfloor.height/2 - joint->body.height/2;
     joint->body.stroke = joint->body.height/20;
-
+    
     joint->head.x = joint->body.x + mode*joint->body.width;
     joint->head.y = joint->body.y + joint->body.height/2;
     joint->head.radius = dev->param.radius/3;
@@ -252,7 +252,6 @@ void oselin_trigonometry(OselinDevice *dev, bool automaticoffset){
     dev->absx = dev->rearjoint.head.x;
     dev->absy = dev->rearjoint.head.y;
     dev->abslength = dev->param.length + 2*dev->rearjoint.length - 2* dev->rearjoint.head.radius;
-    
     if (automaticoffset){
         dev->offset = (dev->param.svgwidth - dev->downfloor.width)/2;
     }

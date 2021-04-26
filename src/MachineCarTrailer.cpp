@@ -9,16 +9,16 @@ using namespace std;
 //bool are_equal(OselinMachine *, OselinMachine *);
 
 
-void oselin_coca_implementation(coca_device * macch, float param[6]){
+void oselin_coca_implementation(coca_device * macch, float param[5]){
     
     //coca_try_carrozzeria(coca_device * macch)
     macch->car.width = param[0];
     macch->car.height = param[1];
-    macch->car.cx = param[2];
-    macch->car.cy = param[3];
+    macch->car.cx = param[3];
+    macch->car.cy = param[4];
 
-    int diametro = (int)param[4];
-    int x = (int)param[5];
+    int diametro = (int)param[2];
+    int x = 1;//(int)param[5];
     
     //coca_try_ruote(coca_device *macch)
     switch (diametro)
@@ -83,7 +83,13 @@ string oselin_coca_to_svg(coca_device * macch){
 
 coca_device * oselin_coca_init(float param[6], float newx, float newy){
     coca_device * dev = new coca_device;
-    oselin_coca_implementation(dev, param);
+
+    float newparam [5];
+    for (int i=0;i<3;i++) newparam[i] = param[i];
+    newparam[3] = newx;
+    newparam[4] = newy;
+    
+    oselin_coca_implementation(dev, newparam);
     return dev;
 }
 
