@@ -168,6 +168,12 @@ void machine(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
         cout << "How many trailers? ";
         cin >> ntrailers;
     }
+
+    OselinMachine *mach = oselin_machine_init(dev, ntrailers, parameters);
+
+    string mysvg = oselin_machine_to_string(mach);
+
+    /*
     if (!oselin_init(dev, parameters, true)){
         dev->param.svgheight = 3 * dev->param.height;
         oselin_trigonometry(dev, false);
@@ -196,7 +202,7 @@ void machine(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
         for (int i=0; i < (int)parameters[4]; i++){
             for (int j=0; j< (int)parameters[3]*ntrailers; j++){
                 
-                y = dev->absy - 3* dev->downfloor.height - (i)*dev->param.height;
+                y = dev->absy - 1.5*dev->downfloor.height - (i)*dev->param.height - (parameters[1]-1)/2;
                 x = trailerarray[j/(int)parameters[3]]->offset + trailerarray[j/(int)parameters[3]]->param.margin + (j%(int)parameters[3]) * (trailerarray[j/(int)parameters[3]]->param.length - 2* trailerarray[j/(int)parameters[3]]->param.margin - parameters[0]);
 
                 cararray[i*ntrailers + j] = oselin_coca_init(parameters, x, y);
@@ -207,7 +213,7 @@ void machine(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
         save(dev,1);
         delete[] cararray;
         delete[] trailerarray;
-    }
+    }*/
     
 }
 

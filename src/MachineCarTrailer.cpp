@@ -1,4 +1,5 @@
 #include "car_trailer.h"
+#include "machine_car_trailer.h"
 #include <iostream>
 #include <string>
 #include <cmath>
@@ -39,7 +40,7 @@ void oselin_coca_implementation(coca_device * macch, float param[5]){
     macch->car.width = param[0];
     macch->car.height = param[1];
     macch->car.cx = param[3];
-    macch->car.cy = param[4];
+    macch->car.cy = param[4] - (macch->car.height - 1) / 2;
 
     int diametro = (int)param[2];
     int x = 1;//(int)param[5];
@@ -127,3 +128,84 @@ coca_device * oselin_coca_init(float param[6], float newx, float newy){
 //MACHINE 
 
 
+OselinMachine * oselin_machine_init(OselinDevice *dev, int ntrailers, float parameters[5]){
+
+    /**
+     * PARAMETERS
+     * LENGTH | HEIGHT | RADIUS | NCARS-PER-TRAILER | NFLOORS
+     * */
+    
+    if (!oselin_init(dev, parameters, true)){
+        //CHECKING CONSTRAINTS AND SETTING SVG DIMENSIONS
+        dev->param.svgheight = 3 * dev->param.height;
+        oselin_trigonometry(dev, false);
+        dev->param.svgwidth = (ntrailers +1) * dev->abslength;
+        dev->offset = 0.5 * dev->abslength;
+        oselin_to_svg(dev);
+        
+        // DYNAMIC ARRAY SOLUTION FOR THEN MACHINE
+        OselinMachine *machine;
+        machine->trailerarray = new OselinDevice* [ntrailers];         
+        machine->cararray = new coca_device* [(int)parameters[4]*(int)parameters[3]*ntrailers];
+        
+        machine->svg = dev->svg;
+
+        for (int i=0; i< ntrailers; i++){
+            machine->trailerarray[i] = oselin_init_acopyof(dev);
+            machine->trailerarray[i]->offset = (0.5 + i) * dev->abslength;
+            oselin_to_svg(machine->trailerarray[i], false);
+        }
+        
+        
+        
+        float x,y;
+
+        for (int i=0; i < (int)parameters[4]; i++){
+            for (int j=0; j< (int)parameters[3]*ntrailers; j++){
+                
+                y = dev->absy - 1.5*dev->downfloor.height - (i)*dev->param.height - (parameters[1]-1)/2;
+                x = machine->trailerarray[j/(int)parameters[3]]->offset + machine->trailerarray[j/(int)parameters[3]]->param.margin + (j%(int)parameters[3]) * (machine->trailerarray[j/(int)parameters[3]]->param.length - 2* machine->trailerarray[j/(int)parameters[3]]->param.margin - parameters[0]);
+
+                machine->cararray[i*ntrailers + j] = oselin_coca_init(parameters, x, y);
+                
+            }
+        }
+        return machine;
+        
+    }
+    
+    return NULL;
+}
+
+string oselin_machine_to_string(OselinMachine *mach, bool with_header){
+    string svg;
+    if (with_header){
+    svg = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width='";
+    svg += to_string(mach->trailerarray[0]->param.svgwidth) + " '  height='";
+    svg += to_string(mach->trailerarray[0]->param.svgheight) + "' >";
+
+    svg += "<rect  x='0.000000' y='0.000000' width='" + to_string(mach->trailerarray[0]->param.svgwidth) + "' height='" + to_string(mach->trailerarray[0]->param.svgheight) + "' style='stroke-width:0.0; stroke:' fill='white' />";
+    }
+    int len = sizeof(mach->trailerarray)/sizeof(mach->trailerarray[0]);
+    for (int i=0;i < len; i++ ){
+        for (int j=0;j<mach->parameters[4];j++){
+            svg += oselin_coca_to_svg(mach->cararray[i*len + j]);
+        }
+    }
+    for (int i=0; i< len; i++) svg += mach->trailerarray[i]->svg;
+
+    return svg;
+}
+
+
+string oselin_machine_save(string svg){
+    if (saving){
+        string filename;
+        cout << "File name for saving (with extension): ";
+        cin >> filename;
+        ofstream MyFile(filename);
+        MyFile << (dev->svg + "\n</svg>");
+        MyFile.close();
+        cout << "SAVED!\n" << endl;
+    }
+}
