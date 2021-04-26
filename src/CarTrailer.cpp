@@ -676,31 +676,33 @@ Oselin_Axis parsingaxis(string svg){
 }
 
 void oselin_parsing(OselinDevice * device, string svg){
+    if (svg!=""){
+        int pieces[7][2];
+        for (int i=1;i<9;i++){
+            int index = svg.find(checkpoint(i));
+            int len = svg.find(checkpoint(i+1)) - index;
+            pieces[i-1][0] = index+11;
+            pieces[i-1][1] = len-11;
+        }
+        device->param.svgwidth = stof(buffering(svg.substr(0,pieces[0][0]),"width='",'\''));
+        device->param.svgheight = stof(buffering(svg.substr(0,pieces[0][0]),"height='",'\''));
+        device->rearjoint = parsingjoint(svg.substr(pieces[0][0], pieces[0][1]));
+        device->frontjoint = parsingjoint(svg.substr(pieces[1][0], pieces[1][1]));
+        device->downfloor = parsingfloor(svg.substr(pieces[2][0], pieces[2][1]),0);
+        device->frontwheel = parsingwheel(svg.substr(pieces[3][0], pieces[3][1]),1);
+        device->rearwheel = parsingwheel(svg.substr(pieces[4][0], pieces[4][1]),1);
 
-    int pieces[7][2];
-    for (int i=1;i<9;i++){
-        int index = svg.find(checkpoint(i));
-        int len = svg.find(checkpoint(i+1)) - index;
-        pieces[i-1][0] = index+11;
-        pieces[i-1][1] = len-11;
+        if (pieces[5][1] > 0){
+            device->upfloor = parsingfloor(svg.substr(pieces[5][0], pieces[5][1]),0);
+            device->rearaxis = parsingaxis(svg.substr(pieces[6][0], pieces[6][1]));
+            device->frontaxis = parsingaxis(svg.substr(pieces[7][0], pieces[7][1]));
+            device->param.nfloors = 2;
+        }
+        else device->param.nfloors = 1;
+        device->param.length = device->downfloor.width;
+        device->param.height = 10 * device->downfloor.height;
     }
-    device->param.svgwidth = stof(buffering(svg.substr(0,pieces[0][0]),"width='",'\''));
-    device->param.svgheight = stof(buffering(svg.substr(0,pieces[0][0]),"height='",'\''));
-    device->rearjoint = parsingjoint(svg.substr(pieces[0][0], pieces[0][1]));
-    device->frontjoint = parsingjoint(svg.substr(pieces[1][0], pieces[1][1]));
-    device->downfloor = parsingfloor(svg.substr(pieces[2][0], pieces[2][1]),0);
-    device->frontwheel = parsingwheel(svg.substr(pieces[3][0], pieces[3][1]),1);
-    device->rearwheel = parsingwheel(svg.substr(pieces[4][0], pieces[4][1]),1);
-
-    if (pieces[5][1] > 0){
-        device->upfloor = parsingfloor(svg.substr(pieces[5][0], pieces[5][1]),0);
-        device->rearaxis = parsingaxis(svg.substr(pieces[6][0], pieces[6][1]));
-        device->frontaxis = parsingaxis(svg.substr(pieces[7][0], pieces[7][1]));
-        device->param.nfloors = 2;
-    }
-    else device->param.nfloors = 1;
-    device->param.length = device->downfloor.width;
-    device->param.height = 10 * device->downfloor.height;
+    else device->svg = "";
 }
 
 
@@ -711,7 +713,9 @@ int oselin_set(OselinDevice *dev, float array[]){
 
 OselinDevice *oselin_init_acopyof(OselinDevice *dev){
     OselinDevice *copy = new OselinDevice;
-
-    (*copy) = (*dev);
-    return copy;
+    if (dev != NULL){
+        (*copy) = (*dev);
+        return copy;
+    }
+    else return copy;
 }

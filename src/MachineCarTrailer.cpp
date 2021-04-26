@@ -2,12 +2,14 @@
 #include <iostream>
 #include <string>
 #include <cmath>
-#include "../TpaHomework1/include/Car.h"
+#include "Car.h"
 
 using namespace std;
 
 //bool are_equal(OselinMachine *, OselinMachine *);
 
+
+//IMPLEMENTING @GIACOMOCORRADINI CAR.H LIBRARY
 
 string new_coca_strg_ruote(coca_device* macch){
     string ruo;
@@ -122,43 +124,6 @@ coca_device * oselin_coca_init(float param[6], float newx, float newy){
     return dev;
 }
 
+//MACHINE 
 
-/*
 
-dev->param.svgheight = 3 * dev->param.height;
-        oselin_trigonometry(dev, false);
-
-        dev->param.svgwidth = (ntrailers +1) * dev->abslength;
-        dev->offset = 0.5 * dev->abslength;
-        oselin_to_svg(dev);
-
-        for (int i=1; i< ntrailers; i++){
-            OselinDevice temp = (*dev);
-            coca_device *car = new coca_device;
-
-            temp.offset = (0.5 + i) * dev->abslength;
-
-            float x = temp.offset + temp.param.margin;
-            float y;
-
-            float carparam[6] = {parameters[0],parameters[1], x, 0, parameters[2]};
-            if (i==0) oselin_to_svg(&temp);
-            else oselin_to_svg(&temp, false); 
-
-            dev->svg += temp.svg + oselin_coca_svg(car,carparam);
-
-            for (int i=1; i<= (int)parameters[4];i++){
-                for (int j=0; j <= (int)parameters[5];j++){
-                    carparam[2] += 2 * temp.param.margin + (i-1)*carparam[0];   
-                    carparam[3] = (j-1)*temp.downfloor.height + temp.absy - 3 * temp.downfloor.height;
-                    dev->svg += temp.svg + oselin_coca_svg(car, carparam);
-
-                }           
-
-            }
-        }
-
-        save(dev, 1);
-        exit(0);
-    }
-*/
