@@ -25,6 +25,7 @@ OselinMachine * oselin_machine_init(OselinDevice *, int , float[5]);
 
 std::string oselin_machine_to_string(OselinMachine *, bool=true);
 
-void oselin_machine_save(std::string);
+std::string oselin_machine_save(OselinMachine *mach);
 
+std::string oselin_machine_change(OselinMachine *, float[5]);
 #endif //MACHINE_CAR_TRAILER_H

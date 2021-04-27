@@ -1,603 +1,411 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<svg xmlns='http://www.w3.org/2000/svg' width='3850.000000 '  height='600.000000' ><rect  x='0.000000' y='0.000000' width='3850.000000' height='600.000000' style='stroke-width:0.0; stroke:' fill='white' />	<rect  x="325.000000" y="321.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+<svg xmlns='http://www.w3.org/2000/svg' width='4950.000000 '  height='450.000000' ><rect  x='0.000000' y='0.000000' width='4950.000000' height='450.000000' style='stroke-width:0.0; stroke:' fill='white' />	<rect  x="325.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="340.000000" cy="371.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="340.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="340.000000" cy="371.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="340.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="410.000000" cy="371.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="410.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="410.000000" cy="371.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="410.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="342.142944,321.000000 353.571442,283.499908 382.142853,283.499908 382.142853,321.000000 342.142944,321.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="342.142944,221.000000 353.571442,183.499908 382.142853,183.499908 382.142853,221.000000 342.142944,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="382.142853,283.499908 405.000000,321.000000 382.142853,321.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="382.142853,183.499908 405.000000,221.000000 382.142853,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="327.857147" y="302.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="327.857147" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="575.000000" y="321.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="575.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="590.000000" cy="371.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="590.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="590.000000" cy="371.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="590.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="660.000000" cy="371.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="660.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="660.000000" cy="371.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="660.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="592.142944,321.000000 603.571411,283.499908 632.142883,283.499908 632.142883,321.000000 592.142944,321.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="592.142944,221.000000 603.571411,183.499908 632.142883,183.499908 632.142883,221.000000 592.142944,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="632.142883,283.499908 655.000000,321.000000 632.142883,321.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="632.142883,183.499908 655.000000,221.000000 632.142883,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="577.857117" y="302.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="577.857117" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="875.000000" y="321.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="875.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="890.000000" cy="371.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="890.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="890.000000" cy="371.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="890.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="960.000000" cy="371.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="960.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="960.000000" cy="371.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="960.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="892.142944,321.000000 903.571411,283.499908 932.142883,283.499908 932.142883,321.000000 892.142944,321.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="892.142944,221.000000 903.571411,183.499908 932.142883,183.499908 932.142883,221.000000 892.142944,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="932.142883,283.499908 955.000000,321.000000 932.142883,321.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="932.142883,183.499908 955.000000,221.000000 932.142883,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="877.857117" y="302.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="877.857117" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="1125.000000" y="321.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="1125.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="1140.000000" cy="371.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="1140.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1140.000000" cy="371.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="1140.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="1210.000000" cy="371.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="1210.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1210.000000" cy="371.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="1210.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="1142.142944,321.000000 1153.571411,283.499908 1182.142822,283.499908 1182.142822,321.000000 1142.142944,321.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="1142.142944,221.000000 1153.571411,183.499908 1182.142822,183.499908 1182.142822,221.000000 1142.142944,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="1182.142822,283.499908 1205.000000,321.000000 1182.142822,321.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="1182.142822,183.499908 1205.000000,221.000000 1182.142822,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="1127.857178" y="302.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="1127.857178" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="1425.000000" y="321.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="1425.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="1440.000000" cy="371.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="1440.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1440.000000" cy="371.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="1440.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="1510.000000" cy="371.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="1510.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1510.000000" cy="371.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="1510.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="1442.142944,321.000000 1453.571411,283.499908 1482.142822,283.499908 1482.142822,321.000000 1442.142944,321.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="1442.142944,221.000000 1453.571411,183.499908 1482.142822,183.499908 1482.142822,221.000000 1442.142944,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="1482.142822,283.499908 1505.000000,321.000000 1482.142822,321.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="1482.142822,183.499908 1505.000000,221.000000 1482.142822,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="1427.857178" y="302.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="1427.857178" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="1675.000000" y="321.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="1675.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="1690.000000" cy="371.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="1690.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1690.000000" cy="371.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="1690.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="1760.000000" cy="371.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="1760.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1760.000000" cy="371.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="1760.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="1692.142944,321.000000 1703.571411,283.499908 1732.142822,283.499908 1732.142822,321.000000 1692.142944,321.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="1692.142944,221.000000 1703.571411,183.499908 1732.142822,183.499908 1732.142822,221.000000 1692.142944,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="1732.142822,283.499908 1755.000000,321.000000 1732.142822,321.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="1732.142822,183.499908 1755.000000,221.000000 1732.142822,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="1677.857178" y="302.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="1677.857178" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="325.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="1975.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="340.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="1990.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="340.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="1990.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="410.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="2060.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="410.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="2060.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="342.142944,121.000000 353.571442,83.499908 382.142853,83.499908 382.142853,121.000000 342.142944,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="1992.142944,221.000000 2003.571411,183.499908 2032.142822,183.499908 2032.142822,221.000000 1992.142944,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="382.142853,83.499908 405.000000,121.000000 382.142853,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="2032.142822,183.499908 2055.000000,221.000000 2032.142822,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="327.857147" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="1977.857178" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="575.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="2225.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="590.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="2240.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="590.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="2240.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="660.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="2310.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="660.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="2310.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="592.142944,121.000000 603.571411,83.499908 632.142883,83.499908 632.142883,121.000000 592.142944,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="2242.143066,221.000000 2253.571533,183.499908 2282.142822,183.499908 2282.142822,221.000000 2242.143066,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="632.142883,83.499908 655.000000,121.000000 632.142883,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="2282.142822,183.499908 2305.000000,221.000000 2282.142822,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="577.857117" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="2227.857178" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="875.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="2525.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="890.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="2540.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="890.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="2540.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="960.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="2610.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="960.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="2610.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="892.142944,121.000000 903.571411,83.499908 932.142883,83.499908 932.142883,121.000000 892.142944,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="2542.143066,221.000000 2553.571533,183.499908 2582.142822,183.499908 2582.142822,221.000000 2542.143066,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="932.142883,83.499908 955.000000,121.000000 932.142883,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="2582.142822,183.499908 2605.000000,221.000000 2582.142822,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="877.857117" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="2527.857178" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="1125.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="2775.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="1140.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="2790.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1140.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="2790.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="1210.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="2860.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1210.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="2860.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="1142.142944,121.000000 1153.571411,83.499908 1182.142822,83.499908 1182.142822,121.000000 1142.142944,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="2792.143066,221.000000 2803.571533,183.499908 2832.142822,183.499908 2832.142822,221.000000 2792.143066,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="1182.142822,83.499908 1205.000000,121.000000 1182.142822,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="2832.142822,183.499908 2855.000000,221.000000 2832.142822,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="1127.857178" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="2777.857178" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="1425.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="3075.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="1440.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="3090.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1440.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="3090.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="1510.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="3160.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1510.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="3160.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="1442.142944,121.000000 1453.571411,83.499908 1482.142822,83.499908 1482.142822,121.000000 1442.142944,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="3092.143066,221.000000 3103.571533,183.499908 3132.142822,183.499908 3132.142822,221.000000 3092.143066,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="1482.142822,83.499908 1505.000000,121.000000 1482.142822,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="3132.142822,183.499908 3155.000000,221.000000 3132.142822,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="1427.857178" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="3077.857178" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="1675.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="3325.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="1690.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="3340.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1690.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="3340.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="1760.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="3410.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1760.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="3410.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="1692.142944,121.000000 1703.571411,83.499908 1732.142822,83.499908 1732.142822,121.000000 1692.142944,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="3342.143066,221.000000 3353.571533,183.499908 3382.142822,183.499908 3382.142822,221.000000 3342.143066,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="1732.142822,83.499908 1755.000000,121.000000 1732.142822,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="3382.142822,183.499908 3405.000000,221.000000 3382.142822,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="1677.857178" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="3327.857178" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="325.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="3625.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="340.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="3640.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="340.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="3640.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="410.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="3710.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="410.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="3710.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="342.142944,121.000000 353.571442,83.499908 382.142853,83.499908 382.142853,121.000000 342.142944,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="3642.143066,221.000000 3653.571533,183.499908 3682.142822,183.499908 3682.142822,221.000000 3642.143066,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="382.142853,83.499908 405.000000,121.000000 382.142853,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="3682.142822,183.499908 3705.000000,221.000000 3682.142822,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="327.857147" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="3627.857178" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="575.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="3875.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="590.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="3890.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="590.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="3890.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="660.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="3960.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="660.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="3960.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="592.142944,121.000000 603.571411,83.499908 632.142883,83.499908 632.142883,121.000000 592.142944,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="3892.143066,221.000000 3903.571533,183.499908 3932.142822,183.499908 3932.142822,221.000000 3892.143066,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="632.142883,83.499908 655.000000,121.000000 632.142883,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="3932.142822,183.499908 3955.000000,221.000000 3932.142822,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="577.857117" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="3877.857178" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="875.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="4175.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="890.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="4190.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="890.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="4190.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="960.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="4260.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="960.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="4260.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="892.142944,121.000000 903.571411,83.499908 932.142883,83.499908 932.142883,121.000000 892.142944,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="4192.143066,221.000000 4203.571289,183.499908 4232.143066,183.499908 4232.143066,221.000000 4192.143066,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="932.142883,83.499908 955.000000,121.000000 932.142883,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="4232.143066,183.499908 4255.000000,221.000000 4232.143066,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="877.857117" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="4177.856934" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<rect  x="1125.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect  x="4425.000000" y="221.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
-	<circle cx="1140.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="4440.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1140.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="4440.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<circle cx="1210.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
+	<circle cx="4510.000000" cy="271.000000" r="24.500000" stroke="black" stroke-width="3" fill="black"/>
 
-	<circle cx="1210.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
+	<circle cx="4510.000000" cy="271.000000" r="15.312500" stroke="black" stroke-width="3" fill="gray"/>
 
-	<polygon points="1142.142944,121.000000 1153.571411,83.499908 1182.142822,83.499908 1182.142822,121.000000 1142.142944,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
+	<polygon points="4442.143066,221.000000 4453.571289,183.499908 4482.143066,183.499908 4482.143066,221.000000 4442.143066,221.000000" style="fill:red;stroke:black;stroke-width:5"/>
 
-	<polygon points="1182.142822,83.499908 1205.000000,121.000000 1182.142822,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
+	<polygon points="4482.143066,183.499908 4505.000000,221.000000 4482.143066,221.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
 
-	<rect x="1127.857178" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<rect  x="1425.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<circle cx="1440.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="1440.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<circle cx="1510.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="1510.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<polygon points="1442.142944,121.000000 1453.571411,83.499908 1482.142822,83.499908 1482.142822,121.000000 1442.142944,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
-
-	<polygon points="1482.142822,83.499908 1505.000000,121.000000 1482.142822,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
-
-	<rect x="1427.857178" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<rect  x="1675.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<circle cx="1690.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="1690.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<circle cx="1760.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="1760.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<polygon points="1692.142944,121.000000 1703.571411,83.499908 1732.142822,83.499908 1732.142822,121.000000 1692.142944,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
-
-	<polygon points="1732.142822,83.499908 1755.000000,121.000000 1732.142822,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
-
-	<rect x="1677.857178" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<rect  x="1975.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<circle cx="1990.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="1990.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<circle cx="2060.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="2060.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<polygon points="1992.142944,121.000000 2003.571411,83.499908 2032.142822,83.499908 2032.142822,121.000000 1992.142944,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
-
-	<polygon points="2032.142822,83.499908 2055.000000,121.000000 2032.142822,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
-
-	<rect x="1977.857178" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<rect  x="2225.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<circle cx="2240.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="2240.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<circle cx="2310.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="2310.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<polygon points="2242.143066,121.000000 2253.571533,83.499908 2282.142822,83.499908 2282.142822,121.000000 2242.143066,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
-
-	<polygon points="2282.142822,83.499908 2305.000000,121.000000 2282.142822,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
-
-	<rect x="2227.857178" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<rect  x="2525.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<circle cx="2540.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="2540.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<circle cx="2610.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="2610.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<polygon points="2542.143066,121.000000 2553.571533,83.499908 2582.142822,83.499908 2582.142822,121.000000 2542.143066,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
-
-	<polygon points="2582.142822,83.499908 2605.000000,121.000000 2582.142822,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
-
-	<rect x="2527.857178" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<rect  x="2775.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<circle cx="2790.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="2790.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<circle cx="2860.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="2860.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<polygon points="2792.143066,121.000000 2803.571533,83.499908 2832.142822,83.499908 2832.142822,121.000000 2792.143066,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
-
-	<polygon points="2832.142822,83.499908 2855.000000,121.000000 2832.142822,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
-
-	<rect x="2777.857178" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<rect  x="3075.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<circle cx="3090.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="3090.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<circle cx="3160.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="3160.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<polygon points="3092.143066,121.000000 3103.571533,83.499908 3132.142822,83.499908 3132.142822,121.000000 3092.143066,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
-
-	<polygon points="3132.142822,83.499908 3155.000000,121.000000 3132.142822,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
-
-	<rect x="3077.857178" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<rect  x="3325.000000" y="121.000000" rx="10" ry="10" width="100.000000" height="50.000000" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
-
-	<circle cx="3340.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="3340.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<circle cx="3410.000000" cy="171.000000" r="25.500000" stroke="black" stroke-width="3" fill="black"/>
-
-	<circle cx="3410.000000" cy="171.000000" r="15.937500" stroke="black" stroke-width="3" fill="gray"/>
-
-	<polygon points="3342.143066,121.000000 3353.571533,83.499908 3382.142822,83.499908 3382.142822,121.000000 3342.143066,121.000000" style="fill:red;stroke:black;stroke-width:5"/>
-
-	<polygon points="3382.142822,83.499908 3405.000000,121.000000 3382.142822,121.000000" style="fill:lightblue;stroke:black;stroke-width:5" />
-
-	<rect x="3327.857178" y="102.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
+	<rect x="4427.856934" y="202.250000" width="5.714286" height="18.749998" style="stroke-width:3;stroke:rgb(0,0,0)" fill="red"/>
 
 
 <!--#1-->
 
-<rect  x='225.000000' y='410.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
-<circle cx='225.000000' cy='415.000000' r='9.000000' stroke='black' stroke-width='2.700000' fill='white' />
+<rect  x='225.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='225.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
 <!--#2-->
 
-<rect  x='725.000000' y='410.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
-<circle cx='775.000000' cy='415.000000' r='9.000000' stroke='black' stroke-width='2.700000' fill='white' />
+<rect  x='725.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='775.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
 <!--#3-->
 
-<rect  x='275.000000' y='400.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
+<rect  x='275.000000' y='300.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
 <!--#4-->
 
-<circle cx='687.500000' cy='423.250000' r='27.000000' stroke='black' stroke-width='2.700000' fill='black' />
-<circle cx='687.500000' cy='423.250000' r='20.250000' stroke='black' stroke-width='2.700000' fill= 'gray' />
+<circle cx='687.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='687.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
 <!--#5-->
 
-<circle cx='312.500000' cy='423.250000' r='27.000000' stroke='black' stroke-width='2.700000' fill='black' />
-<circle cx='312.500000' cy='423.250000' r='20.250000' stroke='black' stroke-width='2.700000' fill= 'gray' />
-<!--#6-->
-
-<rect  x='275.000000' y='200.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
-<!--#7-->
-
-<g transform='rotate(20.000000,435.000000,315.000000)'>
-<rect  x='425.000000' y='200.000000' width='20.000000' height='230.000000' style='stroke-width:1.000000; stroke:black' fill='#990000' />
-<circle cx='435.000000' cy='420.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-<circle cx='435.000000' cy='210.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-</g>
-<!--#8-->
-
-<g transform='rotate(20.000000,585.000000,315.000000)'>
-<rect  x='575.000000' y='200.000000' width='20.000000' height='230.000000' style='stroke-width:1.000000; stroke:black' fill='#990000' />
-<circle cx='585.000000' cy='420.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-<circle cx='585.000000' cy='210.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-</g>
+<circle cx='312.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='312.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
 <!--#1-->
 
-<rect  x='775.000000' y='410.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
-<circle cx='775.000000' cy='415.000000' r='9.000000' stroke='black' stroke-width='2.700000' fill='white' />
+<rect  x='775.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='775.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
 <!--#2-->
 
-<rect  x='1275.000000' y='410.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
-<circle cx='1325.000000' cy='415.000000' r='9.000000' stroke='black' stroke-width='2.700000' fill='white' />
+<rect  x='1275.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='1325.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
 <!--#3-->
 
-<rect  x='825.000000' y='400.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
+<rect  x='825.000000' y='300.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
 <!--#4-->
 
-<circle cx='1237.500000' cy='423.250000' r='27.000000' stroke='black' stroke-width='2.700000' fill='black' />
-<circle cx='1237.500000' cy='423.250000' r='20.250000' stroke='black' stroke-width='2.700000' fill= 'gray' />
+<circle cx='1237.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='1237.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
 <!--#5-->
 
-<circle cx='862.500000' cy='423.250000' r='27.000000' stroke='black' stroke-width='2.700000' fill='black' />
-<circle cx='862.500000' cy='423.250000' r='20.250000' stroke='black' stroke-width='2.700000' fill= 'gray' />
-<!--#6-->
-
-<rect  x='825.000000' y='200.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
-<!--#7-->
-
-<g transform='rotate(20.000000,985.000000,315.000000)'>
-<rect  x='975.000000' y='200.000000' width='20.000000' height='230.000000' style='stroke-width:1.000000; stroke:black' fill='#990000' />
-<circle cx='985.000000' cy='420.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-<circle cx='985.000000' cy='210.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-</g>
-<!--#8-->
-
-<g transform='rotate(20.000000,1135.000000,315.000000)'>
-<rect  x='1125.000000' y='200.000000' width='20.000000' height='230.000000' style='stroke-width:1.000000; stroke:black' fill='#990000' />
-<circle cx='1135.000000' cy='420.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-<circle cx='1135.000000' cy='210.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-</g>
+<circle cx='862.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='862.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
 <!--#1-->
 
-<rect  x='1325.000000' y='410.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
-<circle cx='1325.000000' cy='415.000000' r='9.000000' stroke='black' stroke-width='2.700000' fill='white' />
+<rect  x='1325.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='1325.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
 <!--#2-->
 
-<rect  x='1825.000000' y='410.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
-<circle cx='1875.000000' cy='415.000000' r='9.000000' stroke='black' stroke-width='2.700000' fill='white' />
+<rect  x='1825.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='1875.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
 <!--#3-->
 
-<rect  x='1375.000000' y='400.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
+<rect  x='1375.000000' y='300.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
 <!--#4-->
 
-<circle cx='1787.500000' cy='423.250000' r='27.000000' stroke='black' stroke-width='2.700000' fill='black' />
-<circle cx='1787.500000' cy='423.250000' r='20.250000' stroke='black' stroke-width='2.700000' fill= 'gray' />
+<circle cx='1787.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='1787.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
 <!--#5-->
 
-<circle cx='1412.500000' cy='423.250000' r='27.000000' stroke='black' stroke-width='2.700000' fill='black' />
-<circle cx='1412.500000' cy='423.250000' r='20.250000' stroke='black' stroke-width='2.700000' fill= 'gray' />
-<!--#6-->
-
-<rect  x='1375.000000' y='200.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
-<!--#7-->
-
-<g transform='rotate(20.000000,1535.000000,315.000000)'>
-<rect  x='1525.000000' y='200.000000' width='20.000000' height='230.000000' style='stroke-width:1.000000; stroke:black' fill='#990000' />
-<circle cx='1535.000000' cy='420.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-<circle cx='1535.000000' cy='210.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-</g>
-<!--#8-->
-
-<g transform='rotate(20.000000,1685.000000,315.000000)'>
-<rect  x='1675.000000' y='200.000000' width='20.000000' height='230.000000' style='stroke-width:1.000000; stroke:black' fill='#990000' />
-<circle cx='1685.000000' cy='420.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-<circle cx='1685.000000' cy='210.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-</g>
+<circle cx='1412.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='1412.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
 <!--#1-->
 
-<rect  x='1875.000000' y='410.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
-<circle cx='1875.000000' cy='415.000000' r='9.000000' stroke='black' stroke-width='2.700000' fill='white' />
+<rect  x='1875.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='1875.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
 <!--#2-->
 
-<rect  x='2375.000000' y='410.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
-<circle cx='2425.000000' cy='415.000000' r='9.000000' stroke='black' stroke-width='2.700000' fill='white' />
+<rect  x='2375.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='2425.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
 <!--#3-->
 
-<rect  x='1925.000000' y='400.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
+<rect  x='1925.000000' y='300.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
 <!--#4-->
 
-<circle cx='2337.500000' cy='423.250000' r='27.000000' stroke='black' stroke-width='2.700000' fill='black' />
-<circle cx='2337.500000' cy='423.250000' r='20.250000' stroke='black' stroke-width='2.700000' fill= 'gray' />
+<circle cx='2337.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='2337.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
 <!--#5-->
 
-<circle cx='1962.500000' cy='423.250000' r='27.000000' stroke='black' stroke-width='2.700000' fill='black' />
-<circle cx='1962.500000' cy='423.250000' r='20.250000' stroke='black' stroke-width='2.700000' fill= 'gray' />
-<!--#6-->
-
-<rect  x='1925.000000' y='200.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
-<!--#7-->
-
-<g transform='rotate(20.000000,2085.000000,315.000000)'>
-<rect  x='2075.000000' y='200.000000' width='20.000000' height='230.000000' style='stroke-width:1.000000; stroke:black' fill='#990000' />
-<circle cx='2085.000000' cy='420.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-<circle cx='2085.000000' cy='210.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-</g>
-<!--#8-->
-
-<g transform='rotate(20.000000,2235.000000,315.000000)'>
-<rect  x='2225.000000' y='200.000000' width='20.000000' height='230.000000' style='stroke-width:1.000000; stroke:black' fill='#990000' />
-<circle cx='2235.000000' cy='420.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-<circle cx='2235.000000' cy='210.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-</g>
+<circle cx='1962.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='1962.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
 <!--#1-->
 
-<rect  x='2425.000000' y='410.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
-<circle cx='2425.000000' cy='415.000000' r='9.000000' stroke='black' stroke-width='2.700000' fill='white' />
+<rect  x='2425.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='2425.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
 <!--#2-->
 
-<rect  x='2925.000000' y='410.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
-<circle cx='2975.000000' cy='415.000000' r='9.000000' stroke='black' stroke-width='2.700000' fill='white' />
+<rect  x='2925.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='2975.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
 <!--#3-->
 
-<rect  x='2475.000000' y='400.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
+<rect  x='2475.000000' y='300.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
 <!--#4-->
 
-<circle cx='2887.500000' cy='423.250000' r='27.000000' stroke='black' stroke-width='2.700000' fill='black' />
-<circle cx='2887.500000' cy='423.250000' r='20.250000' stroke='black' stroke-width='2.700000' fill= 'gray' />
+<circle cx='2887.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='2887.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
 <!--#5-->
 
-<circle cx='2512.500000' cy='423.250000' r='27.000000' stroke='black' stroke-width='2.700000' fill='black' />
-<circle cx='2512.500000' cy='423.250000' r='20.250000' stroke='black' stroke-width='2.700000' fill= 'gray' />
-<!--#6-->
-
-<rect  x='2475.000000' y='200.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
-<!--#7-->
-
-<g transform='rotate(20.000000,2635.000000,315.000000)'>
-<rect  x='2625.000000' y='200.000000' width='20.000000' height='230.000000' style='stroke-width:1.000000; stroke:black' fill='#990000' />
-<circle cx='2635.000000' cy='420.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-<circle cx='2635.000000' cy='210.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-</g>
-<!--#8-->
-
-<g transform='rotate(20.000000,2785.000000,315.000000)'>
-<rect  x='2775.000000' y='200.000000' width='20.000000' height='230.000000' style='stroke-width:1.000000; stroke:black' fill='#990000' />
-<circle cx='2785.000000' cy='420.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-<circle cx='2785.000000' cy='210.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-</g>
+<circle cx='2512.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='2512.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
 <!--#1-->
 
-<rect  x='2975.000000' y='410.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
-<circle cx='2975.000000' cy='415.000000' r='9.000000' stroke='black' stroke-width='2.700000' fill='white' />
+<rect  x='2975.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='2975.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
 <!--#2-->
 
-<rect  x='3475.000000' y='410.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
-<circle cx='3525.000000' cy='415.000000' r='9.000000' stroke='black' stroke-width='2.700000' fill='white' />
+<rect  x='3475.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='3525.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
 <!--#3-->
 
-<rect  x='3025.000000' y='400.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
+<rect  x='3025.000000' y='300.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
 <!--#4-->
 
-<circle cx='3437.500000' cy='423.250000' r='27.000000' stroke='black' stroke-width='2.700000' fill='black' />
-<circle cx='3437.500000' cy='423.250000' r='20.250000' stroke='black' stroke-width='2.700000' fill= 'gray' />
+<circle cx='3437.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='3437.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
 <!--#5-->
 
-<circle cx='3062.500000' cy='423.250000' r='27.000000' stroke='black' stroke-width='2.700000' fill='black' />
-<circle cx='3062.500000' cy='423.250000' r='20.250000' stroke='black' stroke-width='2.700000' fill= 'gray' />
-<!--#6-->
+<circle cx='3062.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='3062.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
+<!--#1-->
 
-<rect  x='3025.000000' y='200.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
-<!--#7-->
+<rect  x='3525.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='3525.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
+<!--#2-->
 
-<g transform='rotate(20.000000,3185.000000,315.000000)'>
-<rect  x='3175.000000' y='200.000000' width='20.000000' height='230.000000' style='stroke-width:1.000000; stroke:black' fill='#990000' />
-<circle cx='3185.000000' cy='420.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-<circle cx='3185.000000' cy='210.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-</g>
-<!--#8-->
+<rect  x='4025.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='4075.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
+<!--#3-->
 
-<g transform='rotate(20.000000,3335.000000,315.000000)'>
-<rect  x='3325.000000' y='200.000000' width='20.000000' height='230.000000' style='stroke-width:1.000000; stroke:black' fill='#990000' />
-<circle cx='3335.000000' cy='420.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-<circle cx='3335.000000' cy='210.000000' r='6.666667' stroke='black' stroke-width='2.700000' fill='white' />
-</g>
+<rect  x='3575.000000' y='300.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
+<!--#4-->
+
+<circle cx='3987.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='3987.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
+<!--#5-->
+
+<circle cx='3612.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='3612.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
+<!--#1-->
+
+<rect  x='4075.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='4075.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
+<!--#2-->
+
+<rect  x='4575.000000' y='310.000000' width='50.000000' height='10.000000' style='stroke-width:0.500000; stroke:black' fill='#990000' />
+<circle cx='4625.000000' cy='315.000000' r='8.000000' stroke='black' stroke-width='2.400000' fill='white' />
+<!--#3-->
+
+<rect  x='4125.000000' y='300.000000' width='450.000000' height='30.000000' style='stroke-width:1.500000; stroke:black' fill='#990000' />
+<!--#4-->
+
+<circle cx='4537.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='4537.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
+<!--#5-->
+
+<circle cx='4162.500000' cy='324.000000' r='24.000000' stroke='black' stroke-width='2.400000' fill='black' />
+<circle cx='4162.500000' cy='324.000000' r='18.000000' stroke='black' stroke-width='2.400000' fill= 'gray' />
 </svg>
