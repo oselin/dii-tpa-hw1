@@ -158,8 +158,10 @@ string change(OselinDevice *dev){
     cin >> newvalue;
 
     if (choice > -1 || choice < 5){
-        (*dev) = oselin_set(dev,choice, newvalue);
-        return "changed successfully";
+        if (oselin_set(dev,choice, newvalue) != NULL) {
+            (*dev) = (*oselin_set(dev,choice, newvalue));
+            return "changed successfully";
+        }
     }
     return "Aborting...";
 }
@@ -200,10 +202,11 @@ string machine_create(OselinDevice *dev, OselinMachine *mach){
     mach->trailerarray = new OselinDevice* [ntrailers];        
     mach->cararray = new coca_device* [(int)parameters[4]*(int)parameters[3]*ntrailers];
 
-    (*mach) = (*oselin_machine_init(dev, ntrailers,parameters));
-    return "Machine created successfully.";
-    
-    //return param;
+    if (oselin_machine_init(dev, ntrailers,parameters)!= NULL){
+        (*mach) = (*oselin_machine_init(dev, ntrailers,parameters));
+        return "Machine created successfully.";
+    }
+    return "An error occurred.";
 }
 
 /**
@@ -341,7 +344,7 @@ void mainloop(OselinDevice *dev, OselinMachine *mach){
             cout << "Command not found." << endl;
             break;
         }
-        system("clear");
+        //system("clear");
         cout << message << " What's next?" << endl;
     }while(inloop);
 

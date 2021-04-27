@@ -112,7 +112,7 @@ std::string errors(int);
 /**
  * Allow changing in the device
  **/
-OselinDevice oselin_set(OselinDevice *, int, float);
+OselinDevice *oselin_set(OselinDevice *, int, float);
 
 /**
  * Return device-like struct allowing several copies
