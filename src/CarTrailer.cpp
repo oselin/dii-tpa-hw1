@@ -739,8 +739,24 @@ void oselin_parsing(OselinDevice * device, string svg){
 /**
  * Allow changing in the device
  **/
-int oselin_set(OselinDevice *dev, float array[]){
-    return oselin_init(dev, array);
+OselinDevice oselin_set(OselinDevice *dev, int index, float newvalue){
+
+    OselinDevice set;
+    float array [5];
+    array[0] = dev->param.length;
+    array[1] = dev->param.height;
+    array[2] = dev->param.radius;
+    array[3] = dev->param.ncars;
+    array[4] = dev->param.nfloors;
+
+    set.param.svgwidth = dev->param.svgwidth;
+    set.param.svgheight = dev->param.svgheight;
+    
+    array[index] = newvalue;
+    oselin_init(&set, array);
+    oselin_trigonometry(&set);
+
+    return set;
 }
 
 /**

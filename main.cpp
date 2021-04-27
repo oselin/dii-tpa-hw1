@@ -77,7 +77,7 @@ string create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
         }
         catch(const exception& e)
         {
-            errors(8);
+            cout << errors(8) << endl;
             exit(1);
         }
         
@@ -144,7 +144,6 @@ string save(OselinDevice *dev, int mode = 0){
 string change(OselinDevice *dev){
 
     int choice; float newvalue;
-    float array [] = {-1,-1,-1,-1,-1};
     string help = "Choose what to change:\n";
     help += "[0] Set new car length\n";
     help += "[1] Set new car height\n";
@@ -159,11 +158,8 @@ string change(OselinDevice *dev){
     cin >> newvalue;
 
     if (choice > -1 || choice < 5){
-        array[choice] = newvalue;
-        if (!oselin_set(dev,array)){
-            oselin_trigonometry(dev);
-            return "changed successfully";
-        }return "The new parameter seems to be wrong. Aborting...";
+        (*dev) = oselin_set(dev,choice, newvalue);
+        return "changed successfully";
     }
     return "Aborting...";
 }
