@@ -132,7 +132,6 @@ coca_device * oselin_coca_init(float param[6], float newx, float newy){
 
 //MACHINE 
 
-
 OselinMachine * oselin_machine_init(OselinDevice *dev, int ntrailers, float parameters[5]){
 
     /**
@@ -190,15 +189,18 @@ string oselin_machine_to_string(OselinMachine *mach, bool with_header){
     int len = mach->length;
     for (int i=0;i<mach->parameters[4];i++){
         for (int j=0;j < (int)mach->parameters[3]*len; j++ ){
-            
+            svg += "<!--COCADEVICECAR-->\n";
             svg += oselin_coca_to_svg(mach->cararray[i*(int)mach->parameters[3]*len + j]);
+
         }
     }
-    for (int i=0; i< len; i++) svg += mach->trailerarray[i]->svg;
+    for (int i=0; i< len; i++) {
+        svg += "<!--OSELINDEVICETRAILER-->\n";
+        svg += mach->trailerarray[i]->svg;
+    }
     //mach->svg = svg;
     return svg;
 }
-
 
 string oselin_machine_save(OselinMachine *mach){
     if (mach->parameters[0] != 0){
@@ -216,6 +218,17 @@ string oselin_machine_save(OselinMachine *mach){
     
 }
 
-string oselin_machine_change(OselinMachine *mach, float param[5]){
-    return "ciao";
+void oselin_machine_parsing(OselinMachine *mach, string svg){
+    cout << svg << endl;
+    if (svg!=""){
+        int pieces[mach->length][2];
+        int index = 0;
+        for (int i=0;i<mach->length;i++){
+            index = svg.find("<!--OSELINDEVICETRAILER-->",index);
+            int len = svg.find("<!--OSELINDEVICETRAILER-->",index+30) - index;
+            pieces[i-1][0] = index;
+            pieces[i-1][1] = len;
+            oselin_parsing(mach->trailerarray[i],svg.substr(index,len));
+        }
+    }
 }

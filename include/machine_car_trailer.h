@@ -28,4 +28,6 @@ std::string oselin_machine_to_string(OselinMachine *, bool=true);
 std::string oselin_machine_save(OselinMachine *mach);
 
 std::string oselin_machine_change(OselinMachine *, float[5]);
+
+void oselin_machine_parsing(OselinMachine *, std::string);
 #endif //MACHINE_CAR_TRAILER_H

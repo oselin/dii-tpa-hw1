@@ -7,42 +7,43 @@
 
 using namespace std;
 
-void errors(int c){
+string errors(int c){
 
     switch (c)
     {
     case 0:
-        cout << "INIT: WIDTH ERROR" << endl;
+        return "INIT: WIDTH ERROR" ;
         break;
     case 1:
-        cout << "INIT: STRUCTURAL ERROR" << endl;
+        return "INIT: STRUCTURAL ERROR" ;
         break;
     case 2:
-        cout << "INIT: CAR DIMENSIONS ERROR" << endl;
+        return "INIT: CAR DIMENSIONS ERROR" ;
         break;
     case 3:
-        cout << "You must create/load a device first!" << endl;
+        return "You must create/load a device first!" ;
         break;
     case 4:
-        cout << "INIT: HEIGHT ERROR" << endl;
+        return "INIT: HEIGHT ERROR" ;
         break;
     case 5:
-        cout << "INIT: NCARS TOO LONG" << endl;
+        return "INIT: NCARS TOO LONG" ;
         break;
     case 6:
-        cout << "INIT: NFLOORS TOO HIGH" << endl;
+        return "INIT: NFLOORS TOO HIGH" ;
         break;
     case 7:
-        cout << "Check the parameters and try again" << endl;
+        return "Check the parameters and try again" ;
         break;
     case 8:
-        cout << "Something went wrong. " << endl;
+        return "Something went wrong. " ;
         break;
     case 9:
         exit(1);
     default:
         break;
     }
+    return "";
     //cout << "GOING BACK TO MAIN MENU" << endl;
 }
 
@@ -62,7 +63,7 @@ int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
         ncar      = param[3];
         nfloors   = param[4];
     }catch(const exception& e){
-        errors(8);
+        cout <<errors(8) << endl;
         return 1;
     }
 
@@ -71,7 +72,7 @@ int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
     float tempradius, templength, tempheight;
  
     if (radius < 16 || radius > 18){
-        errors(7);
+        cout <<errors(7) << endl;
         return 1;
     }
 
@@ -94,28 +95,28 @@ int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
     //CONSTRAINS
     if (!avoidsvg){
         if (dev->param.svgwidth < templength){
-            errors(0);
+            cout <<errors(0) << endl;
             return 1;
         }
         if (dev->param.svgheight < tempheight*5/4){
-            errors(4);
+            cout <<errors(4) << endl;
             return 1;
         }
     }
     if (ncar ==1 && tempfloor == 2){
-        errors(1);
+        cout <<errors(1) << endl;
         return 1;
     }
     if (templength < (tempheight*4/5)){
-        errors(2);
+        cout <<errors(2) << endl;
         return 1;
     }
     if (tempcar > 2){
-        errors(7);
+        cout <<errors(7) << endl;
         return 1;
     }
     if (tempfloor > 2){
-        errors(7);
+        cout <<errors(7) << endl;
         return 1;
     }
 
@@ -238,7 +239,7 @@ void trigaxis(OselinDevice *dev, string m){
 
 void oselin_trigonometry(OselinDevice *dev, bool automaticoffset){
 
-    if (dev == NULL) errors(9);
+    if (dev == NULL) cout <<errors(9) << endl;
 
     trigfloors(dev, "down");
 

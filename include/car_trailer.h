@@ -81,7 +81,7 @@ int oselin_init(OselinDevice *, float[5], bool = false);
 
 void oselin_parsing(OselinDevice *, std::string);
 
-void errors(int);
+std::string errors(int);
 
 //SET FUNCTIONS
 int oselin_set(OselinDevice *, float [5]);

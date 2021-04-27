@@ -31,12 +31,12 @@ void help(){
     cout << "-h | --help\t\t allows you to read this awesome guide" << endl;
     cout << "-c | --create\t\t create a trailer SVG\t\t\t--create [SVG width] [SVG height] [Car length] [Car height] [Wheel radius] [Cars-per-trailer] [Floors]" << endl;
     cout << "-l | --load\t\t load SVG from file\t\t\t--load [path]" << endl;
-    cout << "-m | --machine\t\t draw a train of trailers\t\t--machine " << endl;
+    cout << "-m | --machine\t\t draw a train of trailers\t\t " << endl;
     cout << "-i | --interface\t use graphic menu (for lame people)" << endl;
     
 }
 
-void load(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
+string load(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
     string filename;
     if (n_args != 0){
         filename = string(param[2]);
@@ -45,15 +45,20 @@ void load(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
         cout << "path/file [with extension]: ";
         cin >> filename;
     }
-
-    ifstream file(filename);
-    stringstream buffer;
-    buffer << file.rdbuf();
-    string s = buffer.str();
-    oselin_parsing(dev, s);
+    try{
+        ifstream file(filename);
+        stringstream buffer;
+        buffer << file.rdbuf();
+        string s = buffer.str();
+        oselin_parsing(dev, s);
+        return "loaded successfully";
+    }
+    catch(const std::exception& e){
+        return "Somethig went wrong. The file exists?";
+    }
 }
 
-void create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
+string create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
 
     float parameters[5];
     
@@ -82,18 +87,20 @@ void create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
             }
             catch(const exception& e)
             {
-                errors(8);
-                exit(1);
+                return errors(8);
+
             }
         }
     }
     
     if (!oselin_init(dev, parameters)){
         oselin_trigonometry(dev);
+        return "Created successfully";
     }
+    return "Something went wrong";
 }
 
-void save(OselinDevice *dev, int mode = 0){
+string save(OselinDevice *dev, int mode = 0){
     char resp;
     int saving = 0;
     if (!mode){
@@ -107,7 +114,7 @@ void save(OselinDevice *dev, int mode = 0){
             oselin_to_svg(dev);
             ++saving ;
         }
-        else cout << "Aborting..." << endl;
+        
     }
     else ++saving;
     if (saving){
@@ -117,12 +124,12 @@ void save(OselinDevice *dev, int mode = 0){
         ofstream MyFile(filename);
         MyFile << (dev->svg + "\n</svg>");
         MyFile.close();
-        cout << "SAVED!\n" << endl;
+        return "SAVED!";
     }
-
+    return "Aborting...";
 }
 
-void change(OselinDevice *dev){
+string change(OselinDevice *dev){
 
     int choice; float newvalue;
     float array [] = {-1,-1,-1,-1,-1};
@@ -143,9 +150,10 @@ void change(OselinDevice *dev){
         array[choice] = newvalue;
         if (!oselin_set(dev,array)){
             oselin_trigonometry(dev);
-        }else cout << "The new parameter seems to be wrong. Aborting..." << endl;
+            return "changed successfully";
+        }return "The new parameter seems to be wrong. Aborting...";
     }
-    else cout << "Aborting..." << endl;
+    return "Aborting...";
 }
 
 void machine_displaymenu(){
@@ -184,7 +192,6 @@ string machine_create(OselinDevice *dev, OselinMachine *mach){
     //return param;
 }
 
-
 string machine_change(OselinDevice *dev, OselinMachine *mach){
     if (mach->parameters[0] != 0){
         int choice; float newvalue;
@@ -216,6 +223,20 @@ string machine_change(OselinDevice *dev, OselinMachine *mach){
     
 }
 
+string machine_load(OselinMachine *mach){
+    string filename;
+    cout << "path/file [with extension]: ";
+    cin >> filename;
+    
+
+    ifstream file(filename);
+    stringstream buffer;
+    buffer << file.rdbuf();
+    string s = buffer.str();
+    oselin_machine_parsing(mach, s);
+    return "al";
+}
+
 void machine_mainloop(OselinDevice *dev, OselinMachine *mach){
 
     int inloop = 1, ntrailers;
@@ -232,8 +253,8 @@ void machine_mainloop(OselinDevice *dev, OselinMachine *mach){
         switch (choice)
         {
         case '1':
-            load(dev);
-            //message = 0;
+            //message = machine_load(mach);
+            message = "This feature will come soon.";
             break;
         case '2':
             message = machine_create(dev, mach);
@@ -262,7 +283,7 @@ void machine_mainloop(OselinDevice *dev, OselinMachine *mach){
 void mainloop(OselinDevice *dev, OselinMachine *mach){
 
     int inloop = 1;
-    
+    string message;
     cout << "Welcome to the SVG TRAILER CREATOR" << endl;
     do{
         displaymenu();
@@ -273,19 +294,20 @@ void mainloop(OselinDevice *dev, OselinMachine *mach){
         switch (choice)
         {
         case '1':
-            load(dev);
+            message = load(dev);
             break;
         case '2':
-            create(dev);
+            message = create(dev);
             break;
         case '3':
-            save(dev);
+            message = save(dev);
             break;    
         case '4':
-            change(dev);
+            message = change(dev);
             break;
         case '5':
             machine_mainloop(dev, mach);
+            message = "";
         case '6':
             inloop = 0;
             break;
@@ -293,6 +315,8 @@ void mainloop(OselinDevice *dev, OselinMachine *mach){
             cout << "Command not found." << endl;
             break;
         }
+        system("clear");
+        cout << message << " What's next?" << endl;
     }while(inloop);
 
 }
@@ -320,7 +344,7 @@ int main(int argc, char * argv[]) {
                 cout << "Too many parameters. Please check and try again." << endl;
             }
             else{
-                create(device, argc,argv);
+                cout << create(device, argc,argv) << endl;;
                 mainloop(device, mach);
             }
         }
@@ -332,7 +356,7 @@ int main(int argc, char * argv[]) {
                 cout << "Too many parameters. Please check and try again." << endl;
             }
             else{
-                load(device, argc,argv);
+                cout << load(device, argc,argv) << endl;
                 mainloop(device, mach);
             }
         }
