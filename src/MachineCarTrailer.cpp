@@ -103,7 +103,7 @@ void oselin_coca_implementation(coca_device * macch, float param[5]){
 }
 
 string oselin_coca_to_svg(coca_device * macch){
-
+    
     string svg;
     svg += coca_strg_carrozzeria(macch);
     svg += new_coca_strg_ruote(macch);
@@ -122,6 +122,7 @@ coca_device * oselin_coca_init(float param[6], float newx, float newy){
     newparam[4] = newy;
 
     oselin_coca_implementation(dev, newparam);
+
     return dev;
 }
 
@@ -142,14 +143,15 @@ OselinMachine * oselin_machine_init(OselinDevice *dev, int ntrailers, float para
         dev->param.svgwidth = (ntrailers +1) * dev->abslength;
         dev->offset = 0.5 * dev->abslength;
         oselin_to_svg(dev);
-        
         // DYNAMIC ARRAY SOLUTION FOR THEN MACHINE
-        OselinMachine *machine;
-        machine->trailerarray = new OselinDevice* [ntrailers];         
+        OselinMachine *machine = new OselinMachine;
+        machine->length = ntrailers;
+        for (int i=0; i<5; i++) machine->parameters[i] = parameters[i];
+        machine->trailerarray = new OselinDevice* [ntrailers];        
+
         machine->cararray = new coca_device* [(int)parameters[4]*(int)parameters[3]*ntrailers];
         
         machine->svg = dev->svg;
-
         for (int i=0; i< ntrailers; i++){
             machine->trailerarray[i] = oselin_init_acopyof(dev);
             machine->trailerarray[i]->offset = (0.5 + i) * dev->abslength;
@@ -159,21 +161,22 @@ OselinMachine * oselin_machine_init(OselinDevice *dev, int ntrailers, float para
         
         
         float x,y;
-
         for (int i=0; i < (int)parameters[4]; i++){
             for (int j=0; j< (int)parameters[3]*ntrailers; j++){
-                
+                int index = j/(int)parameters[3];
                 y = dev->absy - 1.5*dev->downfloor.height - (i)*dev->param.height - (parameters[1]-1)/2;
-                x = machine->trailerarray[j/(int)parameters[3]]->offset + machine->trailerarray[j/(int)parameters[3]]->param.margin + (j%(int)parameters[3]) * (machine->trailerarray[j/(int)parameters[3]]->param.length - 2* machine->trailerarray[j/(int)parameters[3]]->param.margin - parameters[0]);
-
+                x = machine->trailerarray[index]->offset 
+                + machine->trailerarray[index]->param.margin 
+                + (j%(int)parameters[3]) 
+                    * (machine->trailerarray[index]->param.length - 2* machine->trailerarray[index]->param.margin - parameters[0]);
                 machine->cararray[i*ntrailers + j] = oselin_coca_init(parameters, x, y);
-                
+                cout << x << endl;
             }
+            cout << "..-----" << endl;
         }
         return machine;
         
     }
-    
     return NULL;
 }
 
@@ -186,26 +189,28 @@ string oselin_machine_to_string(OselinMachine *mach, bool with_header){
 
     svg += "<rect  x='0.000000' y='0.000000' width='" + to_string(mach->trailerarray[0]->param.svgwidth) + "' height='" + to_string(mach->trailerarray[0]->param.svgheight) + "' style='stroke-width:0.0; stroke:' fill='white' />";
     }
-    int len = sizeof(mach->trailerarray)/sizeof(mach->trailerarray[0]);
-    for (int i=0;i < len; i++ ){
-        for (int j=0;j<mach->parameters[4];j++){
+    int len = mach->length;
+    
+    for (int i=0;i<mach->parameters[4];i++){
+        for (int j=0;j < (int)mach->parameters[3]*len; j++ ){
+            
             svg += oselin_coca_to_svg(mach->cararray[i*len + j]);
+            cout << "aggiunto" << j << endl;
         }
     }
     for (int i=0; i< len; i++) svg += mach->trailerarray[i]->svg;
-
+    
     return svg;
 }
 
 
-string oselin_machine_save(string svg){
-    if (saving){
-        string filename;
-        cout << "File name for saving (with extension): ";
-        cin >> filename;
-        ofstream MyFile(filename);
-        MyFile << (dev->svg + "\n</svg>");
-        MyFile.close();
-        cout << "SAVED!\n" << endl;
-    }
+void oselin_machine_save(string svg){
+    string filename;
+    cout << "File name for saving (with extension): ";
+    cin >> filename;
+    ofstream MyFile(filename);
+    MyFile << (svg + "\n</svg>");
+    MyFile.close();
+    cout << "SAVED!\n" << endl;
+    
 }

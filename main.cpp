@@ -170,8 +170,10 @@ void machine(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
     }
 
     OselinMachine *mach = oselin_machine_init(dev, ntrailers, parameters);
-
+    
     string mysvg = oselin_machine_to_string(mach);
+
+    oselin_machine_save(mysvg);
 
     /*
     if (!oselin_init(dev, parameters, true)){
