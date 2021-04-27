@@ -7,6 +7,10 @@
 
 using namespace std;
 
+/**
+ * Function for handling errors. It returns a string with the error type. It is invoked by all the other functions
+ * @param int error code
+ **/
 string errors(int c){
 
     switch (c)
@@ -47,6 +51,12 @@ string errors(int c){
     //cout << "GOING BACK TO MAIN MENU" << endl;
 }
 
+/**
+ * Check if all the data are solid
+ * @param OselinDevice to be filled
+ * @param float with data to check
+ * @param bool for bypassing some check operations
+ **/
 int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
 
     if (dev == NULL){
@@ -130,6 +140,7 @@ int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
     return 0;
 
 }
+
 
 //TRIGONOMETRY SUPPORTING FUNCTIONS
 void trigfloors(OselinDevice *dev,  string m){
@@ -237,6 +248,11 @@ void trigaxis(OselinDevice *dev, string m){
      
 }
 
+/**
+ * Do all the math for OselinDevice struct
+ * @param OselinDevice to be calculated
+ * @param bool for set automatically the offset for centering the drawing
+ **/
 void oselin_trigonometry(OselinDevice *dev, bool automaticoffset){
 
     if (dev == NULL) cout <<errors(9) << endl;
@@ -263,6 +279,7 @@ void oselin_trigonometry(OselinDevice *dev, bool automaticoffset){
         dev->offset = (dev->param.svgwidth - dev->downfloor.width)/2;
     }
 }
+
 
 //STRING TO SVG: SUPPORTING FUNCTIONS
 string oselin_wheeltoSVG(Oselin_Wheel wheel, float offset){
@@ -550,6 +567,12 @@ string oselin_measures(OselinDevice dev){
     return measures;
 }
 
+/**
+ * Convert the device into a string
+ * @param OselinDevice to convert
+ * @param bool for adding or not the header
+ * @param bool to add or not measures
+ **/
 void oselin_to_svg(OselinDevice *device, bool with_header, bool with_measures){
 
     string svg;
@@ -587,6 +610,7 @@ void oselin_to_svg(OselinDevice *device, bool with_header, bool with_measures){
     
     device->svg = svg;
 }
+
 
 //STRING PARSING: SUPPORTING FUNCTIONS
 string checkpoint(int i){
@@ -676,6 +700,11 @@ Oselin_Axis parsingaxis(string svg){
     
 }
 
+/**
+ * Parse an svg imported as string and fill the device
+ * @param string svg
+ * @param device to be filled
+ **/
 void oselin_parsing(OselinDevice * device, string svg){
     if (svg!=""){
         int pieces[7][2];
@@ -707,11 +736,17 @@ void oselin_parsing(OselinDevice * device, string svg){
 }
 
 
-//MY_SET REQUIRED FUNCTIONS
+/**
+ * Allow changing in the device
+ **/
 int oselin_set(OselinDevice *dev, float array[]){
     return oselin_init(dev, array);
 }
 
+/**
+ * Return device-like struct allowing several copies
+ * @param device (=trailer already existing)
+ **/
 OselinDevice *oselin_init_acopyof(OselinDevice *dev){
     OselinDevice *copy = new OselinDevice;
     if (dev != NULL){

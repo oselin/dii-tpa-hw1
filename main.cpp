@@ -36,6 +36,9 @@ void help(){
     
 }
 
+/**
+ * Load OselinDevice from file. It can work with graphical menu or inline commands
+ **/
 string load(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
     string filename;
     if (n_args != 0){
@@ -58,6 +61,9 @@ string load(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
     }
 }
 
+/**
+ * Create OselinDevice from scratch. It can work with graphical menu or inline commands
+ **/
 string create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
 
     float parameters[5];
@@ -100,6 +106,9 @@ string create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
     return "Something went wrong";
 }
 
+/**
+ * Save an existing OselinDevice to file
+ **/
 string save(OselinDevice *dev, int mode = 0){
     char resp;
     int saving = 0;
@@ -129,6 +138,9 @@ string save(OselinDevice *dev, int mode = 0){
     return "Aborting...";
 }
 
+/**
+ * Change some parameters of an existing OselinDevice
+ **/
 string change(OselinDevice *dev){
 
     int choice; float newvalue;
@@ -156,6 +168,9 @@ string change(OselinDevice *dev){
     return "Aborting...";
 }
 
+/**
+ * Just display some possible commands
+ **/
 void machine_displaymenu(){
     string com = "";
     com += "----------------------------------\n";
@@ -170,6 +185,9 @@ void machine_displaymenu(){
 
 }
 
+/**
+ * Create a new machine from scratch
+ **/
 string machine_create(OselinDevice *dev, OselinMachine *mach){
     //PARAM
     //lenght | height | radius | ncars | nfloors | ntrailers
@@ -192,6 +210,9 @@ string machine_create(OselinDevice *dev, OselinMachine *mach){
     //return param;
 }
 
+/**
+ * Change parameters of an existing machine
+ **/
 string machine_change(OselinDevice *dev, OselinMachine *mach){
     if (mach->parameters[0] != 0){
         int choice; float newvalue;
@@ -223,6 +244,9 @@ string machine_change(OselinDevice *dev, OselinMachine *mach){
     
 }
 
+/**
+ * Load a machine from file
+ **/
 string machine_load(OselinMachine *mach){
     string filename;
     cout << "path/file [with extension]: ";
@@ -237,6 +261,9 @@ string machine_load(OselinMachine *mach){
     return "al";
 }
 
+/**
+ * Sub loop for working in a machine environment
+ **/
 void machine_mainloop(OselinDevice *dev, OselinMachine *mach){
 
     int inloop = 1, ntrailers;
@@ -280,6 +307,9 @@ void machine_mainloop(OselinDevice *dev, OselinMachine *mach){
 
 }
 
+/**
+ * Main loop of the program
+ **/
 void mainloop(OselinDevice *dev, OselinMachine *mach){
 
     int inloop = 1;

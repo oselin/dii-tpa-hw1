@@ -16,6 +16,10 @@ using namespace std;
 
 //IMPLEMENTING @GIACOMOCORRADINI CAR.H LIBRARY
 
+/**
+ * Redefining svg conversion for car's wheels because the author did not implemented y-coordiante changes
+ * @param coca_device (=car)
+ **/
 string new_coca_strg_ruote(coca_device* macch){
     string ruo;
     // Ruota sinistra
@@ -38,6 +42,11 @@ string new_coca_strg_ruote(coca_device* macch){
     return ruo;
 }
 
+/**
+ * Fill some parameters which weren't considered or modified by the author @GiacomoCorradini
+ * @param coca_device (=car)
+ * @param param from which newparam can be calculated
+ **/
 void oselin_coca_implementation(coca_device * macch, float param[5]){
     
     //coca_try_carrozzeria(coca_device * macch)
@@ -106,6 +115,10 @@ void oselin_coca_implementation(coca_device * macch, float param[5]){
     coca_try_tetto(macch);
 }
 
+/**
+ * Convert car to svg
+ * @param coca_device (or car struct)
+ **/
 string oselin_coca_to_svg(coca_device * macch){
     
     string svg;
@@ -117,6 +130,11 @@ string oselin_coca_to_svg(coca_device * macch){
     return svg;
 }
 
+/**
+ * Initializate car struct
+ * @param float[] -> parameters for the design
+ * @param newx, newy car's position
+ **/
 coca_device * oselin_coca_init(float param[6], float newx, float newy){
     coca_device * dev = new coca_device;
 
@@ -132,13 +150,16 @@ coca_device * oselin_coca_init(float param[6], float newx, float newy){
 
 //MACHINE 
 
+/**
+ * Initialize a machine
+ * @param OselinDevice trailers can be copied from
+ * @param int -> number of trailers chosen by the user
+ * @param float[] ->list of parameters chosen by the user:
+ * LENGTH | HEIGHT | RADIUS | NCARS-PER-TRAILER | NFLOORS
+ **/
 OselinMachine * oselin_machine_init(OselinDevice *dev, int ntrailers, float parameters[5]){
 
-    /**
-     * PARAMETERS
-     * LENGTH | HEIGHT | RADIUS | NCARS-PER-TRAILER | NFLOORS
-     * */
-    
+        
     if (!oselin_init(dev, parameters, true)){
         //CHECKING CONSTRAINTS AND SETTING SVG DIMENSIONS
         dev->param.svgheight = 3 * dev->param.height;
@@ -178,6 +199,11 @@ OselinMachine * oselin_machine_init(OselinDevice *dev, int ntrailers, float para
     return NULL;
 }
 
+/**
+ * Convert all the attributes to svg format
+ * @param OselinMachine to be converted
+ * @param bool for adding or not header
+ **/
 string oselin_machine_to_string(OselinMachine *mach, bool with_header){
     string svg = "";
     if (with_header){
@@ -202,6 +228,10 @@ string oselin_machine_to_string(OselinMachine *mach, bool with_header){
     return svg;
 }
 
+/**
+ * Save the created machine to file
+ * @param OselinMachine to be saved
+ **/
 string oselin_machine_save(OselinMachine *mach){
     if (mach->parameters[0] != 0){
         oselin_machine_to_string(mach, true);
@@ -218,6 +248,11 @@ string oselin_machine_save(OselinMachine *mach){
     
 }
 
+/**
+ * Parse an svg imported from file
+ * @param OselinMachine to be filled
+ * @param string to be parsed
+ **/
 void oselin_machine_parsing(OselinMachine *mach, string svg){
     cout << svg << endl;
     if (svg!=""){

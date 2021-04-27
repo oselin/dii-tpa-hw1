@@ -73,19 +73,51 @@ struct OselinDevice{
     Oselin_Axis frontaxis;
 };
 
+/**
+ * Convert the device into a string
+ * @param OselinDevice to convert
+ * @param bool for adding or not the header
+ * @param bool to add or not measures
+ **/
 void oselin_to_svg(OselinDevice *, bool = true, bool = false);
 
+/**
+ * Do all the math for OselinDevice struct
+ * @param OselinDevice to be calculated
+ * @param bool for set automatically the offset for centering the drawing
+ **/
 void oselin_trigonometry(OselinDevice *, bool = true);
 
+/**
+ * Check if all the data are solid
+ * @param OselinDevice to be filled
+ * @param float with data to check
+ * @param bool for bypassing some check operations
+ **/
 int oselin_init(OselinDevice *, float[5], bool = false);
 
+/**
+ * Parse an svg imported as string and fill the device
+ * @param string svg
+ * @param device to be filled
+ **/
 void oselin_parsing(OselinDevice *, std::string);
 
+/**
+ * Function for handling errors. It returns a string with the error type. It is invoked by all the other functions
+ * @param int error code
+ **/
 std::string errors(int);
 
-//SET FUNCTIONS
+/**
+ * Allow changing in the device
+ **/
 int oselin_set(OselinDevice *, float [5]);
 
+/**
+ * Return device-like struct allowing several copies
+ * @param device (=trailer already existing)
+ **/
 OselinDevice *oselin_init_acopyof(OselinDevice *);
 
 
