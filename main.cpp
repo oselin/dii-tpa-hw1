@@ -77,7 +77,7 @@ string create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
         }
         catch(const exception& e)
         {
-            errors(8);
+            cout << errors(8) << endl;
             exit(1);
         }
         
@@ -144,7 +144,6 @@ string save(OselinDevice *dev, int mode = 0){
 string change(OselinDevice *dev){
 
     int choice; float newvalue;
-    float array [] = {-1,-1,-1,-1,-1};
     string help = "Choose what to change:\n";
     help += "[0] Set new car length\n";
     help += "[1] Set new car height\n";
@@ -159,11 +158,10 @@ string change(OselinDevice *dev){
     cin >> newvalue;
 
     if (choice > -1 || choice < 5){
-        array[choice] = newvalue;
-        if (!oselin_set(dev,array)){
-            oselin_trigonometry(dev);
+        if (oselin_set(dev,choice, newvalue) != NULL) {
+            (*dev) = (*oselin_set(dev,choice, newvalue));
             return "changed successfully";
-        }return "The new parameter seems to be wrong. Aborting...";
+        }
     }
     return "Aborting...";
 }
@@ -204,10 +202,11 @@ string machine_create(OselinDevice *dev, OselinMachine *mach){
     mach->trailerarray = new OselinDevice* [ntrailers];        
     mach->cararray = new coca_device* [(int)parameters[4]*(int)parameters[3]*ntrailers];
 
-    (*mach) = (*oselin_machine_init(dev, ntrailers,parameters));
-    return "Machine created successfully.";
-    
-    //return param;
+    if (oselin_machine_init(dev, ntrailers,parameters)!= NULL){
+        (*mach) = (*oselin_machine_init(dev, ntrailers,parameters));
+        return "Machine created successfully.";
+    }
+    return "An error occurred.";
 }
 
 /**
@@ -345,7 +344,7 @@ void mainloop(OselinDevice *dev, OselinMachine *mach){
             cout << "Command not found." << endl;
             break;
         }
-        system("clear");
+        //system("clear");
         cout << message << " What's next?" << endl;
     }while(inloop);
 

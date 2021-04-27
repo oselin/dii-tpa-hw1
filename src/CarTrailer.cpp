@@ -77,7 +77,6 @@ int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
         return 1;
     }
 
-
     int tempcar, tempfloor;
     float tempradius, templength, tempheight;
  
@@ -86,25 +85,20 @@ int oselin_init(OselinDevice *dev, float param[], bool avoidsvg){
         return 1;
     }
 
-    if (ncar != -1) tempcar = ncar;
-    else tempcar = dev->param.ncars;
-
-    if (nfloors != -1) tempfloor = nfloors;
-    else tempfloor = dev->param.nfloors;
-
-    if (radius != -1) tempradius = radius;
-    else tempradius = dev->param.radius;
-
-    if (carlength != -1) templength = carlength * tempcar + (tempcar+3)*carlength/2;
-    else templength = dev->param.length;
-    if (carheight != -1) tempheight = carheight * tempfloor + 100;
-    else tempheight = dev->param.height;
+    tempcar = ncar;
+    tempfloor = nfloors;
+    tempradius = radius;
+    templength = carlength * tempcar + (tempcar+3)*carlength/2;
+    tempheight = carheight * tempfloor + 100;
 
     
     dev->param.margin = carlength/2;
     //CONSTRAINS
     if (!avoidsvg){
         if (dev->param.svgwidth < templength){
+            cout << dev->param.svgwidth << endl;
+            cout << templength << endl;
+
             cout <<errors(0) << endl;
             return 1;
         }
@@ -176,8 +170,9 @@ void trigwheel(OselinDevice *dev, string m){
         }
     float wheeloffset = dev->param.length/12;
     //REAR WHEEL
-    wheel->radius = dev->param.radius;
-    wheel->stroke = dev->param.radius/10;
+
+    wheel->radius = dev->downfloor.height / 40 * 2 * dev->param.radius;
+    wheel->stroke = wheel->radius/10;
     wheel->x = dev->downfloor.x + pow(-1,mode)* wheeloffset + mode*dev->param.length;
     wheel->y = dev->downfloor.y + dev->downfloor.height - wheel->radius/4;
     
@@ -232,7 +227,7 @@ void trigaxis(OselinDevice *dev, string m){
     axis->topscrew.innercolor = "";
     axis->topscrew.outercolor = "white";
     axis->topscrew.radius = axis->body.width /3;
-    axis->topscrew.stroke = dev->param.radius/10;
+    axis->topscrew.stroke = (dev->downfloor.height / 40 * 2 * dev->param.radius)/10;
     axis->topscrew.x = axis->body.width/2 + axis->body.x;
     axis->topscrew.y = axis->body.width/2 + axis->body.y;
     
@@ -240,7 +235,7 @@ void trigaxis(OselinDevice *dev, string m){
     axis->bottomscrew.innercolor = "";
     axis->bottomscrew.outercolor = "white";
     axis->bottomscrew.radius = axis->body.width /3;
-    axis->bottomscrew.stroke = dev->param.radius/10;
+    axis->bottomscrew.stroke = (dev->downfloor.height / 40 * 2 * dev->param.radius)/10;
     axis->bottomscrew.x = axis->body.width/2 + axis->body.x;
     axis->bottomscrew.y = -axis->body.width/2 + axis->body.y + axis->body.height;
     axis->rotationpoint[0] = axis->body.x + axis->body.width/2;
@@ -259,7 +254,7 @@ void oselin_trigonometry(OselinDevice *dev, bool automaticoffset){
 
     trigfloors(dev, "down");
 
-    dev->param.radius = dev->downfloor.height / 40 * 2 * dev->param.radius;
+   
     trigwheel(dev, "rear");
     trigwheel(dev, "front");
 
@@ -730,7 +725,23 @@ void oselin_parsing(OselinDevice * device, string svg){
         }
         else device->param.nfloors = 1;
         device->param.length = device->downfloor.width;
-        device->param.height = 10 * device->downfloor.height;
+        device->param.height = (float)(device->downfloor.y - device->upfloor.y  - 100) /device->param.nfloors;
+        
+        device->param.ncars = (int)(device->param.length/4.5);
+        cout << device->param.height << endl;
+        float array [] = {
+                (float)(device->param.length/4.5),
+                device->param.height,
+                20 * device->rearwheel.radius/device->downfloor.height,
+                2,
+                (float)device->param.nfloors
+        };
+        OselinDevice *dev = new OselinDevice;
+        dev->param.svgwidth  = device->param.svgwidth ;  
+        dev->param.svgheight = device->param.svgheight;
+        oselin_init(dev, array);
+        oselin_trigonometry(dev);
+        (*device) = (*dev);
     }
     else device->svg = "";
 }
@@ -739,8 +750,27 @@ void oselin_parsing(OselinDevice * device, string svg){
 /**
  * Allow changing in the device
  **/
-int oselin_set(OselinDevice *dev, float array[]){
-    return oselin_init(dev, array);
+OselinDevice *oselin_set(OselinDevice *dev, int index, float newvalue){
+
+    OselinDevice *set = new OselinDevice;
+    float array [5];
+    array[0] = dev->param.length/((float)dev->param.ncars + ((float)dev->param.ncars+3)/2);
+    array[1] = (dev->param.height -100)/dev->param.nfloors;
+    array[2] = dev->param.radius;
+    array[3] = dev->param.ncars;
+    array[4] = dev->param.nfloors;
+
+    set->param.svgwidth = dev->param.svgwidth;
+    set->param.svgheight = dev->param.svgheight;
+    if (index != -1 ) array[index] = newvalue;
+    if (!oselin_init(set, array)){
+        oselin_trigonometry(set);
+        return set;
+    }
+    else return NULL;
+
+    
+
 }
 
 /**
