@@ -205,27 +205,31 @@ OselinMachine * oselin_machine_init(OselinDevice *dev, int ntrailers, float para
  * @param bool for adding or not header
  **/
 string oselin_machine_to_string(OselinMachine *mach, bool with_header){
-    string svg = "";
-    if (with_header){
-    svg += "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width='";
-    svg += to_string(mach->trailerarray[0]->param.svgwidth) + " '  height='";
-    svg += to_string(mach->trailerarray[0]->param.svgheight) + "' >";
-    svg += "<rect  x='0.000000' y='0.000000' width='" + to_string(mach->trailerarray[0]->param.svgwidth) + "' height='" + to_string(mach->trailerarray[0]->param.svgheight) + "' style='stroke-width:0.0; stroke:' fill='white' />";
-    }
-    int len = mach->length;
-    for (int i=0;i<mach->parameters[4];i++){
-        for (int j=0;j < (int)mach->parameters[3]*len; j++ ){
-            svg += "<!--COCADEVICECAR-->\n";
-            svg += oselin_coca_to_svg(mach->cararray[i*(int)mach->parameters[3]*len + j]);
-
+    
+    if (mach!=NULL){
+        string svg = "";
+        if (with_header){
+        svg += "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width='";
+        svg += to_string(mach->trailerarray[0]->param.svgwidth) + " '  height='";
+        svg += to_string(mach->trailerarray[0]->param.svgheight) + "' >";
+        svg += "<rect  x='0.000000' y='0.000000' width='" + to_string(mach->trailerarray[0]->param.svgwidth) + "' height='" + to_string(mach->trailerarray[0]->param.svgheight) + "' style='stroke-width:0.0; stroke:' fill='white' />";
         }
+        int len = mach->length;
+        for (int i=0;i<mach->parameters[4];i++){
+            for (int j=0;j < (int)mach->parameters[3]*len; j++ ){
+                svg += "<!--COCADEVICECAR-->\n";
+                svg += oselin_coca_to_svg(mach->cararray[i*(int)mach->parameters[3]*len + j]);
+
+            }
+        }
+        for (int i=0; i< len; i++) {
+            svg += "<!--OSELINDEVICETRAILER-->\n";
+            svg += mach->trailerarray[i]->svg;
+        }
+        //mach->svg = svg;
+        return svg;
     }
-    for (int i=0; i< len; i++) {
-        svg += "<!--OSELINDEVICETRAILER-->\n";
-        svg += mach->trailerarray[i]->svg;
-    }
-    //mach->svg = svg;
-    return svg;
+    return "";
 }
 
 /**
@@ -233,16 +237,19 @@ string oselin_machine_to_string(OselinMachine *mach, bool with_header){
  * @param OselinMachine to be saved
  **/
 string oselin_machine_save(OselinMachine *mach){
-    if (mach->parameters[0] != 0){
-        oselin_machine_to_string(mach, true);
+    cout << (mach == NULL) << endl;
+    if (mach->parameters[0] != 0 && mach != NULL){
         string filename, svgmach;
         cout << "File name for saving (with extension): ";
         cin >> filename;
         ofstream MyFile(filename);
         svgmach =  oselin_machine_to_string(mach, true);
-        MyFile << (svgmach + "\n</svg>");
-        MyFile.close();
-        return "Saved!";
+        if (svgmach == "") return "Something went wrong.";
+        else{
+            MyFile << (svgmach + "\n</svg>");
+            MyFile.close();
+            return "Saved!";
+        }
     }
     return "The machine looks empty...";
     
