@@ -599,7 +599,8 @@ int oselin_to_svg(OselinDevice *device, bool with_header, bool with_measures){
         
         device->svg = svg;
         return 0;
-    }else return 1;
+     }
+     return 1;
 }
 
 
@@ -778,5 +779,5 @@ OselinDevice *oselin_init_acopyof(OselinDevice *dev){
         if (copy != NULL) oselin_trigonometry(copy);
         return copy;
     }
-    else return NULL;
+    return NULL;
 }

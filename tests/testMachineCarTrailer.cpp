@@ -10,11 +10,13 @@ TEST_CASE("init should return NULL value if parameters are  wrong ", "[oselin_ma
 
     OselinDevice dev;
     int ntrailers = -2;
-    float parameters[] = {0,0,0,0,0,0,0,0};
+    Parameters p;
+    p.svgwidth  = 0;
+    p.svgheight = 0;
 
-    REQUIRE(oselin_machine_init(&dev, ntrailers, parameters)==NULL);
+    REQUIRE(oselin_machine_init(p, ntrailers)==NULL);
 
-    REQUIRE(oselin_machine_init(&dev,0,parameters)==NULL);
+    REQUIRE(oselin_machine_init(p, 0)==NULL);
 }
 
 TEST_CASE("tostring function should return empty string if parameters are wrong","oselin_machine_to_string"){
@@ -31,7 +33,7 @@ TEST_CASE("tosave should not save if parameters are wrong","oselin_machine_save"
     
     REQUIRE(oselin_machine_save(&mach)=="The machine looks empty...");
 
-    mach.parameters[0] = 1;
+    mach.parameters.length = 1;
     REQUIRE(oselin_machine_save(&mach)=="Something went wrong.");
 }
 
