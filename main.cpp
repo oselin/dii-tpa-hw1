@@ -67,13 +67,22 @@ string load(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
 string create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
 
     float parameters[5];
-    
+    Parameters p;
     if (n_args != 0){
         try
         {
-            dev->param.svgwidth  = stof(param[2]);
-            dev->param.svgheight = stof(param[3]);
-            for (int i=0;i<5;i++) parameters[i] = stof(param[i+4]);
+            p.svgwidth  = stof(param[2]);
+            p.svgheight = stof(param[3]);
+
+           
+            p.length    = stof(param[4]);
+            p.height    = stof(param[5]);
+            p.radius    = stof(param[6]);
+            p.ncars     = atoi(param[7]);
+            p.nfloors   = atoi(param[8]);
+            //p.margin;
+
+            //for (int i=0;i<5;i++) parameters[i] = stof(param[i+4]);
         }
         catch(const exception& e)
         {
@@ -84,22 +93,27 @@ string create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
         
     }
     else{
-        for (int i=0; i<7; i++){
-            cout << questions[i];
-            try{
-                if (i==0) cin >> dev->param.svgwidth;
-                else if (i==1) cin >> dev->param.svgheight;
+        try{
+            for (int i=0; i<7; i++){
+                cout << questions[i];
+                if (i==0) cin >> p.svgwidth;
+                else if (i==1) cin >> p.svgheight;
                 else cin >> parameters[i-2];
             }
-            catch(const exception& e)
-            {
-                return errors(8);
+        catch(const exception& e){
+            return errors(8);
 
-            }
         }
+        p.length    = parameters[4];
+        p.height    = parameters[5];
+        p.radius    = parameters[6];
+        p.ncars     = (int)parameters[7];
+        p.nfloors   = (int)parameters[8];
+        //p.margin;
     }
     
-    if (!oselin_init(dev, parameters)){
+    dev = oselin_init(p);
+    if (dev!=NULL){
         oselin_trigonometry(dev);
         return "Created successfully";
     }

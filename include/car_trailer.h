@@ -2,7 +2,6 @@
 #ifndef CAR_TRAILER_H
 #define CAR_TRAILER_H
 
-#define WHEELOFFSET 70
 #define DOWNOFFSET 50
 #include <string>
 
@@ -12,8 +11,8 @@ struct Parameters{
     float radius;
     float length;
     float height;
-    int ncars;
-    int nfloors;
+    int   ncars;
+    int   nfloors;
     float margin;
 };
 
@@ -79,14 +78,14 @@ struct OselinDevice{
  * @param bool for adding or not the header
  * @param bool to add or not measures
  **/
-void oselin_to_svg(OselinDevice *, bool = true, bool = false);
+int oselin_to_svg(OselinDevice *, bool = true, bool = false);
 
 /**
  * Do all the math for OselinDevice struct
  * @param OselinDevice to be calculated
  * @param bool for set automatically the offset for centering the drawing
  **/
-void oselin_trigonometry(OselinDevice *, bool = true);
+int oselin_trigonometry(OselinDevice *, bool = true);
 
 /**
  * Check if all the data are solid
@@ -94,7 +93,7 @@ void oselin_trigonometry(OselinDevice *, bool = true);
  * @param float with data to check
  * @param bool for bypassing some check operations
  **/
-int oselin_init(OselinDevice *, float[5], bool = false);
+OselinDevice *oselin_init(Parameters, bool = false);
 
 /**
  * Parse an svg imported as string and fill the device
