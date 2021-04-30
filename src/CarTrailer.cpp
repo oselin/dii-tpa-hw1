@@ -80,7 +80,6 @@ OselinDevice *oselin_init(Parameters param, bool avoidsvg){
     param.length = param.length * param.ncars + (param.ncars+3)*param.length/2;
     param.height = param.height * param.nfloors + 100;
 
-    
     param.margin = param.length/2;
     //CONSTRAINS
     if (!avoidsvg){
@@ -564,7 +563,7 @@ string oselin_measures(OselinDevice dev){
  * @param bool to add or not measures
  **/
 int oselin_to_svg(OselinDevice *device, bool with_header, bool with_measures){
-
+    cout << device->param.svgwidth << endl;
     string svg;
     if (device!=NULL){
         if (with_header){
@@ -774,7 +773,7 @@ OselinDevice *oselin_set(OselinDevice *dev, int index, float newvalue){
  **/
 OselinDevice *oselin_init_acopyof(OselinDevice *dev){
     if (dev != NULL){
-        OselinDevice *copy = oselin_init(dev->param);
+        OselinDevice *copy = oselin_init(dev->param, true);
         if (copy != NULL) oselin_trigonometry(copy);
         return copy;
     }

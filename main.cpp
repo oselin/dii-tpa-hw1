@@ -99,20 +99,21 @@ string create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
                 if (i==0) cin >> p.svgwidth;
                 else if (i==1) cin >> p.svgheight;
                 else cin >> parameters[i-2];
-            }
+            }}
         catch(const exception& e){
             return errors(8);
 
         }
-        p.length    = parameters[4];
-        p.height    = parameters[5];
-        p.radius    = parameters[6];
-        p.ncars     = (int)parameters[7];
-        p.nfloors   = (int)parameters[8];
+
+        p.length    = parameters[0];
+        p.height    = parameters[1];
+        p.radius    = parameters[2];
+        p.ncars     = (int)parameters[3];
+        p.nfloors   = (int)parameters[4];
         //p.margin;
     }
     
-    dev = oselin_init(p);
+    (*dev) = (*oselin_init(p));
     if (dev!=NULL){
         oselin_trigonometry(dev);
         return "Created successfully";
@@ -212,14 +213,18 @@ string machine_create(OselinDevice *dev, OselinMachine *mach){
     }
     cout << "How many trailers? ";
     cin >> ntrailers;
+    Parameters p;
+    p.length    = parameters[0];
+    p.height    = parameters[1];
+    p.radius    = parameters[2];
+    p.ncars     = (int)parameters[3];
+    p.nfloors   = (int)parameters[4];
 
     mach->trailerarray = new OselinDevice* [ntrailers];        
     mach->cararray = new coca_device* [(int)parameters[4]*(int)parameters[3]*ntrailers];
 
-    if (oselin_machine_init(dev, ntrailers,parameters)!= NULL){
-        (*mach) = (*oselin_machine_init(dev, ntrailers,parameters));
-        return "Machine created successfully.";
-    }
+    (*mach) = (*oselin_machine_init(p, ntrailers));
+    if (mach!=NULL) return "Machine created successfully.";
     return "An error occurred.";
 }
 
@@ -227,10 +232,9 @@ string machine_create(OselinDevice *dev, OselinMachine *mach){
  * Change parameters of an existing machine
  **/
 string machine_change(OselinDevice *dev, OselinMachine *mach){
-    if (mach->parameters[0] != 0){
+    if (mach->parameters.length != 0){
         int choice; float newvalue;
-        float array [5];
-        for (int i=0; i < 5; i++) array[i] = mach->parameters[i];
+        Parameters p = mach->parameters;
         string help = "Choose what to change:\n";
         help += "[0] Set new car length\n";
         help += "[1] Set new car height\n";
@@ -247,8 +251,8 @@ string machine_change(OselinDevice *dev, OselinMachine *mach){
 
         if (choice > -1 || choice < 6){
             if (choice == 5) mach->length = (int)newvalue;
-            else array[choice] = newvalue;
-            (*mach) = (*oselin_machine_init(dev, mach->length, array));
+            //else array[choice] = newvalue;
+            //(*mach) = (*oselin_machine_init(dev, mach->length, array));
             return "Machine updated.";
         }
         return "Aborting.";
@@ -314,7 +318,7 @@ void machine_mainloop(OselinDevice *dev, OselinMachine *mach){
             message = "Command not found.";
             break;
         }
-        system("clear");
+        //system("clear");
         cout << message << " What's next?" << endl;
     }while(inloop);
 
@@ -358,7 +362,7 @@ void mainloop(OselinDevice *dev, OselinMachine *mach){
             cout << "Command not found." << endl;
             break;
         }
-        //system("clear");
+        system("clear");
         cout << message << " What's next?" << endl;
     }while(inloop);
 
