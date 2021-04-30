@@ -76,11 +76,11 @@ OselinDevice *oselin_init(Parameters param, bool avoidsvg){
         cout <<errors(7) << endl;
         return NULL;
     }
-
+    param.margin = param.length/2;
     param.length = param.length * param.ncars + (param.ncars+3)*param.length/2;
     param.height = param.height * param.nfloors + 100;
 
-    param.margin = param.length/2;
+    
     //CONSTRAINS
     if (!avoidsvg){
         if (param.svgwidth < param.length){
@@ -563,7 +563,6 @@ string oselin_measures(OselinDevice dev){
  * @param bool to add or not measures
  **/
 int oselin_to_svg(OselinDevice *device, bool with_header, bool with_measures){
-    cout << device->param.svgwidth << endl;
     string svg;
     if (device!=NULL){
         if (with_header){
@@ -625,7 +624,6 @@ string buffering(string svg, string param, char symb){
 
 Oselin_Floor parsingfloor(string svg, int mode){
     Oselin_Floor f;
-    if (mode) cout << svg << endl;
     f.x = stof(buffering(svg, "x='",'\''));
     f.y = stof(buffering(svg, "y='",'\''));
     f.width = stof(buffering(svg, "width='",'\''));
@@ -725,7 +723,6 @@ void oselin_parsing(OselinDevice * device, string svg){
         device->param.height = (float)(device->downfloor.y - device->upfloor.y  - 100) /device->param.nfloors;
         
         device->param.ncars = (int)(device->param.length/4.5);
-        cout << device->param.height << endl;
         Parameters p;
         p.length = (float)(device->param.length/4.5);
         p.height = device->param.height;
@@ -773,7 +770,11 @@ OselinDevice *oselin_set(OselinDevice *dev, int index, float newvalue){
  **/
 OselinDevice *oselin_init_acopyof(OselinDevice *dev){
     if (dev != NULL){
-        OselinDevice *copy = oselin_init(dev->param, true);
+        Parameters p = dev->param;
+        p.length = dev->param.length/(p.ncars + (float)(p.ncars+3)/2);
+        p.height = (dev->param.height -100)/ p.nfloors;
+
+        OselinDevice *copy = oselin_init(p, true);
         if (copy != NULL) oselin_trigonometry(copy);
         return copy;
     }

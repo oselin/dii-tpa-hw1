@@ -221,7 +221,7 @@ string machine_create(OselinDevice *dev, OselinMachine *mach){
     p.nfloors   = (int)parameters[4];
 
     mach->trailerarray = new OselinDevice* [ntrailers];        
-    mach->cararray = new coca_device* [(int)parameters[4]*(int)parameters[3]*ntrailers];
+    mach->cararray = new coca_device* [p.nfloors * p.ncars *ntrailers];
 
     (*mach) = (*oselin_machine_init(p, ntrailers));
     if (mach!=NULL) return "Machine created successfully.";
@@ -318,7 +318,7 @@ void machine_mainloop(OselinDevice *dev, OselinMachine *mach){
             message = "Command not found.";
             break;
         }
-        //system("clear");
+        system("clear");
         cout << message << " What's next?" << endl;
     }while(inloop);
 
