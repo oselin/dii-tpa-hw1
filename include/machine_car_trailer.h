@@ -15,19 +15,6 @@ struct OselinMachine{
 };
 
 /**
- * Fill some parameters which weren't considered or modified by the author @GiacomoCorradini
- * @param coca_device (=car)
- * @param param from which newparam can be calculated
- **/
-void oselin_coca_implementation(coca_device *, float[5]);    
-
-/**
- * Convert car to svg
- * @param coca_device (or car struct)
- **/
-std::string oselin_coca_to_svg(coca_device *);
-
-/**
  * Initializate car struct
  * @param float[] -> parameters for the design
  * @param newx, newy car's position
