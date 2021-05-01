@@ -160,11 +160,13 @@ string change(OselinDevice *dev){
 
     int choice; float newvalue;
     string help = "Choose what to change:\n";
-    help += "[0] Set new car length\n";
-    help += "[1] Set new car height\n";
-    help += "[2] Set new radius\n";
-    help += "[3] Set new number of cars per trailer\n";
-    help += "[4] Set new number of floors\n";
+    help += "[0] Set new car SVG width\n";
+    help += "[1] Set new car SVG height\n";
+    help += "[2] Set new car length\n";
+    help += "[3] Set new car height\n";
+    help += "[4] Set new radius\n";
+    help += "[5] Set new number of cars per trailer\n";
+    help += "[6] Set new number of floors\n";
 
     cout << help << endl;
     cout << "Your choice: ";
@@ -172,11 +174,46 @@ string change(OselinDevice *dev){
     cout << "New value: ";
     cin >> newvalue;
 
-    if (choice > -1 || choice < 5){
-        if (oselin_set(dev,choice, newvalue) != NULL) {
-            (*dev) = (*oselin_set(dev,choice, newvalue));
-            return "changed successfully";
+    switch (choice)
+    {
+    case 0:
+        if(oselin_set_svgwidth(dev,newvalue) != NULL){
+            (*dev) = (*oselin_set_svgwidth(dev,newvalue));
+            return "Changed successfully!";
         }
+    case 1:
+        if(oselin_set_svgheight(dev,newvalue) != NULL){
+            (*dev) = (*oselin_set_svgheight(dev,newvalue));
+            return "Changed successfully!";
+        }
+    case 2:
+        if(oselin_set_length(dev,newvalue) != NULL){
+            (*dev) = (*oselin_set_length(dev,newvalue));
+            return "Changed successfully!";
+        }
+    case 3:
+        if(oselin_set_height(dev,newvalue) != NULL){
+            (*dev) = (*oselin_set_height(dev,newvalue));
+            return "Changed successfully!";
+        }
+    case 4:
+        if(oselin_set_radius(dev,newvalue) != NULL){
+            (*dev) = (*oselin_set_radius(dev,newvalue));
+            return "Changed successfully!";
+        }
+    case 5:
+        if(oselin_set_ncars(dev,(int)newvalue) != NULL){
+            (*dev) = (*oselin_set_ncars(dev,(int)newvalue));
+            return "Changed successfully!";
+        }
+    case 6:
+        if(oselin_set_nfloors(dev,(int)newvalue) != NULL){
+            (*dev) = (*oselin_set_nfloors(dev,(int)newvalue));
+            return "Changed successfully!";
+        }
+    
+    default:
+        break;
     }
     return "Aborting...";
 }

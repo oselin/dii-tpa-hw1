@@ -111,7 +111,13 @@ std::string errors(int);
 /**
  * Allow changing in the device
  **/
-OselinDevice *oselin_set(OselinDevice *, int, float);
+OselinDevice *oselin_set_radius(OselinDevice *, float);
+OselinDevice *oselin_set_length(OselinDevice *, float);
+OselinDevice *oselin_set_height(OselinDevice *, float);
+OselinDevice *oselin_set_ncars(OselinDevice *, int);
+OselinDevice *oselin_set_nfloors(OselinDevice *, int);
+OselinDevice *oselin_set_svgwidth(OselinDevice *, float);
+OselinDevice *oselin_set_svgheight(OselinDevice *, float);
 
 /**
  * Return device-like struct allowing several copies

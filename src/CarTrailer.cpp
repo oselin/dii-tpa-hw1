@@ -748,21 +748,150 @@ void oselin_parsing(OselinDevice * device, string svg){
 /**
  * Allow changing in the device
  **/
-OselinDevice *oselin_set(OselinDevice *dev, int index, float newvalue){
+OselinDevice *oselin_set_radius(OselinDevice *dev, float newvalue){
 
     OselinDevice *set = new OselinDevice;
     Parameters array;
     array = dev->param;
-
     array.length = dev->param.length/((float)dev->param.ncars + ((float)dev->param.ncars+3)/2);
     array.height = (dev->param.height -100)/dev->param.nfloors;
-    //if (index != -1 ) array[index] = newvalue;
+
+    //NEW VALUE
+    array.radius = newvalue;
+
+
     set = oselin_init(array);
     if (set !=NULL){
         oselin_trigonometry(set);
         return set;
     }
-    else return NULL;
+    return NULL;
+
+}
+
+OselinDevice *oselin_set_ncars(OselinDevice *dev, int newvalue){
+
+    OselinDevice *set = new OselinDevice;
+    Parameters array;
+    array = dev->param;
+    array.length = dev->param.length/((float)dev->param.ncars + ((float)dev->param.ncars+3)/2);
+    array.height = (dev->param.height -100)/dev->param.nfloors;
+
+    //NEW VALUE
+    array.ncars = newvalue;
+
+
+    set = oselin_init(array);
+    if (set !=NULL){
+        oselin_trigonometry(set);
+        return set;
+    }
+    return NULL;
+
+}
+
+OselinDevice *oselin_set_nfloors(OselinDevice *dev, int newvalue){
+
+    OselinDevice *set = new OselinDevice;
+    Parameters array;
+    array = dev->param;
+    array.length = dev->param.length/((float)dev->param.ncars + ((float)dev->param.ncars+3)/2);
+    array.height = (dev->param.height -100)/dev->param.nfloors;
+
+    //NEW VALUE
+    array.nfloors = newvalue;
+
+
+    set = oselin_init(array);
+    if (set !=NULL){
+        oselin_trigonometry(set);
+        return set;
+    }
+    return NULL;
+
+}
+
+OselinDevice *oselin_set_length(OselinDevice *dev, float newvalue){
+
+    OselinDevice *set = new OselinDevice;
+    Parameters array;
+    array = dev->param;
+    array.length = dev->param.length/((float)dev->param.ncars + ((float)dev->param.ncars+3)/2);
+    array.height = (dev->param.height -100)/dev->param.nfloors;
+
+    //NEW VALUE
+    array.length = newvalue;
+
+
+    set = oselin_init(array);
+    if (set !=NULL){
+        oselin_trigonometry(set);
+        return set;
+    }
+    return NULL;
+
+}
+
+OselinDevice *oselin_set_height(OselinDevice *dev, float newvalue){
+
+    OselinDevice *set = new OselinDevice;
+    Parameters array;
+    array = dev->param;
+    array.length = dev->param.length/((float)dev->param.ncars + ((float)dev->param.ncars+3)/2);
+    array.height = (dev->param.height -100)/dev->param.nfloors;
+
+    //NEW VALUE
+    array.height = newvalue;
+
+
+    set = oselin_init(array);
+    if (set !=NULL){
+        oselin_trigonometry(set);
+        return set;
+    }
+    return NULL;
+
+}
+
+OselinDevice *oselin_set_svgwidth(OselinDevice *dev, float newvalue){
+
+    OselinDevice *set = new OselinDevice;
+    Parameters array;
+    array = dev->param;
+    array.length = dev->param.length/((float)dev->param.ncars + ((float)dev->param.ncars+3)/2);
+    array.height = (dev->param.height -100)/dev->param.nfloors;
+
+    //NEW VALUE
+    array.svgwidth = newvalue;
+
+
+    set = oselin_init(array);
+    if (set !=NULL){
+        oselin_trigonometry(set);
+        return set;
+    }
+    return NULL;
+
+}
+
+OselinDevice *oselin_set_svgheight(OselinDevice *dev, float newvalue){
+
+    OselinDevice *set = new OselinDevice;
+    Parameters array;
+    array = dev->param;
+    array.length = dev->param.length/((float)dev->param.ncars + ((float)dev->param.ncars+3)/2);
+    array.height = (dev->param.height -100)/dev->param.nfloors;
+
+    //NEW VALUE
+    array.svgheight = newvalue;
+
+
+    set = oselin_init(array);
+    if (set !=NULL){
+        oselin_trigonometry(set);
+        return set;
+    }
+    return NULL;
 
 }
 
