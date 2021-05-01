@@ -50,6 +50,7 @@ coca_device * oselin_coca_init(Parameters p, float newx, float newy){
  * LENGTH | HEIGHT | RADIUS | NCARS-PER-TRAILER | NFLOORS
  **/
 OselinMachine * oselin_machine_init(Parameters p, int ntrailers){
+    
     OselinDevice *dev = oselin_init(p, true);
     if (dev!=NULL){
         //CHECKING CONSTRAINTS AND SETTING SVG DIMENSIONS
@@ -124,17 +125,19 @@ string oselin_machine_to_string(OselinMachine *mach, bool with_header){
  * @param OselinMachine to be saved
  **/
 string oselin_machine_save(OselinMachine *mach){
-    if (mach->parameters.length != 0 && mach != NULL){
-        string filename, svgmach;
-        cout << "File name for saving (with extension): ";
-        cin >> filename;
-        ofstream MyFile(filename);
-        svgmach =  oselin_machine_to_string(mach, true);
-        if (svgmach == "") return "Something went wrong.";
-        else{
-            MyFile << (svgmach + "\n</svg>");
-            MyFile.close();
-            return "Saved!";
+    if (mach != NULL){
+        if (mach->parameters.length != 0){
+            string filename, svgmach;
+            cout << "File name for saving (with extension): ";
+            cin >> filename;
+            ofstream MyFile(filename);
+            svgmach =  oselin_machine_to_string(mach, true);
+            if (svgmach == "") return "Something went wrong.";
+            else{
+                MyFile << (svgmach + "\n</svg>");
+                MyFile.close();
+                return "Saved!";
+            }
         }
     }
     return "The machine looks empty...";

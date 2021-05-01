@@ -43,7 +43,8 @@ string errors(int c){
         return "Something went wrong. " ;
         break;
     case 9:
-        exit(1);
+        return "Fatal error.";
+        break;
     default:
         break;
     }
@@ -81,7 +82,7 @@ OselinDevice *oselin_init(Parameters param, bool avoidsvg){
     param.height = param.height * param.nfloors + 100;
 
     
-    //CONSTRAINS
+    //CONSTRAINTS
     if (!avoidsvg){
         if (param.svgwidth < param.length){
             cout <<errors(0) << endl;

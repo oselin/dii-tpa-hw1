@@ -223,8 +223,10 @@ string machine_create(OselinDevice *dev, OselinMachine *mach){
     mach->trailerarray = new OselinDevice* [ntrailers];        
     mach->cararray = new coca_device* [p.nfloors * p.ncars *ntrailers];
 
-    (*mach) = (*oselin_machine_init(p, ntrailers));
-    if (mach!=NULL) return "Machine created successfully.";
+    if (oselin_machine_init(p, ntrailers) != NULL){
+        (*mach) = (*oselin_machine_init(p, ntrailers));
+        return "Machine created successfully.";
+    }
     return "An error occurred.";
 }
 

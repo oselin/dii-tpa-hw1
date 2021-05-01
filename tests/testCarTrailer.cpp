@@ -1,8 +1,9 @@
+#include "car_trailer.h"
+#include "catch2/catch2.hpp"
 
-#include "../include/catch2/catch2.hpp"
-#include "../include/car_trailer.h"
-#include <iostream>
-using namespace std;
+
+
+
 TEST_CASE("init should succeed with non zero value", "[oselin_init]") {
 
     Parameters p;
@@ -10,7 +11,6 @@ TEST_CASE("init should succeed with non zero value", "[oselin_init]") {
     p.svgheight = 0;
 
     REQUIRE(oselin_init(p) == NULL);
-    cout << "aa" << endl;
     p.svgwidth = 800;
     p.svgheight = 600;
     p.ncars = 1;
@@ -73,8 +73,6 @@ TEST_CASE("trigonometry should return 1 if something bad happens", "[oselin_trig
     REQUIRE(oselin_trigonometry(NULL)==1);
 }
 
-
-
 TEST_CASE("parsing should return empty string if nothing is fed into it", "[oselin_parsing]") {
     
     Parameters p;
@@ -98,10 +96,8 @@ TEST_CASE("", "[oselin_set]") {
     //OselinDevice *oselin_set(OselinDevice *, int, float);
 }
 
+
 TEST_CASE("The function should return NULL fi something bad happens", "[oselin_init_acopyof]") {
     
     REQUIRE(oselin_init_acopyof(NULL)==NULL);
 }
-
-
-

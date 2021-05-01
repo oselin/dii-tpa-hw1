@@ -1,11 +1,7 @@
+#include "machine_car_trailer.h"
+#include "catch2/catch2.hpp"
 
-#include "../include/catch2/catch2.hpp"
-#include "../include/car_trailer.h"
-#include "../include/machine_car_trailer.h"
-#include <string>
-#include <iostream>
 
-using namespace std;
 TEST_CASE("init should return NULL value if parameters are  wrong ", "[oselin_machine_init]"){
 
     OselinDevice dev;
@@ -21,20 +17,20 @@ TEST_CASE("init should return NULL value if parameters are  wrong ", "[oselin_ma
 
 TEST_CASE("tostring function should return empty string if parameters are wrong","oselin_machine_to_string"){
     OselinMachine *mach = NULL;
-    cout << (mach == NULL) << endl;
-    cout << "ts" << endl;
     REQUIRE(oselin_machine_to_string(mach)=="");
 
     //REQUIRE(oselin_machine_to_string(&mach)=="");
 }
 
 TEST_CASE("tosave should not save if parameters are wrong","oselin_machine_save"){
-    OselinMachine mach;
+    OselinMachine *mach = new OselinMachine;
     
-    REQUIRE(oselin_machine_save(&mach)=="The machine looks empty...");
+    
+    mach->parameters.length = 0;
+    oselin_machine_save(mach);
 
-    mach.parameters.length = 1;
-    REQUIRE(oselin_machine_save(&mach)=="Something went wrong.");
+    oselin_machine_save(NULL);
+
 }
 
 TEST_CASE("parsing should ...","oselin_machine_parsing"){
