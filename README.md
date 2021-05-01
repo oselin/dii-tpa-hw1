@@ -141,3 +141,37 @@ Here's what you can do:
 ~~~
 
 Here's the functions `load`, `create`, `save`, `change` and `machine` can be called, which exploit the library's fuctions above illustrated to manipulate trailer structs and data.
+
+## Suggested measures
+~~~C++
+float SVGwidth  = 800;
+float SVGheight = 600;
+float length    = 100;
+float carheight = 50;
+float radius    = 16;
+int ncars       = 2;
+int nfloors     = 2;
+
+~~~
+
+## Machine commands
+
+When typing
+~~~C++
+./main -m
+~~~
+or choosing
+~~~
+[5] - create a machine
+~~~
+
+it is possible to create a machine. By this the options aviable are
+
+~~~
+Here's what you can do:
+[1] - load machine SVG drawing from file
+[2] - create a new machine
+[3] - save machine SVG drawing to file
+[4] - change a parameter
+[5] - return
+~~~
