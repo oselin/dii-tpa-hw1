@@ -454,6 +454,9 @@ int main(int argc, char * argv[]) {
             mainloop(device, mach);
         }
     }
+
+    delete device;
+    delete mach;
     return 0;
 }
 
