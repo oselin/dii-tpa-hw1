@@ -53,7 +53,7 @@ string load(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
         stringstream buffer;
         buffer << file.rdbuf();
         string s = buffer.str();
-        oselin_parsing(dev, s);
+        (*dev) = (*oselin_parsing(s));
         return "loaded successfully";
     }
     catch(const std::exception& e){
@@ -313,8 +313,11 @@ string machine_load(OselinMachine *mach){
     stringstream buffer;
     buffer << file.rdbuf();
     string s = buffer.str();
-    oselin_machine_parsing(mach, s);
-    return "al";
+    cout << "finqua" << endl;
+    if (oselin_machine_parsing(s)!=NULL) (*mach) = (*oselin_machine_parsing(s));
+    else mach = NULL;
+    
+    return "loaded successfully";
 }
 
 /**
@@ -336,8 +339,8 @@ void machine_mainloop(OselinDevice *dev, OselinMachine *mach){
         switch (choice)
         {
         case '1':
-            //message = machine_load(mach);
-            message = "This feature will come soon.";
+            message = machine_load(mach);
+            //message = "This feature will come soon.";
             break;
         case '2':
             message = machine_create(dev, mach);

@@ -48,5 +48,5 @@ std::string oselin_machine_save(OselinMachine *mach);
  * @param OselinMachine to be filled
  * @param string to be parsed
  **/
-void oselin_machine_parsing(OselinMachine *, std::string);
+OselinMachine *oselin_machine_parsing(std::string);
 #endif //MACHINE_CAR_TRAILER_H

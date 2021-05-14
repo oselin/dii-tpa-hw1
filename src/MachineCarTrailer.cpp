@@ -59,7 +59,7 @@ OselinMachine * oselin_machine_init(Parameters p, int ntrailers){
         dev->param.svgwidth = (ntrailers +1) * dev->abslength;
         dev->offset = 0.5 * dev->abslength;
         oselin_to_svg(dev);
-        // DYNAMIC ARRAY SOLUTION FOR THEN MACHINE
+        // DYNAMIC ARRAY SOLUTION FOR the MACHINE
         OselinMachine *machine = new OselinMachine;
         machine->length = ntrailers;
         machine->parameters = p;
@@ -149,17 +149,48 @@ string oselin_machine_save(OselinMachine *mach){
  * @param OselinMachine to be filled
  * @param string to be parsed
  **/
-void oselin_machine_parsing(OselinMachine *mach, string svg){
-    
+OselinMachine * oselin_machine_parsing(string svg){
     if (svg!=""){
-        int pieces[mach->length][2];
-        int index = 0;
-        for (int i=0;i<mach->length;i++){
-            index = svg.find("<!--OSELINDEVICETRAILER-->",index);
-            int len = svg.find("<!--OSELINDEVICETRAILER-->",index+30) - index;
-            pieces[i-1][0] = index;
-            pieces[i-1][1] = len;
-            oselin_parsing(mach->trailerarray[i],svg.substr(index,len));
+        //counting the number of trailers and cars
+        int check = svg.find("<!--OSELINDEVICETRAILER-->",1);
+        int counter[] = {0,0};
+        while (check>0){
+            check = svg.find("<!--OSELINDEVICETRAILER-->",check+30);
+            counter[0]++;
+            
         }
+        check = svg.find("<!--COCADEVICECAR-->",1);
+        while (check< svg.length()){
+            check = svg.find("<!--COCADEVICECAR-->",check+30);
+            counter[1]++;
+        }
+        
+        
+        int ncars, nfloors;
+        if ( counter[1]/counter[0] < 3) {
+            ncars = counter[1]/counter[0];
+            nfloors = 1;
+        }
+        else{
+            ncars = counter[1]/counter[0]/2;
+            nfloors = 2;
+        }
+
+        int pos = svg.find("<!--OSELINDEVICETRAILER-->",0);
+        int len = svg.find("<!--OSELINDEVICETRAILER-->",pos+30) - pos;
+
+        OselinDevice *dev = oselin_parsing(svg.substr(pos,len),1);
+        OselinMachine *machine = new OselinMachine;
+
+        Parameters param;
+        param.length = (float)(dev->param.length/4.5);
+        param.height = (dev->param.height-100)/nfloors;
+        param.radius = 20 * dev->rearwheel.radius/dev->downfloor.height;
+        param.ncars     = ncars;
+        param.nfloors   = nfloors;
+        return oselin_machine_init(param,counter[0]);
+
+
     }
+    return NULL;
 }

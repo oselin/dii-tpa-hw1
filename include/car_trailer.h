@@ -100,7 +100,7 @@ OselinDevice *oselin_init(Parameters, bool = false);
  * @param string svg
  * @param device to be filled
  **/
-void oselin_parsing(OselinDevice *, std::string);
+OselinDevice * oselin_parsing(std::string, int = 0);
 
 /**
  * Function for handling errors. It returns a string with the error type. It is invoked by all the other functions
