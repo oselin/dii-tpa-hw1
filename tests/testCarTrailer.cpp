@@ -1,13 +1,13 @@
 #include "car_trailer.h"
 #include "catch2/catch2.hpp"
-
+#include <iostream>
 
 
 
 TEST_CASE("init should succeed with non zero value", "[oselin_init]") {
 
     Parameters p;
-    p.svgwidth =0;
+    p.svgwidth = 0;
     p.svgheight = 0;
 
     REQUIRE(oselin_init(p) == NULL);
@@ -22,6 +22,7 @@ TEST_CASE("init should succeed with non zero value", "[oselin_init]") {
 
 
 TEST_CASE("oselin init copy should not return null value", "[oselin_init_acopyof]") {
+
     REQUIRE(oselin_init_acopyof(NULL) == NULL);
 
     Parameters p;
@@ -71,6 +72,9 @@ TEST_CASE("trigonometry should return 1 if something bad happens", "[oselin_trig
     OselinDevice *dev = oselin_init(p);
 
     REQUIRE(oselin_trigonometry(NULL)==1);
+    REQUIRE(oselin_trigonometry(dev)==0);
+
+    delete dev;
 }
 
 TEST_CASE("parsing should return empty string if nothing is fed into it", "[oselin_parsing]") {
@@ -84,9 +88,12 @@ TEST_CASE("parsing should return empty string if nothing is fed into it", "[osel
     p.ncars     = 2;
     p.nfloors   = 2;
 
-    OselinDevice *dev = oselin_init(p);
-    oselin_parsing(dev,"");
-    REQUIRE(dev->svg =="");
+    //OselinDevice *dev = oselin_init(p);
+    OselinDevice * dev;
+    dev = oselin_parsing("");
+    REQUIRE(dev->svg == "");
+
+    delete dev;
 
 }
 
