@@ -1,16 +1,21 @@
 #include <iostream>
 #include <string>
 #include "car_trailer.h"
-#include "Car.h"
-#include "machine_car_trailer.h"
 
 #include <fstream>
 #include <streambuf>
 #include <sstream>
+
+#include <unordered_map>
 using namespace std;
 
 string questions[] = {"SVG width: ", "SVG height: ","Car lenght: ","Car height: ", "Wheel radius [16,17,18]: ","Cars-per-trailer [1,2]: ","Number of floors [1,2]: "};
 
+void print(unordered_map<string,float> umap){
+    for (pair<string, float> p : umap){
+        cout << p.first << " | " << p.second << endl;
+    }
+}
 
 void displaymenu(){
     string com = "";
@@ -36,12 +41,46 @@ void help(){
     
 }
 
-/**
- * Load OselinDevice from file. It can work with graphical menu or inline commands
- **/
-string load(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
+void machine_displaymenu(){
+    string com = "";
+    com += "----------------------------------\n";
+    com += "Here's what you can do:\n";
+    com += "[1] - load machine SVG drawing from file\n";
+    com += "[2] - create a new machine\n";
+    com += "[3] - save machine SVG drawing to file\n";
+    com += "[4] - change a parameter\n";
+    com += "[5] - return";
+
+    cout << com << endl;
+
+}
+
+
+
+unordered_map<string, float> argv2umap(char * argv[]){
+    if (argv != NULL){
+        unordered_map<string,float> umap;
+        try{
+            umap["svg_width"] =  stof(argv[2]);
+            umap["svg_height"] = stof(argv[3]);
+            umap["car_length"] = stof(argv[4]);
+            umap["car_height"] = stof(argv[5]);
+            umap["car_radius"] = stof(argv[6]);
+            umap["n_cars"] =     stof(argv[7]);
+            umap["n_floors"] =   stof(argv[8]);
+        }catch (const exception &e){
+            throw e;
+        }
+
+        return umap;
+    }
+
+    throw std::invalid_argument("Something went wrong.");
+}
+
+oselin::Trailer* load(char *argv[] = NULL){
     string filename;
-    if (n_args != 0){
+    if (argv != NULL){
         filename = string(param[2]);
     }
     else{
@@ -53,89 +92,67 @@ string load(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
         stringstream buffer;
         buffer << file.rdbuf();
         string s = buffer.str();
-        (*dev) = (*oselin_parsing(s));
-        return "loaded successfully";
     }
-    catch(const std::exception& e){
-        return "Somethig went wrong. The file exists?";
+    catch(const exception& e){
+        throw e;
     }
+
+    oselin::Trailer *t = new oselin::Trailer(s);
+    return t;
 }
-
-/**
- * Create OselinDevice from scratch. It can work with graphical menu or inline commands
- **/
-string create(OselinDevice *dev, int n_args = 0, char *param[] = NULL){
-
-    float parameters[5];
-    Parameters p;
-    if (n_args != 0){
-        try
-        {
-            p.svgwidth  = stof(param[2]);
-            p.svgheight = stof(param[3]);
-
-           
-            p.length    = stof(param[4]);
-            p.height    = stof(param[5]);
-            p.radius    = stof(param[6]);
-            p.ncars     = atoi(param[7]);
-            p.nfloors   = atoi(param[8]);
-            //p.margin;
-
-            //for (int i=0;i<5;i++) parameters[i] = stof(param[i+4]);
-        }
-        catch(const exception& e)
-        {
-            cout << errors(8) << endl;
-            exit(1);
-        }
-        
-        
-    }
-    else{
+oselin::Trailer* create(unordered_map<string, float> parameters){
+    
+    if (parameters.size() == 0){
         try{
             for (int i=0; i<7; i++){
                 cout << questions[i];
-                if (i==0) cin >> p.svgwidth;
-                else if (i==1) cin >> p.svgheight;
-                else cin >> parameters[i-2];
-            }}
-        catch(const exception& e){
-            return errors(8);
+                switch (i)
+                {
+                case 0:
+                    cin >> parameters["svg_width"];
+                    break;
+                case 1:
+                    cin >> parameters["svg_height"];
+                    break;
+                case 2:
+                    cin >> parameters["car_length"];
+                    break;
+                case 3:
+                    cin >> parameters["car_height"];
+                    break;
+                case 4:
+                    cin >> parameters["car_radius"];
+                    break;
+                case 5:
+                    cin >> parameters["n_cars"];
+                    break;
+                case 6:
+                    cin >> parameters["n_floors"];
+                    break;
+                default:
+                    throw out_of_range("An error occurred.");
+                }}
+        }catch(const exception& e){
+            throw e;
+        }}
 
-        }
+    oselin::Trailer *t = new oselin::Trailer(parameters);
+    return t;
 
-        p.length    = parameters[0];
-        p.height    = parameters[1];
-        p.radius    = parameters[2];
-        p.ncars     = (int)parameters[3];
-        p.nfloors   = (int)parameters[4];
-        //p.margin;
-    }
-    
-    (*dev) = (*oselin_init(p));
-    if (dev!=NULL){
-        oselin_trigonometry(dev);
-        return "Created successfully";
-    }
-    return "Something went wrong";
 }
-
-/**
- * Save an existing OselinDevice to file
- **/
-string save(OselinDevice *dev, int mode = 0){
+string save(oselin::Trailer *trailer){
     char resp;
     int saving = 0;
+    string svg;
     if (!mode){
         cout << "Do you want measures on the drawing?[y/n] ";
         cin >> resp;
         if (resp == 'y' || resp == 'Y') {
-            oselin_to_svg(dev, true, true);
+            svg = trailer->svg(true, true);
             ++saving ;
         }
         else if (resp == 'n' || resp == 'N'){
-            oselin_to_svg(dev);
+            tsvg = trailer->svg();
             ++saving ;
         }
         
@@ -146,17 +163,14 @@ string save(OselinDevice *dev, int mode = 0){
         cout << "File name for saving (with extension): ";
         cin >> filename;
         ofstream MyFile(filename);
-        MyFile << (dev->svg + "\n</svg>");
+        MyFile << (svg + "\n</svg>");
         MyFile.close();
         return "SAVED!";
     }
     return "Aborting...";
 }
 
-/**
- * Change some parameters of an existing OselinDevice
- **/
-string change(OselinDevice *dev){
+string change(oselin::Trailer *trailer){
 
     int choice; float newvalue;
     string help = "Choose what to change:\n";
@@ -176,205 +190,28 @@ string change(OselinDevice *dev){
 
     switch (choice)
     {
-    case 0:
-        if(oselin_set_svgwidth(dev,newvalue) != NULL){
-            (*dev) = (*oselin_set_svgwidth(dev,newvalue));
-            return "Changed successfully!";
-        }
-    case 1:
-        if(oselin_set_svgheight(dev,newvalue) != NULL){
-            (*dev) = (*oselin_set_svgheight(dev,newvalue));
-            return "Changed successfully!";
-        }
-    case 2:
-        if(oselin_set_length(dev,newvalue) != NULL){
-            (*dev) = (*oselin_set_length(dev,newvalue));
-            return "Changed successfully!";
-        }
-    case 3:
-        if(oselin_set_height(dev,newvalue) != NULL){
-            (*dev) = (*oselin_set_height(dev,newvalue));
-            return "Changed successfully!";
-        }
-    case 4:
-        if(oselin_set_radius(dev,newvalue) != NULL){
-            (*dev) = (*oselin_set_radius(dev,newvalue));
-            return "Changed successfully!";
-        }
-    case 5:
-        if(oselin_set_ncars(dev,(int)newvalue) != NULL){
-            (*dev) = (*oselin_set_ncars(dev,(int)newvalue));
-            return "Changed successfully!";
-        }
-    case 6:
-        if(oselin_set_nfloors(dev,(int)newvalue) != NULL){
-            (*dev) = (*oselin_set_nfloors(dev,(int)newvalue));
-            return "Changed successfully!";
-        }
-    
+    case 0: trailer->svg_width(newvalue); 
+    case 1: trailer->svg_height(newvalue);
+    case 2: trailer->car_length(newvalue);
+    case 3: trailer->car_height(newvalue);
+    case 4: trailer->car_radius(newvalue);
+    case 5: trailer->n_cars(newvalue);    
+    case 6: trailer->n_floors(newvalue);  
     default:
         break;
     }
     return "Aborting...";
 }
 
-/**
- * Just display some possible commands
- **/
-void machine_displaymenu(){
-    string com = "";
-    com += "----------------------------------\n";
-    com += "Here's what you can do:\n";
-    com += "[1] - load machine SVG drawing from file\n";
-    com += "[2] - create a new machine\n";
-    com += "[3] - save machine SVG drawing to file\n";
-    com += "[4] - change a parameter\n";
-    com += "[5] - return";
 
-    cout << com << endl;
+void mainloop(oselin::Trailer *trailer, oselin::Machine *machine, unordered_map<string, float> &parameters){
 
-}
-
-/**
- * Create a new machine from scratch
- **/
-string machine_create(OselinDevice *dev, OselinMachine *mach){
-    //PARAM
-    //lenght | height | radius | ncars | nfloors | ntrailers
     
-    int ntrailers;
-    float parameters[5];
-    for (int i=0; i<5; i++){
-        cout << questions[i+2];
-        cin >> parameters[i];
-    }
-    cout << "How many trailers? ";
-    cin >> ntrailers;
-    Parameters p;
-    p.length    = parameters[0];
-    p.height    = parameters[1];
-    p.radius    = parameters[2];
-    p.ncars     = (int)parameters[3];
-    p.nfloors   = (int)parameters[4];
-
-    mach->trailerarray = new OselinDevice* [ntrailers];        
-    mach->cararray = new coca_device* [p.nfloors * p.ncars *ntrailers];
-
-    if (oselin_machine_init(p, ntrailers) != NULL){
-        (*mach) = (*oselin_machine_init(p, ntrailers));
-        return "Machine created successfully.";
-    }
-    return "An error occurred.";
-}
-
-/**
- * Change parameters of an existing machine
- **/
-string machine_change(OselinDevice *dev, OselinMachine *mach){
-    if (mach->parameters.length != 0){
-        int choice; float newvalue;
-        Parameters p = mach->parameters;
-        string help = "Choose what to change:\n";
-        help += "[0] Set new car length\n";
-        help += "[1] Set new car height\n";
-        help += "[2] Set new radius\n";
-        help += "[3] Set new number of cars per trailer\n";
-        help += "[4] Set new number of floors\n";
-        help += "[5] Set new number of trailers\n";
-
-        cout << help << endl;
-        cout << "Your choice: ";
-        cin >> choice;
-        cout << "New value: ";
-        cin >> newvalue;
-
-        if (choice > -1 || choice < 6){
-            if (choice == 5) mach->length = (int)newvalue;
-            //else array[choice] = newvalue;
-            //(*mach) = (*oselin_machine_init(dev, mach->length, array));
-            return "Machine updated.";
-        }
-        return "Aborting.";
-    }
-    return "The machine looks empty. Did you created one first?";
-    
-}
-
-/**
- * Load a machine from file
- **/
-string machine_load(OselinMachine *mach){
-    string filename;
-    cout << "path/file [with extension]: ";
-    cin >> filename;
-    
-
-    ifstream file(filename);
-    stringstream buffer;
-    buffer << file.rdbuf();
-    string s = buffer.str();
-    cout << "finqua" << endl;
-    if (oselin_machine_parsing(s)!=NULL) (*mach) = (*oselin_machine_parsing(s));
-    else mach = NULL;
-    
-    return "loaded successfully";
-}
-
-/**
- * Sub loop for working in a machine environment
- **/
-void machine_mainloop(OselinDevice *dev, OselinMachine *mach){
-
-    int inloop = 1, ntrailers;
-    string message;
-    float f[5];
-    cout << "MACHINE MODE" << endl;
-    do{
-        
-        machine_displaymenu();
-        char choice;
-        cout << "Your choice: " ;
-        cin >> choice;
-
-        switch (choice)
-        {
-        case '1':
-            message = machine_load(mach);
-            //message = "This feature will come soon.";
-            break;
-        case '2':
-            message = machine_create(dev, mach);
-            
-            break;
-        case '3':
-            message = oselin_machine_save(mach);
-            break;    
-        case '4':
-            message = machine_change(dev,mach);
-            break;
-        case '5':
-            inloop = 0;
-            message = "Closing.";
-            break;
-        default:
-            message = "Command not found.";
-            break;
-        }
-        system("clear");
-        cout << message << " What's next?" << endl;
-    }while(inloop);
-
-}
-
-/**
- * Main loop of the program
- **/
-void mainloop(OselinDevice *dev, OselinMachine *mach){
-
     int inloop = 1;
     string message;
     cout << "Welcome to the SVG TRAILER CREATOR" << endl;
     do{
+        
         displaymenu();
         char choice;
         cout << "Your choice: " ;
@@ -383,19 +220,22 @@ void mainloop(OselinDevice *dev, OselinMachine *mach){
         switch (choice)
         {
         case '1':
-            message = load(dev);
+            message = load(trailer);
             break;
         case '2':
-            message = create(dev);
+            parameters.clear();
+            trailer = create(parameters);
+            print(trailer->parameters());
+            message = "Created successfully";
             break;
         case '3':
-            message = save(dev);
+            message = save(trailer);
             break;    
         case '4':
-            message = change(dev);
+            message = change(trailer);
             break;
         case '5':
-            machine_mainloop(dev, mach);
+            //machine_mainloop(dev, mach);
             message = "";
         case '6':
             inloop = 0;
@@ -404,27 +244,28 @@ void mainloop(OselinDevice *dev, OselinMachine *mach){
             cout << "Command not found." << endl;
             break;
         }
-        system("clear");
+        //system("clear");
         cout << message << " What's next?" << endl;
+
     }while(inloop);
 
 }
 
+/**
+ * Sub loop for working in a machine environment
+ **/
 int main(int argc, char * argv[]) {
 
-    OselinDevice *device = new OselinDevice;
+    oselin::Trailer *trailer;
+    oselin::Machine *machine;
+    unordered_map<string, float> parameters;
     
-    OselinMachine *mach = new OselinMachine;
-    //signal(SIGINT,quit);
     if (argc==1){
         cout <<"Welcolme to the trailer-to-svg tool. Use '-h' to display commands.\n" << endl;
     }
-    
     else{
         
-        if      (string(argv[1]) == "-h" || string(argv[1]) == "--help"){
-            help();//NO switch qua perché non si poteva fare l'enum
-        }
+        if      (string(argv[1]) == "-h" || string(argv[1]) == "--help") help();
         else if (string(argv[1]) == "-c" || string(argv[1]) == "--create"){
             if (argc < 9){
                 cout << "Missing some parameters. Please check and try again." << endl;
@@ -433,8 +274,9 @@ int main(int argc, char * argv[]) {
                 cout << "Too many parameters. Please check and try again." << endl;
             }
             else{
-                cout << create(device, argc,argv) << endl;;
-                mainloop(device, mach);
+                parameters = argv2umap(argv);
+                trailer = create(parameters);
+                mainloop(trailer, machine, parameters);
             }
         }
         else if (string(argv[1]) == "-l" || string(argv[1]) == "--load"){
@@ -445,21 +287,19 @@ int main(int argc, char * argv[]) {
                 cout << "Too many parameters. Please check and try again." << endl;
             }
             else{
-                cout << load(device, argc,argv) << endl;
-                mainloop(device, mach);
+                //cout << load(trailer, argc,argv) << endl;
+                mainloop(trailer, machine, parameters);
             }
         }
         else if (string(argv[1]) == "-m" || string(argv[1]) == "--machine"){
-            machine_mainloop(device, mach);
-            mainloop(device, mach);
+            ///machine_mainloop(device, mach);
+            mainloop(trailer, machine, parameters);
         }
         else if (string(argv[1]) == "-i" || string(argv[1]) == "--interface"){
-            mainloop(device, mach);
+            mainloop(trailer, machine, parameters);
         }
     }
 
-    delete device;
-    delete mach;
     return 0;
 }
 
