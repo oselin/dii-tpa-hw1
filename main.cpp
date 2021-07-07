@@ -55,8 +55,6 @@ void machine_displaymenu(){
 
 }
 
-
-
 unordered_map<string, float> argv2umap(char * argv[]){
     if (argv != NULL){
         unordered_map<string,float> umap;
@@ -78,10 +76,32 @@ unordered_map<string, float> argv2umap(char * argv[]){
     throw std::invalid_argument("Something went wrong.");
 }
 
-oselin::Trailer* load(char *argv[] = NULL){
-    string filename;
+oselin::Parameters argv2param(char * argv[]){
     if (argv != NULL){
-        filename = string(param[2]);
+        oselin::Parameters param;
+        try{
+            param.svg_width_ =  stof(argv[2]);
+            param.svg_height_ = stof(argv[3]);
+            param.car_length_ = stof(argv[4]);
+            param.car_height_ = stof(argv[5]);
+            param.car_radius_ = stof(argv[6]);
+            param.n_cars_ =     stof(argv[7]);
+            param.n_floors_ =   stof(argv[8]);
+        }catch (const exception &e){
+            throw e;
+        }
+
+        return param;
+    }
+
+    throw std::invalid_argument("Something went wrong.");
+}
+
+
+oselin::Trailer* load(char *argv[] = NULL){
+    string s, filename;
+    if (argv != NULL){
+        filename = string(argv[2]);
     }
     else{
         cout << "path/file [with extension]: ";
@@ -100,73 +120,71 @@ oselin::Trailer* load(char *argv[] = NULL){
     oselin::Trailer *t = new oselin::Trailer(s);
     return t;
 }
-oselin::Trailer* create(unordered_map<string, float> parameters){
+oselin::Trailer* create(oselin::Parameters parameters){
     
-    if (parameters.size() == 0){
+    if (parameters.isempty){
         try{
             for (int i=0; i<7; i++){
                 cout << questions[i];
                 switch (i)
                 {
                 case 0:
-                    cin >> parameters["svg_width"];
+                    cin >> parameters.svg_width_;
                     break;
                 case 1:
-                    cin >> parameters["svg_height"];
+                    cin >> parameters.svg_height_;
                     break;
                 case 2:
-                    cin >> parameters["car_length"];
+                    cin >> parameters.car_length_;
                     break;
                 case 3:
-                    cin >> parameters["car_height"];
+                    cin >> parameters.car_height_;
                     break;
                 case 4:
-                    cin >> parameters["car_radius"];
+                    cin >> parameters.car_radius_;
                     break;
                 case 5:
-                    cin >> parameters["n_cars"];
+                    cin >> parameters.n_cars_;
                     break;
                 case 6:
-                    cin >> parameters["n_floors"];
+                    cin >> parameters.n_floors_;
                     break;
                 default:
                     throw out_of_range("An error occurred.");
                 }}
         }catch(const exception& e){
             throw e;
-        }}
+        }
+        parameters.isempty = false;
+        }
 
     oselin::Trailer *t = new oselin::Trailer(parameters);
     return t;
 
 }
-string save(oselin::Trailer *trailer){
+string save(oselin::Trailer *trailer, int mode=0){
     char resp;
-    int saving = 0;
     string svg;
     if (!mode){
         cout << "Do you want measures on the drawing?[y/n] ";
         cin >> resp;
         if (resp == 'y' || resp == 'Y') {
             svg = trailer->svg(true, true);
-            ++saving ;
         }
         else if (resp == 'n' || resp == 'N'){
-            tsvg = trailer->svg();
-            ++saving ;
+            svg = trailer->svg();
         }
         
     }
-    else ++saving;
-    if (saving){
-        string filename;
-        cout << "File name for saving (with extension): ";
-        cin >> filename;
-        ofstream MyFile(filename);
-        MyFile << (svg + "\n</svg>");
-        MyFile.close();
-        return "SAVED!";
-    }
+    else svg = trailer->svg();
+    string filename;
+    cout << "File name for saving (with extension): ";
+    cin >> filename;
+    ofstream MyFile(filename);
+    MyFile << (svg + "\n</svg>");
+    MyFile.close();
+    return "SAVED!";
+    
     return "Aborting...";
 }
 
@@ -204,14 +222,14 @@ string change(oselin::Trailer *trailer){
 }
 
 
-void mainloop(oselin::Trailer *trailer, oselin::Machine *machine, unordered_map<string, float> &parameters){
+void mainloop(oselin::Trailer *trailer, oselin::Machine *machine,oselin::Parameters &parameters){
 
     
     int inloop = 1;
     string message;
     cout << "Welcome to the SVG TRAILER CREATOR" << endl;
     do{
-        
+        cout << "MAIN OFFSET: " << trailer->offset() << endl;
         displaymenu();
         char choice;
         cout << "Your choice: " ;
@@ -220,13 +238,14 @@ void mainloop(oselin::Trailer *trailer, oselin::Machine *machine, unordered_map<
         switch (choice)
         {
         case '1':
-            message = load(trailer);
+            trailer = load();
+            message = "File loaded successfully.";
             break;
         case '2':
-            parameters.clear();
+            parameters.isempty = true;
             trailer = create(parameters);
-            print(trailer->parameters());
-            message = "Created successfully";
+            //print(trailer->parameters());
+            message = "Created successfully.";
             break;
         case '3':
             message = save(trailer);
@@ -258,7 +277,7 @@ int main(int argc, char * argv[]) {
 
     oselin::Trailer *trailer;
     oselin::Machine *machine;
-    unordered_map<string, float> parameters;
+    oselin::Parameters parameters;
     
     if (argc==1){
         cout <<"Welcolme to the trailer-to-svg tool. Use '-h' to display commands.\n" << endl;
@@ -274,7 +293,7 @@ int main(int argc, char * argv[]) {
                 cout << "Too many parameters. Please check and try again." << endl;
             }
             else{
-                parameters = argv2umap(argv);
+                parameters = argv2param(argv);
                 trailer = create(parameters);
                 mainloop(trailer, machine, parameters);
             }

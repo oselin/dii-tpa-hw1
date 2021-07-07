@@ -15,8 +15,13 @@ target_include_directories(catch2Test PRIVATE
 
 # Including sources
 target_sources(catch2Test PRIVATE
-        ../src/CarTrailer.cpp
-        ../src/MachineCarTrailer.cpp)
+        ../src/MachineCarTrailer.cpp
+        ../src/Trailer.cpp
+        ../src/Axis.cpp
+        ../src/Floor.cpp
+        ../src/Joint.cpp
+        ../src/Svg.cpp
+        ../src/Wheel.cpp)
 target_sources(catch2Test PRIVATE
         ../TpaHomework1/src/Car.cpp)
 
