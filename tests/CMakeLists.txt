@@ -22,7 +22,8 @@ target_sources(catch2Test PRIVATE
         ../src/Joint.cpp
         ../src/Svg.cpp
         ../src/Wheel.cpp
-        ../src/DeviceFunction.cpp)
+        ../src/DeviceFunction.cpp
+        ../src/Parameters.cpp)
 target_sources(catch2Test PRIVATE
         ../TpaHomework1/src/Car.cpp)
 

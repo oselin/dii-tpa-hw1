@@ -181,23 +181,5 @@ string oselin::measures(){
 }
 
 
-void oselin::printParam(oselin::Parameters p){
-        cout <<  "isempty\t\t" << p.isempty_               << endl;
-        cout <<  "x\t\t" << p.x_                           << endl;
-        cout <<  "y\t\t" << p.y_                           << endl;
-        cout <<  "length\t\t" << p.length_                 << endl;
-        cout <<  "height\t\t" << p.height_                 << endl;
-        cout <<  "offset\t\t" << p.offset_                 << endl;
-        cout <<  "svg_width\t" << p.svg_width_             << endl;  
-        cout <<  "svg_height\t" << p.svg_height_           << endl;
-        cout <<  "trailer_length\t" << p.trailer_length_   << endl;
-        cout <<  "trailer_height\t" << p.trailer_height_   << endl;    
-        cout <<  "car_length\t" << p.car_length_           << endl;
-        cout <<  "car_height\t" << p.car_height_           << endl;
-        cout <<  "car_radius\t" << p.car_radius_           << endl;
-        cout <<  "n_cars\t\t" << p.n_cars_                 << endl;
-        cout <<  "n_floors\t" << p.n_floors_               << endl;
-        cout <<  "margin\t\t" << p.margin_                 << endl;
-}
 
 

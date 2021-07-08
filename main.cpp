@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "car_trailer.h"
+#include "machine_car_trailer.h"
 
 #include <fstream>
 #include <streambuf>
@@ -77,26 +78,7 @@ unordered_map<string, float> argv2umap(char * argv[]){
     throw std::invalid_argument("Something went wrong.");
 }
 
-oselin::Parameters argv2param(char * argv[]){
-    if (argv != NULL){
-        oselin::Parameters param;
-        try{
-            param.svg_width_ =  stof(argv[2]);
-            param.svg_height_ = stof(argv[3]);
-            param.car_length_ = stof(argv[4]);
-            param.car_height_ = stof(argv[5]);
-            param.car_radius_ = stof(argv[6]);
-            param.n_cars_ =     stof(argv[7]);
-            param.n_floors_ =   stof(argv[8]);
-        }catch (const exception &e){
-            throw e;
-        }
 
-        return param;
-    }
-
-    throw std::invalid_argument("Something went wrong.");
-}
 
 oselin::Trailer* load(int argc = 0, char *argv[] = NULL){
     string s, filename;
@@ -126,30 +108,32 @@ oselin::Trailer* create(oselin::Trailer *trailer){
     if (trailer->isempty()){
         oselin::Parameters p;
         try{
+            float answ;
             for (int i=0; i<7; i++){
                 cout << questions[i];
+                cin >> answ;
                 switch (i)
                 {
                 case 0:
-                    cin >> p.svg_width_;
+                    p.svg_width(answ);
                     break;
                 case 1:
-                    cin >> p.svg_height_;
+                    p.svg_height(answ);
                     break;
                 case 2:
-                    cin >> p.car_length_;
+                    p.car_length(answ);
                     break;
                 case 3:
-                    cin >> p.car_height_;
+                    p.car_height(answ);
                     break;
                 case 4:
-                    cin >> p.car_radius_;
+                    p.car_radius(answ);
                     break;
                 case 5:
-                    cin >> p.n_cars_;
+                    p.n_cars(answ);
                     break;
                 case 6:
-                    cin >> p.n_floors_;
+                    p.n_floors(answ);
                     break;
                 default:
                     throw out_of_range("An error occurred.");
@@ -158,9 +142,8 @@ oselin::Trailer* create(oselin::Trailer *trailer){
             throw e;
         }
         //Prevent data loss if something goes wrong
-        p.isempty_ = false;
-
-        oselin::Trailer *t = new oselin::Trailer(p);
+        p.isempty(false);
+        oselin::Trailer *t = new oselin::Trailer(p, 0);
         return t;
     }
     return trailer;    
@@ -229,6 +212,102 @@ string change(oselin::Trailer *trailer){
 }
 
 
+void machine_save(oselin::Machine *machine){
+    if (machine != NULL){
+        if (machine->isempty() == 0){
+            string filename, svgmach;
+            cout << "File name for saving (with extension): ";
+            cin >> filename;
+            ofstream MyFile(filename);
+            svgmach =  machine->svg();
+            if (svgmach == "") throw range_error("Something went wrong.");
+            else{
+                MyFile << (svgmach + "\n</svg>");
+                MyFile.close();
+                cout << "Saved." << endl;
+            }
+        }
+    }
+    else throw logic_error("Pointer is null.");
+    
+}
+
+
+
+oselin::Machine * machine_create(){
+    //PARAM
+    //Car lenght | Car height | Car radius | n_cars | n_floors | n_trailers
+    
+    int ntrailers;
+    float parameters[5];
+    for (int i=0; i<5; i++){
+        cout << questions[i+2];
+        cin >> parameters[i];
+    }
+    cout << "How many trailers? ";
+    cin >> ntrailers;
+    oselin::Parameters p;
+    p.car_length(parameters[0]);
+    p.car_height(parameters[1]);
+    p.car_radius(parameters[2]);
+    p.n_cars    (parameters[3]);
+    p.n_floors  (parameters[4]);
+
+    oselin::Machine *m = new oselin::Machine(p, ntrailers);
+    return m;
+}
+
+
+/**
+ * Sub loop for working in a machine environment
+ **/
+void machine_mainloop(oselin::Machine *machine){
+    system("clear");
+    int inloop = 1, ntrailers;
+    string message;
+    float f[5];
+    
+    cout << "MACHINE MODE" << endl;
+    do{
+        
+        machine_displaymenu();
+        char choice;
+        cout << "Your choice: " ;
+        cin >> choice;
+
+        switch (choice)
+        {
+        case '1':
+            //message = machine_load(mach);
+            //message = "This feature will come soon.";
+            break;
+        case '2':
+            machine = machine_create();
+            message = "Machine created successfully.";
+            
+            break;
+        case '3':
+            machine_save(machine);
+            break;    
+        case '4':
+            //message = machine_change(dev,mach);
+            break;
+        case '5':
+            inloop = 0;
+            message = "Closing.";
+            break;
+        default:
+            message = "Command not found.";
+            break;
+        }
+        system("clear");
+        cout << message << " What's next?" << endl;
+    }while(inloop);
+
+}
+
+
+
 void mainloop(oselin::Trailer *trailer, oselin::Machine *machine){
 
     
@@ -259,11 +338,11 @@ void mainloop(oselin::Trailer *trailer, oselin::Machine *machine){
             message = change(trailer);
             break;
         case '5':
-            //machine_mainloop(dev, mach);
+            machine_mainloop(machine);
             message = "";
         case '6':
             system("clear");
-            oselin::printParam(trailer->parameters());
+            cout << trailer;
             getchar(); getchar();
             break;
         case '7':
@@ -273,7 +352,7 @@ void mainloop(oselin::Trailer *trailer, oselin::Machine *machine){
             cout << "Command not found." << endl;
             break;
         }
-        system("clear");
+        //system("clear");
         cout << message << " What's next?" << endl;
 
     }while(inloop);
@@ -302,7 +381,8 @@ int main(int argc, char * argv[]) {
                 cout << "Too many parameters. Please check and try again." << endl;
             }
             else{
-                trailer = new oselin::Trailer(argv2param(argv));
+                
+                trailer = new oselin::Trailer(oselin::Parameters(argv),0);
                 mainloop(trailer, machine);
             }
         }
@@ -319,7 +399,7 @@ int main(int argc, char * argv[]) {
             }
         }
         else if (string(argv[1]) == "-m" || string(argv[1]) == "--machine"){
-            ///machine_mainloop(device, mach);
+            machine_mainloop(machine);
             mainloop(trailer, machine);
         }
         else if (string(argv[1]) == "-i" || string(argv[1]) == "--interface"){

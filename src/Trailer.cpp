@@ -7,78 +7,15 @@
 #include <stdexcept>
 #include <ostream>
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::string;
+using std::to_string;
 
 
-//Get-Set Methods for: isempty()
-void   oselin::Trailer::isempty(bool inp){this->parameters_.isempty_ = inp;}
-bool   oselin::Trailer::isempty() const{return this->parameters_.isempty_ ;}
 
-//Get-Set Methods for: x()
-void   oselin::Trailer::x(float inp){this->parameters_.x_ = inp;}
-float  oselin::Trailer::x() const{return this->parameters_.x_;}
 
-//Get-Set Methods for: y()
-void   oselin::Trailer::y(float inp){this->parameters_.y_ = inp;}
-float  oselin::Trailer::y() const{return this->parameters_.y_;}
-
-//Get-Set Methods for: length()
-void   oselin::Trailer::length(float l){this->parameters_.length_ = l;}
-float  oselin::Trailer::length() const{return this->parameters_.length_;}
-
-//Get-Set Methods for: height()
-void   oselin::Trailer::height(float h){this->parameters_.height_ = h;}
-float  oselin::Trailer::height() const{return this->parameters_.height_;}
-
-//Get-Set Methods for: offset()
-void   oselin::Trailer::offset(float off){this->parameters_.offset_ = off;}
-float  oselin::Trailer::offset() const{return this->parameters_.offset_;}
-
-//Get-Set Methods for: parameters()
-void  oselin::Trailer::parameters(oselin::Parameters p){this->parameters_ = p;}
-oselin::Parameters oselin::Trailer::parameters() const{return this->parameters_;}
-
-//Get-Set Methods for: svg_width()
-void  oselin::Trailer::svg_width(float nv){this->parameters_.svg_width_ = nv;}
-float oselin::Trailer::svg_width() const{return this->parameters_.svg_width_;} 
-
-//Get-Set Methods for: svg_height()
-void  oselin::Trailer::svg_height(float nv){this->parameters_.svg_height_ = nv;}
-float oselin::Trailer::svg_height() const{return this->parameters_.svg_height_;}
-
-//Get-Set Methods for: trailer_length()
-void  oselin::Trailer::trailer_length(float nv){this->parameters_.trailer_length_ = nv;}
-float oselin::Trailer::trailer_length() const{return this->parameters_.trailer_length_;}
-
-//Get-Set Methods for: trailer_height()
-void  oselin::Trailer::trailer_height(float nv){this->parameters_.trailer_height_ = nv;}
-float oselin::Trailer::trailer_height() const{return this->parameters_.trailer_height_;}
-
-//Get-Set Methods for: car_length()
-void  oselin::Trailer::car_length(float nv){this->parameters_.car_length_ = nv;}
-float oselin::Trailer::car_length() const{return this->parameters_.car_length_;}
-
-//Get-Set Methods for: car_height()
-void  oselin::Trailer::car_height(float nv){this->parameters_.car_height_ = nv;}
-float oselin::Trailer::car_height() const{return this->parameters_.car_height_;}
-
-//Get-Set Methods for: car_radius()
-void  oselin::Trailer::car_radius(float nv){this->parameters_.car_radius_ = nv;}
-float oselin::Trailer::car_radius() const{return this->parameters_.car_radius_;}
-
-//Get-Set Methods for: n_cars()
-void  oselin::Trailer::n_cars(float nv){this->parameters_.n_cars_ = nv;}
-float oselin::Trailer::n_cars() const{return this->parameters_.n_cars_;}
-
-//Get-Set Methods for: n_floors()
-void  oselin::Trailer::n_floors(float nv){this->parameters_.n_floors_ = nv;}
-float oselin::Trailer::n_floors() const{return this->parameters_.n_floors_;}
-
-//Get-Set Methods for: svg_height()
-void  oselin::Trailer::margin(float m){this->parameters_.margin_ = m;}
-float oselin::Trailer::margin() const{return this->parameters_.margin_;}
-
-void oselin::Trailer::copy(){
+void oselin::Trailer::distributeOffset(){
     this->downfloor.offset(this->offset());
     this->upfloor.offset(this->offset());
     this->front_wheel.offset(this->offset());
@@ -102,7 +39,7 @@ void oselin::Trailer::copy(){
 
 void oselin::Trailer::fromSvg2Param(){
     this->isempty(0);
-    this->copy();
+    this->distributeOffset();
     this->car_radius(20 * this->rear_wheel.radius()/this->downfloor.height());
 
     this->x(this->rear_joint.head.x());
@@ -117,144 +54,83 @@ void oselin::Trailer::fromSvg2Param(){
     this->length(this->trailer_length()+ 2*this->rear_joint.length() - 2* this->rear_joint.head.radius());
 }
 
+//Method for the machine part
+oselin::Trailer* oselin::Trailer::copy(){
+
+    oselin::Parameters buffer(this);
+    buffer.length(this->length()/(this->n_cars() + (this->n_cars()+3)/2));
+
+    buffer.height((this->height() -100)/ (int)this->n_floors());
+    oselin::Trailer *acopyof = new oselin::Trailer(buffer, true, false);
+
+    return acopyof;
+}
+
 //Constructor
 oselin::Trailer::Trailer(){
+    cout << "Default constructor has been invoked." << endl;
     this->isempty(true);
 }
 
 //Copy Constructor by reference
-oselin::Trailer::Trailer(Trailer &t){
+oselin::Trailer::Trailer(Trailer &t): oselin::Parameters(t){
     cout << "Reference constructor has been invoked" << endl;
-    this->parameters_.svg_width_ =  t.svg_width();
-    this->parameters_.svg_height_ = t.svg_height();
-    this->parameters_.length_ =     t.length();
-    this->parameters_.x_ =          t.x();
-    this->parameters_.y_ =          t.y();
-    this->parameters_.offset_ =     t.offset();
-    this->downfloor =               t.downfloor;
-    this->upfloor =                 t.upfloor;
-    this->front_wheel =             t.front_wheel;
-    this->rear_wheel =              t.rear_wheel;
-    this->rear_joint =              t.rear_joint;
-    this->front_joint =             t.front_joint;
-    this->rear_axis =               t.rear_axis;
-    this->front_axis =              t.front_axis;
-    this->parameters_ =             t.parameters();
-
-    this->copy();
+    this->distributeOffset();
 }
 
 //Copy Constructor by address
-oselin::Trailer::Trailer(Trailer *t){
+oselin::Trailer::Trailer(Trailer *t): oselin::Parameters(t){
     cout << "Pointer constructor has been invoked" << endl;
-    this->parameters_.svg_width_ =  t->svg_width();
-    this->parameters_.svg_height_ = t->svg_height();
-    this->parameters_.length_ =     t->length();
-    this->parameters_.x_ =          t->x();
-    this->parameters_.y_ =          t->y();
-    this->parameters_.offset_ =     t->offset();
-    this->downfloor =   t->downfloor;
-    this->upfloor =     t->upfloor;
-    this->front_wheel = t->front_wheel;
-    this->rear_wheel =  t->rear_wheel;
-    this->rear_joint =  t->rear_joint;
-    this->front_joint = t->front_joint;
-    this->rear_axis =   t->rear_axis;
-    this->front_axis =  t->front_axis;
-    this->parameters_ = t->parameters();
-
-    this->copy();
+    this->distributeOffset();
 }
 
 //Constructor - PARAMETERS
-oselin::Trailer::Trailer(oselin::Parameters parameters, bool avoid_svg){
+oselin::Trailer::Trailer(oselin::Parameters parameters, bool avoid_svg, bool automatic_offset){
     cout << "Constructor has been invoked" << endl;
- 
-    if (parameters.car_radius_ < 16 || parameters.car_radius_ > 18){
+    
+    
+    if (parameters.car_radius() < 16 || parameters.car_radius() > 18){
         throw std::out_of_range("Radius value is wrong!");
     }
 
     //Estimating the required margin values
-    parameters.margin_ = parameters.car_length_/2;
+    parameters.margin(parameters.car_length()/2);
     
     //Redefining length and height
-    parameters.trailer_length_ = parameters.car_length_ * parameters.n_cars_  + (parameters.n_cars_+3)*parameters.car_length_/2;
-    parameters.height_ = parameters.car_height_ * parameters.n_floors_ + 100;
+    parameters.trailer_length(parameters.car_length() * parameters.n_cars()  + (parameters.n_cars()+3)*parameters.car_length()/2);
+    parameters.height(parameters.car_height() * parameters.n_floors() + 100);
     
     //CONSTRAINTS
     if (!avoid_svg){
-        if (parameters.svg_width_ < parameters.trailer_length_){
+        if (parameters.svg_width() < parameters.trailer_length()){
             throw std::invalid_argument("INIT: WIDTH ERROR");
         }
-        if (parameters.svg_height_ < parameters.trailer_height_*5/4){
+        if (parameters.svg_height() < parameters.trailer_height()*5/4){
             throw std::invalid_argument("INIT: HEIGHT ERROR");
         }
     }
-    if (parameters.n_cars_ == 1 && parameters.n_floors_ == 2){
+    if (parameters.n_cars() == 1 && parameters.n_floors() == 2){
         throw std::invalid_argument("INIT: STRUCTURAL ERROR");
     }
-    if (parameters.car_length_ < (parameters.car_height_*4/5)){
+    if (parameters.car_length() < (parameters.car_height()*4/5)){
         throw std::invalid_argument("INIT: CAR DIMENSIONS ERROR");
     }
-    if (parameters.n_cars_ > 2){
+    if (parameters.n_cars() > 2){
         throw std::out_of_range("Too many cars!");
     }
-    if (parameters.n_floors_ > 2){
+    if (parameters.n_floors() > 2){
         throw std::out_of_range("Too many floors!");
     }
-
     
-    this->parameters_ = parameters;
+    this->copyParam(parameters);
 
-    oselin::trigonometry(this);
-    this->copy();
-    oselin::printParam(this->parameters());
-   
-}
-
-//TO_SVG METHOD
-string oselin::Trailer::svg(bool with_header, bool with_measures) const{
-       
-    string svg;
-    //if (device!=NULL){// CHOOSE HOW TO TEST IF IT EXISTS
-        if (with_header){
-            svg += "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width='";
-            svg += to_string(this->svg_width()) + " '  height='";
-            svg += to_string(this->svg_height()) + "' >";
-
-            svg += "<!--of" + to_string(this->offset()) + "-->\n";
-            svg += "<!--cl" + to_string(this->car_length()) + "-->\n";
-            svg += "<!--ch" + to_string(this->car_height()) + "-->\n";
-            svg += "<rect  x='0.000000' y='0.000000' width='" + to_string(this->svg_width()) + "' height='" + to_string(this->svg_height()) + "' style='stroke-width:0.0; stroke:' fill='white' />";
-        }
-        svg += "\n<!--#1-->";
-        svg += "\n" + this->rear_joint.svg();
-        svg += "\n<!--#2-->";
-        svg += "\n" +this->front_joint.svg();
-        svg += "\n<!--#3-->";
-        svg += "\n" + this->downfloor.svg();
-        svg += "\n<!--#4-->";
-        svg += "\n" + this->front_wheel.svg();
-        svg += "\n<!--#5-->";
-        svg += "\n" + this->rear_wheel.svg();
-        
-        if (this->n_floors() > 1) {
-            svg += "\n<!--#6-->";
-            svg += "\n" + this->upfloor.svg();
-            svg += "\n<!--#7-->";
-            svg += "\n" + this->rear_axis.svg();
-            svg += "\n<!--#8-->";
-            svg += "\n" + this->front_axis.svg();
-        }
-        
-        if (with_measures) svg += oselin::measures();
-
-        
-    return svg;
+    oselin::trigonometry(this, automatic_offset);
+    this->distributeOffset();   
 }
 
 //Constructor - PARSING
 oselin::Trailer::Trailer(string svg){
+
     if (svg != ""){
         int pieces[7][2];
         for (int i=1;i<9;i++){
@@ -286,8 +162,66 @@ oselin::Trailer::Trailer(string svg){
 
         
         this->fromSvg2Param();
-        oselin::printParam(this->parameters());
     }
     else throw std::range_error("File is empty!");
 }
 
+//TO_SVG METHOD
+string oselin::Trailer::svg(bool with_header, bool with_measures) const{
+    
+    string svg;
+    //if (device!=NULL){// CHOOSE HOW TO TEST IF IT EXISTS
+        if (with_header){
+            svg += "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width='";
+            svg += to_string(this->svg_width()) + " '  height='";
+            svg += to_string(this->svg_height()) + "' >";
+            svg += "<rect  x='0.000000' y='0.000000' width='" + to_string(this->svg_width()) + "' height='" + to_string(this->svg_height()) + "' style='stroke-width:0.0; stroke:' fill='white' />";
+        }
+
+        svg += "<!--of" + to_string(this->offset()) + "-->\n";
+        svg += "<!--cl" + to_string(this->car_length()) + "-->\n";
+        svg += "<!--ch" + to_string(this->car_height()) + "-->\n";
+
+        svg += "\n<!--#1-->";
+        svg += "\n" + this->rear_joint.svg();
+        svg += "\n<!--#2-->";
+        svg += "\n" +this->front_joint.svg();
+        svg += "\n<!--#3-->";
+        svg += "\n" + this->downfloor.svg();
+        svg += "\n<!--#4-->";
+        svg += "\n" + this->front_wheel.svg();
+        svg += "\n<!--#5-->";
+        svg += "\n" + this->rear_wheel.svg();
+        
+        if (this->n_floors() > 1) {
+            svg += "\n<!--#6-->";
+            svg += "\n" + this->upfloor.svg();
+            svg += "\n<!--#7-->";
+            svg += "\n" + this->rear_axis.svg();
+            svg += "\n<!--#8-->";
+            svg += "\n" + this->front_axis.svg();
+        }
+        
+        if (with_measures) svg += oselin::measures();
+
+        
+    return svg;
+}
+
+void oselin::Trailer::manage_y(float v){
+    this->downfloor.y(              this->downfloor.y(              )+v);            
+    this->upfloor.y(                this->upfloor.y(                )+v);        
+    this->front_wheel.y(            this->front_wheel.y(            )+v);            
+    this->rear_wheel.y(             this->rear_wheel.y(             )+v);        
+    this->rear_joint.body.y(        this->rear_joint.body.y(        )+v);        
+    this->rear_joint.head.y(        this->rear_joint.head.y(        )+v);        
+    this->front_joint.body.y(       this->front_joint.body.y(       )+v);        
+    this->front_joint.head.y(       this->front_joint.head.y(       )+v);        
+    this->rear_axis.body.y(         this->rear_axis.body.y(         )+v);        
+    this->rear_axis.bottom_screw.y( this->rear_axis.bottom_screw.y( )+v);        
+    this->rear_axis.top_screw.y(    this->rear_axis.top_screw.y(    )+v);        
+    this->front_axis.body.y(        this->front_axis.body.y(        )+v);    
+    this->front_axis.bottom_screw.y(this->front_axis.bottom_screw.y()+v);    
+    this->front_axis.top_screw.y(   this->front_axis.top_screw.y(   )+v);    
+
+}

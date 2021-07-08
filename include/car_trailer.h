@@ -20,25 +20,79 @@ using std::ostream;
 
 
 namespace oselin{
-    struct Parameters{
-        bool isempty_ = true;
-        float x_                = 0;//TO AVOID UNDEFINED RANDOM VALUES
-        float y_                = 0;
-        float length_           = 0;
-        float height_           = 0;
-        float offset_           = 0;
-        float svg_width_        = 0;
-        float svg_height_       = 0;
-        float trailer_length_   = 0;
-        float trailer_height_   = 0;  
-        float car_length_       = 0;
-        float car_height_       = 0;  
-        float car_radius_       = 0; 
-        float n_cars_           = 0;  
-        float n_floors_         = 0;
-        float margin_           = 0;
-    };
-    
+    class Parameters{
+        protected:
+            bool  isempty_ = true;       
+            float x_                = 0;//TO AVOID UNDEFINED RANDOM VALUES
+            float y_                = 0;
+            float length_           = 0;
+            float height_           = 0;
+            float offset_           = 0;
+            float svg_width_        = 0;
+            float svg_height_       = 0;
+            float trailer_length_   = 0;
+            float trailer_height_   = 0;  
+            float car_length_       = 0;
+            float car_height_       = 0;  
+            float car_radius_       = 0; 
+            float n_cars_           = 0;  
+            float n_floors_         = 0;
+            float margin_           = 0;
+
+            virtual void print(ostream&) const;
+        public:
+            Parameters();
+            Parameters(char **);
+            Parameters(const Parameters&);
+            Parameters(Parameters*);
+            void isempty(bool);
+            bool isempty() const;
+            void  x(float);
+            float x() const;
+            void  y(float);
+            float y() const;
+            void  length(float);
+            float length() const;
+            void  height(float);
+            float height() const;
+            void  offset(float);
+            float offset() const;
+
+            void  svg_width(float);  
+            float svg_width() const;    
+            void  svg_height(float); 
+            float svg_height() const;
+            void  trailer_length(float); 
+            float trailer_length() const; 
+            void  trailer_height(float); 
+            float trailer_height() const; 
+            void  car_length(float); 
+            float car_length() const;   
+            void  car_height(float);  
+            float car_height() const;    
+            void  car_radius(float);  
+            float car_radius() const;   
+            void  n_cars(float);     
+            float n_cars() const;       
+            void  n_floors(float);   
+            float n_floors() const;
+            void  margin(float);   
+            float margin() const;
+            
+            virtual void copyParam(const oselin::Parameters &);
+            virtual void copyParam(oselin::Parameters *);
+
+            friend ostream& operator<<(ostream& os, const Parameters & base){
+                base.print(os);
+                return os;
+            }
+
+            friend ostream& operator<<(ostream& os, const Parameters *base){
+                base->print(os);
+                return os;
+            }
+        };
+
     class Svg{
         protected:
             float x_ ;
@@ -165,10 +219,7 @@ namespace oselin{
             string svg() const;
     };
 
-    class Trailer{
-        private:
-            Parameters parameters_;
-
+    class Trailer: public Parameters{
         public:
             
             Floor downfloor;    
@@ -181,56 +232,19 @@ namespace oselin{
             Axis  front_axis;   
 
             Trailer();
-            Trailer(Parameters, bool = 0);
+            Trailer(Parameters, bool = 1, bool = 1);
             Trailer (Trailer &);
             Trailer (Trailer *);
             Trailer (string);
 
-            void isempty(bool);
-            bool isempty() const;
-            void  x(float);
-            float x() const;
-            void  y(float);
-            float y() const;
-            void  length(float);
-            float length() const;
-            void   height(float);
-            float  height() const;
-            void  offset(float);
-            float offset() const;
 
             string svg(bool = false, bool = false) const;
-            void  parameters(Parameters);
-            Parameters parameters() const;
-
-            void  svg_width(float);  
-            float svg_width() const;    
-            void  svg_height(float); 
-            float svg_height() const;
-            void  trailer_length(float); 
-            float trailer_length() const; 
-            void  trailer_height(float); 
-            float trailer_height() const; 
-            void  car_length(float); 
-            float car_length() const;   
-            void  car_height(float);  
-            float car_height() const;    
-            void  car_radius(float);  
-            float car_radius() const;   
-            void  n_cars(float);     
-            float n_cars() const;       
-            void  n_floors(float);   
-            float n_floors() const;
-            void  margin(float);   
-            float margin() const;
+            
             void fromSvg2Param();
-            void copy();
-    };
 
-    class Machine{
-        private:
-
-        public:
+            void distributeOffset();
+            void manage_y(float);
+            Trailer* copy();
     };
 
     int trigonometry(Trailer *, bool = 1);
@@ -244,9 +258,8 @@ namespace oselin{
     void printParam(Parameters);
 };
 
-//ostream& operator<<(ostream& os, const oselin::Svg &mother){
-//    mother.print(os);
-//    return os;
-//}
+
+
+
 
 #endif //CAR_TRAILER_H
