@@ -17,7 +17,7 @@ using std::string;
 namespace oselin{
     struct Parameters{
         bool isempty = true;
-        float x_                = 0;//TO AVOID RANDOM UNDEFINED VALUES
+        float x_                = 0;//TO AVOID UNDEFINED RANDOM VALUES
         float y_                = 0;
         float length_           = 0;
         float height_           = 0;
@@ -75,6 +75,7 @@ namespace oselin{
         public:
             Wheel();
             Wheel(Wheel &w);
+            Wheel(string);
 
             void   radius(float r);
             float  radius() const;
@@ -92,6 +93,7 @@ namespace oselin{
         public:
             Floor();
             Floor (Floor &f);
+            Floor(string);
             
             void  width(float w);
             float width() const;
@@ -106,8 +108,9 @@ namespace oselin{
         private:
             float length_;
         public:
-            Joint(){}
+            Joint();
             Joint(Joint &j);
+            Joint(string);
 
             Floor body;
             Wheel head;
@@ -121,12 +124,13 @@ namespace oselin{
 
     class Axis:  public Svg{
         private:
-            float angle_ = 20;
+            float angle_;
             float point_[2];
         public:
-            Axis(){}
+            Axis();
             Axis (Axis &a);
-
+            Axis(string);
+            
             Floor body;
             Wheel bottom_screw;
             Wheel top_screw;
@@ -209,6 +213,12 @@ namespace oselin{
     };
 
     int trigonometry(Trailer *trailer, bool = 1);
+
+    string checkpoint(int);
+
+    string buffering(string, string, char);
+
+    string measures();
 };
 
 

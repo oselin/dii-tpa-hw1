@@ -98,9 +98,9 @@ oselin::Parameters argv2param(char * argv[]){
 }
 
 
-oselin::Trailer* load(char *argv[] = NULL){
+oselin::Trailer* load(int argc = 0, char *argv[] = NULL){
     string s, filename;
-    if (argv != NULL){
+    if (argv != NULL && argc >=2){
         filename = string(argv[2]);
     }
     else{
@@ -111,57 +111,63 @@ oselin::Trailer* load(char *argv[] = NULL){
         ifstream file(filename);
         stringstream buffer;
         buffer << file.rdbuf();
-        string s = buffer.str();
+        s = buffer.str();
     }
     catch(const exception& e){
+        cout << "An error occurred here" << endl;
         throw e;
     }
-
     oselin::Trailer *t = new oselin::Trailer(s);
     return t;
 }
+
 oselin::Trailer* create(oselin::Parameters parameters){
     
     if (parameters.isempty){
+        oselin::Parameters p;
         try{
             for (int i=0; i<7; i++){
                 cout << questions[i];
                 switch (i)
                 {
                 case 0:
-                    cin >> parameters.svg_width_;
+                    cin >> p.svg_width_;
                     break;
                 case 1:
-                    cin >> parameters.svg_height_;
+                    cin >> p.svg_height_;
                     break;
                 case 2:
-                    cin >> parameters.car_length_;
+                    cin >> p.car_length_;
                     break;
                 case 3:
-                    cin >> parameters.car_height_;
+                    cin >> p.car_height_;
                     break;
                 case 4:
-                    cin >> parameters.car_radius_;
+                    cin >> p.car_radius_;
                     break;
                 case 5:
-                    cin >> parameters.n_cars_;
+                    cin >> p.n_cars_;
                     break;
                 case 6:
-                    cin >> parameters.n_floors_;
+                    cin >> p.n_floors_;
                     break;
                 default:
                     throw out_of_range("An error occurred.");
                 }}
         }catch(const exception& e){
+            parameters.isempty = false;
             throw e;
         }
+        //Prevent data loss if something goes wrong
+        parameters = p;
         parameters.isempty = false;
-        }
+    }
 
     oselin::Trailer *t = new oselin::Trailer(parameters);
     return t;
 
 }
+
 string save(oselin::Trailer *trailer, int mode=0){
     char resp;
     string svg;
@@ -244,7 +250,6 @@ void mainloop(oselin::Trailer *trailer, oselin::Machine *machine,oselin::Paramet
         case '2':
             parameters.isempty = true;
             trailer = create(parameters);
-            //print(trailer->parameters());
             message = "Created successfully.";
             break;
         case '3':
@@ -293,7 +298,8 @@ int main(int argc, char * argv[]) {
                 cout << "Too many parameters. Please check and try again." << endl;
             }
             else{
-                parameters = argv2param(argv);
+                parameters = argv2param(argv);                
+                parameters.isempty = false;
                 trailer = create(parameters);
                 mainloop(trailer, machine, parameters);
             }
@@ -306,7 +312,8 @@ int main(int argc, char * argv[]) {
                 cout << "Too many parameters. Please check and try again." << endl;
             }
             else{
-                //cout << load(trailer, argc,argv) << endl;
+                trailer = load(argc,argv);
+                parameters = trailer->parameters();
                 mainloop(trailer, machine, parameters);
             }
         }

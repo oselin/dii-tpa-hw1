@@ -6,6 +6,7 @@
 #include <cmath>
 #include <stdexcept>
 
+
 #define FRONT 1
 #define REAR  0
 #define UP    1 
@@ -96,197 +97,6 @@ void oselin::Trailer::copy(){
     this->rear_axis.bottom_screw.offset(this->offset());
     this->rear_axis.top_screw.offset(this->offset());
     
-}
-
-
-
-//TRIGONOMETRY SUPPORTING FUNCTIONS
-oselin::Floor trigonometry_floors(oselin::Trailer *trailer, int mode){
-    if (trailer!=NULL){
-
-        oselin::Floor f;
-        
-        f.width(trailer->trailer_length());
-        f.height(trailer->trailer_length()/15);
-
-        trailer->trailer_height(f.height());
-
-        f.stroke(f.height()/20);
-        f.x(0);
-        f.y(trailer->svg_height() - (trailer->svg_height() - trailer->height())/2 - mode*trailer->height());
-
-        return f;
-    }
-    throw logic_error("Pointer is null.");
-   
-
-}
-
-oselin::Wheel trigonometry_wheel(oselin::Trailer *trailer, int mode){
-    if (trailer!=NULL){
-
-        oselin::Wheel wheel;
-
-        float wheeloffset = trailer->trailer_length()/12;
-
-        wheel.radius(trailer->downfloor.height() / 40 * 2 * trailer->car_radius());
-        wheel.stroke(wheel.radius()/10);
-        wheel.x(trailer->downfloor.x() + pow(-1,mode)* wheeloffset + mode*trailer->trailer_length());
-        wheel.y(trailer->downfloor.y() + trailer->downfloor.height() - wheel.radius()/4);
-        return wheel;
-    }
-    throw logic_error("Pointer is null");
-}
-
-oselin::Joint trigonometry_joint(oselin::Trailer *trailer, int mode){
-
-    if (trailer != NULL){
-        oselin::Joint j;
-        
-        j.body.width(DOWNOFFSET);
-        j.body.height(DOWNOFFSET/5);
-        j.body.x(trailer->downfloor.x() + (mode-1)*DOWNOFFSET + mode*trailer->trailer_length());
-        j.body.y(trailer->downfloor.y() + trailer->downfloor.height()/2 - j.body.height()/2);
-        j.body.stroke(j.body.height()/20);
-        
-        j.head.x(j.body.x() + mode*j.body.width());
-        j.head.y(j.body.y() + j.body.height()/2);
-        j.head.radius(trailer->car_radius()/3);
-        j.head.stroke(trailer->car_radius()/10);
-        j.head.innercolor("");
-        j.head.color("white");
-
-        j.length(j.body.width() + j.head.radius());
-
-        return j;
-    }
-    throw logic_error("Pointer is null");
-}
-
-oselin::Axis trigonometry_axis(oselin::Trailer *trailer, int mode){
-
-    if (trailer != NULL){
-        oselin::Axis a; 
-
-        a.body.x(trailer->trailer_length()*(mode+1)/3 + trailer->upfloor.x());
-        a.body.y(trailer->upfloor.y());
-        a.body.height(trailer->height() + trailer->downfloor.height());
-        a.body.width(trailer->height()/10);
-        a.body.stroke(a.body.width()/20);
-        
-        a.top_screw.innercolor("");
-        a.top_screw.color("white");
-        a.top_screw.radius(a.body.width() /3);
-        a.top_screw.stroke((trailer->downfloor.height() / 40 * 2 * trailer->car_radius())/10);
-        a.top_screw.x(a.body.width()/2 + a.body.x());
-        a.top_screw.y(a.body.width()/2 + a.body.y());
-        
-        
-        a.bottom_screw.innercolor("");
-        a.bottom_screw.color("white");
-        a.bottom_screw.radius(a.body.width() /3);
-        a.bottom_screw.stroke((trailer->downfloor.height() / 40 * 2 * trailer->car_radius())/10);
-        a.bottom_screw.x(a.body.width()/2 + a.body.x());
-        a.bottom_screw.y(-a.body.width()/2 + a.body.y() + a.body.height());
-        a.point_x(a.body.x() + a.body.width()/2);
-        a.point_y(a.body.y() + a.body.height()/2);
-              
-        return a;
-    }
-    throw logic_error("Pointer is null");
-}
-
-int oselin::trigonometry(oselin::Trailer *trailer, bool automaticoffset){
-
-    if (trailer == NULL) throw logic_error("Pointer is null");
-
-    trailer->downfloor =   trigonometry_floors(trailer, DOWN);
-    trailer->rear_wheel =  trigonometry_wheel (trailer, REAR);
-    trailer->front_wheel = trigonometry_wheel (trailer, FRONT);
-    trailer->rear_joint =  trigonometry_joint (trailer, REAR);
-    trailer->front_joint = trigonometry_joint (trailer, FRONT);
-    
-    if (trailer->n_floors() > 1){
-        trailer->upfloor =    trigonometry_floors(trailer, (int)UP);
-        trailer->rear_axis =  trigonometry_axis  (trailer, REAR);
-        trailer->front_axis = trigonometry_axis  (trailer, FRONT);
-    }
-
-    trailer->x(trailer->rear_joint.head.x());
-    trailer->y(trailer->rear_joint.head.y());
-    trailer->length(trailer->trailer_length()+ 2*trailer->rear_joint.length() - 2* trailer->rear_joint.head.radius());
-    
-    if (automaticoffset){
-        trailer->offset((trailer->svg_width() - trailer->downfloor.width())/2);
-    }
-    return 0;
-}
-
-string measures(){
-    string measure;
-    for (int i=0; i<6; i++){
-        measure += " ";
-    }
-
-    return measure;
-}
-
-
-/**
- * @param element to measure
- * @param main_dimension
- * */
-string get_measures(){
-    string measures;
-
-    oselin::Floor line;
-    oselin::Floor SXlim;
-    oselin::Floor DXlim;
-
-
-    
-    return measures;
-}
-
-
-
-//TO_SVG METHOD
-string oselin::Trailer::svg(bool with_header, bool with_measures) const{
-       
-    string svg;
-    //if (device!=NULL){// CHOOSE HOW TO TEST IF IT EXISTS
-        if (with_header){
-
-            svg = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width='";
-            svg += to_string(this->svg_width()) + " '  height='";
-            svg += to_string(this->svg_height()) + "' >";
-
-            svg += "<rect  x='0.000000' y='0.000000' width='" + to_string(this->svg_width()) + "' height='" + to_string(this->svg_height()) + "' style='stroke-width:0.0; stroke:' fill='white' />";
-        }
-        svg += "\n<!--#1-->";
-        svg += "\n" + this->rear_joint.svg();
-        svg += "\n<!--#2-->";
-        svg += "\n" +this->front_joint.svg();
-        svg += "\n<!--#3-->";
-        svg += "\n" + this->downfloor.svg();
-        svg += "\n<!--#4-->";
-        svg += "\n" + this->front_wheel.svg();
-        svg += "\n<!--#5-->";
-        svg += "\n" + this->rear_wheel.svg();
-        
-        if (this->n_floors() > 1) {
-            svg += "\n<!--#6-->";
-            svg += "\n" + this->upfloor.svg();
-            svg += "\n<!--#7-->";
-            svg += "\n" + this->rear_axis.svg();
-            svg += "\n<!--#8-->";
-            svg += "\n" + this->front_axis.svg();
-        }
-        
-        if (with_measures) svg += measures();
-
-        
-    return svg;
 }
 
 //Copy Constructor by reference
@@ -385,9 +195,91 @@ oselin::Trailer::Trailer(oselin::Parameters parameters, bool avoid_svg){
     this->copy();
 }
 
+//TO_SVG METHOD
+string oselin::Trailer::svg(bool with_header, bool with_measures) const{
+       
+    string svg;
+    //if (device!=NULL){// CHOOSE HOW TO TEST IF IT EXISTS
+        if (with_header){
+
+            svg = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width='";
+            svg += to_string(this->svg_width()) + " '  height='";
+            svg += to_string(this->svg_height()) + "' >";
+
+            svg += "<rect  x='0.000000' y='0.000000' width='" + to_string(this->svg_width()) + "' height='" + to_string(this->svg_height()) + "' style='stroke-width:0.0; stroke:' fill='white' />";
+        }
+        svg += "\n<!--#1-->";
+        svg += "\n" + this->rear_joint.svg();
+        svg += "\n<!--#2-->";
+        svg += "\n" +this->front_joint.svg();
+        svg += "\n<!--#3-->";
+        svg += "\n" + this->downfloor.svg();
+        svg += "\n<!--#4-->";
+        svg += "\n" + this->front_wheel.svg();
+        svg += "\n<!--#5-->";
+        svg += "\n" + this->rear_wheel.svg();
+        
+        if (this->n_floors() > 1) {
+            svg += "\n<!--#6-->";
+            svg += "\n" + this->upfloor.svg();
+            svg += "\n<!--#7-->";
+            svg += "\n" + this->rear_axis.svg();
+            svg += "\n<!--#8-->";
+            svg += "\n" + this->front_axis.svg();
+        }
+        
+        if (with_measures) svg += oselin::measures();
+
+        
+    return svg;
+}
+
 //Constructor - PARSING
-oselin::Trailer::Trailer(string s){}
+oselin::Trailer::Trailer(string svg){
+    if (svg != ""){
+        int pieces[7][2];
+        for (int i=1;i<9;i++){
+            int index = svg.find(oselin::checkpoint(i));
+            int len = svg.find(oselin::checkpoint(i+1)) - index;
+            pieces[i-1][0] = index+11;
+            pieces[i-1][1] = len-11;
+        }
+        this->svg_width  (stof(oselin::buffering(svg.substr(0,pieces[0][0]),"width='", '\'')));
+        this->svg_height (stof(oselin::buffering(svg.substr(0,pieces[0][0]),"height='",'\'')));
+       
+        this->rear_joint      = oselin::Joint(svg.substr(pieces[0][0], pieces[0][1]));
+        this->front_joint     = oselin::Joint(svg.substr(pieces[1][0], pieces[1][1]));
+        this->downfloor       = oselin::Floor(svg.substr(pieces[2][0], pieces[2][1]));
+        this->front_wheel     = oselin::Wheel(svg.substr(pieces[3][0], pieces[3][1]));//double color
+        this->rear_wheel      = oselin::Wheel(svg.substr(pieces[4][0], pieces[4][1])); //double color
 
+        if (pieces[5][1] > 0){
+            this->upfloor    = oselin::Floor(svg.substr(pieces[5][0], pieces[5][1]));
+            this->rear_axis  = oselin::Axis (svg.substr(pieces[6][0], pieces[6][1]));
+            this->front_axis = oselin::Axis (svg.substr(pieces[7][0], pieces[7][1]));
+            this->n_floors(2);
+        }
+        else this->n_floors(1);
 
+        //this->length( = device->downfloor.width;
+        //this->height( = (float)(device->downfloor.y - device->upfloor.y  - 100) /device->param.nfloors;
+        //this->n_cars( = (int)(device->param.length/4.5);
+        Parameters p;
+        //p.length = (float)(device->param.length/4.5);
+        //p.height = device->param.height;
+        this->car_radius(20 * this->rear_wheel.radius()/this->downfloor.height());
+        
+        
+        //if (p.nfloors > 1)  p.ncars = 2;
+        //else  p.ncars = 2; //IMPOSSIBLE TO UNDERSTAND IF TRAILER IS MADE FOR ONE LONG CAR INSTEAD OF TWO SHORT ONES
+        //if (!svgoverride){
+        //    p.svgwidth  = device->param.svgwidth ;  
+        //    p.svgheight = device->param.svgheight;
+        //}
 
+        oselin::trigonometry(this);
+        this->copy();
+    }
+    throw std::range_error("File is empty!");
+}
 

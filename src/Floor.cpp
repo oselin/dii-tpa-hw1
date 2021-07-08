@@ -13,7 +13,7 @@
 
 using namespace std;
 
-
+//Constructor
 oselin::Floor::Floor(): oselin::Svg(){
     this->strokecolor_ = "black";
     this->color_ = "#990000";
@@ -24,6 +24,17 @@ oselin::Floor::Floor(Floor &f): oselin::Svg(f){
     this->width_ =  f.width();
     this->height_ = f.height();
 
+}
+
+//Constructor - PARSING
+oselin::Floor::Floor(string svg){
+    this->x(stof(oselin::buffering(svg, "x='",'\'')));
+    this->y(stof(oselin::buffering(svg, "y='",'\'')));
+    this->width(stof(oselin::buffering(svg, "width='",'\'')));
+    this->height(stof(oselin::buffering(svg, "height='",'\'')));
+    this->color(oselin::buffering(svg, "fill='",'\''));
+    this->stroke(stof(oselin::buffering(svg, "stroke-width:",';')));
+    this->strokecolor(oselin::buffering(svg, "stroke:", '\''));
 }
 
 //Get-Set Methods for: width()
@@ -37,9 +48,6 @@ float  oselin::Floor::height() const{return this->height_;}
 //TO_SVG METHOD
 string oselin::Floor::svg() const{
 
-    cout << "VALUES" << endl;
-    cout << this->offset() + this->x_ << endl;
-    cout << this->offset() << endl;
     string str = "\n<rect  ";
     str += "x='" + to_string(this->offset() + this->x_) + "'";
     str += " y='" + to_string(this->y_) + "'";

@@ -5,16 +5,14 @@
 #include <cmath>
 #include <stdexcept>
 
-#define FRONT 1
-#define REAR  0
-#define UP    1 
-#define DOWN  0
-
-
 using namespace std;
 
+//Constructor
+oselin::Axis::Axis(): oselin::Svg(){
+    this->angle_ = 20;
+}
 
-//Copy COnstructor
+//Copy Constructor
 oselin::Axis::Axis(Axis &a): oselin::Svg(a){
     this->body =         a.body;
     this->bottom_screw = a.bottom_screw;
@@ -22,6 +20,28 @@ oselin::Axis::Axis(Axis &a): oselin::Svg(a){
     this->angle_ =       a.angle();
     this->point_[0]=     a.point()[0];
     this->point_[1]=     a.point()[1];
+}
+
+//Constructor - PARSING
+oselin::Axis::Axis(string svg){
+    string rect = svg.substr(svg.find("<rect"),svg.find(">")-svg.find("<rect"));
+    int index = svg.find("<circle");
+    int index2 = svg.find("<circle",index+1);
+    string circlebottom = svg.substr(index,svg.find(">") - index);
+    string circletop = svg.substr(index2,svg.find(">",index2) - index2);
+    string rotation = "<g transform='rotate(";
+    this->angle_ = stof(oselin::buffering(svg,rotation,','));
+    rotation += to_string(this->angle_) + ',';
+
+    for (int i=0;i<2;i++){
+        if (!i) this->point_[i] = stof(oselin::buffering(svg, rotation, ','));
+        else    this->point_[i] = stof(oselin::buffering(svg, rotation, ')'));
+        rotation += to_string(this->point_[i]) + ',';
+    }
+    this->body         = oselin::Floor(rect);
+    this->bottom_screw = oselin::Wheel(circlebottom);
+    this->top_screw    = oselin::Wheel(circletop);
+    
 }
 
 //Get-Set Methods for: angle()

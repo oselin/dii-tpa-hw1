@@ -5,15 +5,9 @@
 #include <cmath>
 #include <stdexcept>
 
-#define FRONT 1
-#define REAR  0
-#define UP    1 
-#define DOWN  0
-
-
 using namespace std;
 
-
+//Constructor
 oselin::Wheel::Wheel(): oselin::Svg(){
     this->strokecolor_ = "black";
     this->color_  = "black";
@@ -27,6 +21,18 @@ oselin::Wheel::Wheel(Wheel &w): oselin::Svg(w){
 
 }
 
+//Constructor - PARSING
+oselin::Wheel::Wheel(string svg){
+    this->x(stof(oselin::buffering(svg, "cx='",'\'')));
+    this->y(stof(oselin::buffering(svg, "cy='",'\'')));
+    this->radius(stof(oselin::buffering(svg, "r='",'\'')));
+    this->stroke(stof(oselin::buffering(svg, "stroke-width='",'\'')));
+    this->strokecolor(oselin::buffering(svg, "stroke='",'\''));
+    this->color(oselin::buffering(svg, "fill='",'\''));
+    //double color
+    this->innercolor(oselin::buffering(svg, "fill= '",'\''));
+}
+
 //Get-Set Methods for: radius()
 void   oselin::Wheel::radius(float r){this->radius_ = r;}
 float  oselin::Wheel::radius() const{return this->radius_;}
@@ -34,7 +40,6 @@ float  oselin::Wheel::radius() const{return this->radius_;}
 //Get-Set Methods for: innercolor()
 void   oselin::Wheel::innercolor(string in){this->innercolor_ = in;}
 string oselin::Wheel::innercolor() const{return this->innercolor_;}
-
 
 //TO_SVG METHOD
 string oselin::Wheel::svg() const{
