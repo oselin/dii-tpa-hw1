@@ -4,12 +4,7 @@
 #include <string>
 #include <cmath>
 #include <stdexcept>
-
-#define FRONT 1
-#define REAR  0
-#define UP    1 
-#define DOWN  0
-
+#include <ostream>
 
 using namespace std;
 
@@ -27,14 +22,18 @@ oselin::Floor::Floor(Floor &f): oselin::Svg(f){
 }
 
 //Constructor - PARSING
-oselin::Floor::Floor(string svg){
-    this->x(stof(oselin::buffering(svg, "x='",'\'')));
-    this->y(stof(oselin::buffering(svg, "y='",'\'')));
-    this->width(stof(oselin::buffering(svg, "width='",'\'')));
-    this->height(stof(oselin::buffering(svg, "height='",'\'')));
-    this->color(oselin::buffering(svg, "fill='",'\''));
-    this->stroke(stof(oselin::buffering(svg, "stroke-width:",';')));
-    this->strokecolor(oselin::buffering(svg, "stroke:", '\''));
+oselin::Floor::Floor(string svg, float off){
+    if (svg != ""){
+        this->offset_ = off;
+        this->x(stof(oselin::buffering(svg, "x='",'\''))-this->offset());
+        this->y(stof(oselin::buffering(svg, "y='",'\'')));
+        this->width(stof(oselin::buffering(svg, "width='",'\'')));
+        this->height(stof(oselin::buffering(svg, "height='",'\'')));
+        this->color(oselin::buffering(svg, "fill='",'\''));
+        this->stroke(stof(oselin::buffering(svg, "stroke-width:",';')));
+        this->strokecolor(oselin::buffering(svg, "stroke:", '\''));
+    }
+    else throw range_error("FLOOR: String is empty.");
 }
 
 //Get-Set Methods for: width()
@@ -59,3 +58,12 @@ string oselin::Floor::svg() const{
     str += " />";
     return str;
 }
+
+//Print Method
+void oselin::Floor::print(ostream& os) const{
+    this->Svg::print(os);
+    os << "WIDTH: "  << this->width_ << endl;
+    os << "HEIGHT: " << this->height_ << endl;
+    os << endl;
+}
+

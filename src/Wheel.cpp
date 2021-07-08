@@ -4,6 +4,7 @@
 #include <string>
 #include <cmath>
 #include <stdexcept>
+#include <ostream>
 
 using namespace std;
 
@@ -22,8 +23,9 @@ oselin::Wheel::Wheel(Wheel &w): oselin::Svg(w){
 }
 
 //Constructor - PARSING
-oselin::Wheel::Wheel(string svg){
-    this->x(stof(oselin::buffering(svg, "cx='",'\'')));
+oselin::Wheel::Wheel(string svg, float off){
+    this->offset_ = off;
+    this->x(stof(oselin::buffering(svg, "cx='",'\''))-this->offset_);
     this->y(stof(oselin::buffering(svg, "cy='",'\'')));
     this->radius(stof(oselin::buffering(svg, "r='",'\'')));
     this->stroke(stof(oselin::buffering(svg, "stroke-width='",'\'')));
@@ -64,4 +66,12 @@ string oselin::Wheel::svg() const{
         str += " />";   
     }
     return str;
+}
+
+//Print Method
+void oselin::Wheel::print(ostream& os) const{
+    this->Svg::print(os);
+    os << "RADIUS: "     << this->radius_ << endl;
+    os << "INNERCOLOR: " << this->innercolor_ << endl;
+    os << endl;
 }

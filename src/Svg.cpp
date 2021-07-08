@@ -4,11 +4,7 @@
 #include <string>
 #include <cmath>
 #include <stdexcept>
-
-#define FRONT 1
-#define REAR  0
-#define UP    1 
-#define DOWN  0
+#include <ostream>
 
 
 using namespace std;
@@ -46,3 +42,14 @@ string oselin::Svg::strokecolor() const{return this->strokecolor_;}
 //Get-Set Methods for: offset()
 void  oselin::Svg::offset(float off){this->offset_ = off;}
 float oselin::Svg::offset()const{return this->offset_;}
+
+//Print Method
+void oselin::Svg::print(ostream& os) const{
+    os << "X: "               << this->x_            << std::endl;
+    os << "Y: "               << this->y_            << std::endl;
+    os << "STROKE: "          << this->stroke_       << std::endl;
+    os << "STROKE COLOR: "    << this->strokecolor_  << std::endl;
+    os << "COLOR: "           << this->color_        << std::endl;
+    os << "OFFSET: "          << this->offset_       << std::endl;
+    os << std::endl;
+}

@@ -26,7 +26,8 @@ void displaymenu(){
     com += "[3] - save SVG drawing to file\n";
     com += "[4] - change a parameter\n";
     com += "[5] - create a machine\n";
-    com += "[6] - exit";
+    com += "[6] - display Device Data\n";
+    com += "[7] - exit";
 
     cout << com << endl;
 
@@ -97,7 +98,6 @@ oselin::Parameters argv2param(char * argv[]){
     throw std::invalid_argument("Something went wrong.");
 }
 
-
 oselin::Trailer* load(int argc = 0, char *argv[] = NULL){
     string s, filename;
     if (argv != NULL && argc >=2){
@@ -121,9 +121,9 @@ oselin::Trailer* load(int argc = 0, char *argv[] = NULL){
     return t;
 }
 
-oselin::Trailer* create(oselin::Parameters parameters){
+oselin::Trailer* create(oselin::Trailer *trailer){
     
-    if (parameters.isempty){
+    if (trailer->isempty()){
         oselin::Parameters p;
         try{
             for (int i=0; i<7; i++){
@@ -155,16 +155,15 @@ oselin::Trailer* create(oselin::Parameters parameters){
                     throw out_of_range("An error occurred.");
                 }}
         }catch(const exception& e){
-            parameters.isempty = false;
             throw e;
         }
         //Prevent data loss if something goes wrong
-        parameters = p;
-        parameters.isempty = false;
-    }
+        p.isempty_ = false;
 
-    oselin::Trailer *t = new oselin::Trailer(parameters);
-    return t;
+        oselin::Trailer *t = new oselin::Trailer(p);
+        return t;
+    }
+    return trailer;    
 
 }
 
@@ -178,7 +177,7 @@ string save(oselin::Trailer *trailer, int mode=0){
             svg = trailer->svg(true, true);
         }
         else if (resp == 'n' || resp == 'N'){
-            svg = trailer->svg();
+            svg = trailer->svg(true);
         }
         
     }
@@ -190,13 +189,12 @@ string save(oselin::Trailer *trailer, int mode=0){
     MyFile << (svg + "\n</svg>");
     MyFile.close();
     return "SAVED!";
-    
-    return "Aborting...";
 }
 
 string change(oselin::Trailer *trailer){
-
+    if (trailer->isempty()) return "You might not have initialized a device. Aborting";
     int choice; float newvalue;
+    system("clear");
     string help = "Choose what to change:\n";
     help += "[0] Set new car SVG width\n";
     help += "[1] Set new car SVG height\n";
@@ -205,10 +203,13 @@ string change(oselin::Trailer *trailer){
     help += "[4] Set new radius\n";
     help += "[5] Set new number of cars per trailer\n";
     help += "[6] Set new number of floors\n";
+    help += "--- Any other number to go back\n";
 
     cout << help << endl;
     cout << "Your choice: ";
     cin >> choice;
+
+    if (choice >7 || choice <0) return "Aborting.";
     cout << "New value: ";
     cin >> newvalue;
 
@@ -224,18 +225,17 @@ string change(oselin::Trailer *trailer){
     default:
         break;
     }
-    return "Aborting...";
+    return "Parameter has been changed";
 }
 
 
-void mainloop(oselin::Trailer *trailer, oselin::Machine *machine,oselin::Parameters &parameters){
+void mainloop(oselin::Trailer *trailer, oselin::Machine *machine){
 
     
     int inloop = 1;
     string message;
     cout << "Welcome to the SVG TRAILER CREATOR" << endl;
     do{
-        cout << "MAIN OFFSET: " << trailer->offset() << endl;
         displaymenu();
         char choice;
         cout << "Your choice: " ;
@@ -248,8 +248,8 @@ void mainloop(oselin::Trailer *trailer, oselin::Machine *machine,oselin::Paramet
             message = "File loaded successfully.";
             break;
         case '2':
-            parameters.isempty = true;
-            trailer = create(parameters);
+            trailer->isempty(true);
+            trailer = create(trailer);
             message = "Created successfully.";
             break;
         case '3':
@@ -262,13 +262,18 @@ void mainloop(oselin::Trailer *trailer, oselin::Machine *machine,oselin::Paramet
             //machine_mainloop(dev, mach);
             message = "";
         case '6':
+            system("clear");
+            oselin::printParam(trailer->parameters());
+            getchar(); getchar();
+            break;
+        case '7':
             inloop = 0;
             break;
         default:
             cout << "Command not found." << endl;
             break;
         }
-        //system("clear");
+        system("clear");
         cout << message << " What's next?" << endl;
 
     }while(inloop);
@@ -282,7 +287,6 @@ int main(int argc, char * argv[]) {
 
     oselin::Trailer *trailer;
     oselin::Machine *machine;
-    oselin::Parameters parameters;
     
     if (argc==1){
         cout <<"Welcolme to the trailer-to-svg tool. Use '-h' to display commands.\n" << endl;
@@ -298,10 +302,8 @@ int main(int argc, char * argv[]) {
                 cout << "Too many parameters. Please check and try again." << endl;
             }
             else{
-                parameters = argv2param(argv);                
-                parameters.isempty = false;
-                trailer = create(parameters);
-                mainloop(trailer, machine, parameters);
+                trailer = new oselin::Trailer(argv2param(argv));
+                mainloop(trailer, machine);
             }
         }
         else if (string(argv[1]) == "-l" || string(argv[1]) == "--load"){
@@ -313,16 +315,16 @@ int main(int argc, char * argv[]) {
             }
             else{
                 trailer = load(argc,argv);
-                parameters = trailer->parameters();
-                mainloop(trailer, machine, parameters);
+                mainloop(trailer, machine);
             }
         }
         else if (string(argv[1]) == "-m" || string(argv[1]) == "--machine"){
             ///machine_mainloop(device, mach);
-            mainloop(trailer, machine, parameters);
+            mainloop(trailer, machine);
         }
         else if (string(argv[1]) == "-i" || string(argv[1]) == "--interface"){
-            mainloop(trailer, machine, parameters);
+            trailer = new oselin::Trailer();
+            mainloop(trailer, machine);
         }
     }
 

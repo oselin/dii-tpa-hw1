@@ -3,20 +3,25 @@
 #define CAR_TRAILER_H
 
 #define DOWNOFFSET 50
+#define FRONT 1
+#define REAR  0
+#define UP    1 
+#define DOWN  0
+
 #include <string>
 #include <unordered_map>
 #include <iostream>
+#include <ostream>
 
-using std::endl;
-using std::cout;
 using std::unordered_map;
 using std::string;
+using std::ostream;
 
 
 
 namespace oselin{
     struct Parameters{
-        bool isempty = true;
+        bool isempty_ = true;
         float x_                = 0;//TO AVOID UNDEFINED RANDOM VALUES
         float y_                = 0;
         float length_           = 0;
@@ -42,45 +47,54 @@ namespace oselin{
             string color_;
             string strokecolor_;
             float offset_ = 0;
+
+            virtual void print(ostream&) const;
         public:
             Svg(){}
-            Svg(Svg &s);
+            Svg(Svg &);
             ~Svg(){}
             
-            void   x(float inp);
+            void   x(float);
             float  x() const;
             
-            void   y(float inp);
+            void   y(float);
             float  y() const;
             
-            void   stroke(float inp);
+            void   stroke(float);
             float  stroke() const;
             
-            void   color(string inp);
+            void   color(string);
             string color() const;
             
-            void   strokecolor(string inp);
+            void   strokecolor(string);
             string strokecolor() const;
             
-            void  offset(float off);
+            void  offset(float);
             float offset() const;
-
+            
             virtual string svg() const = 0; // PURE VIRTUAL FUNCTION
+
+            friend ostream& operator<<(ostream& os, const Svg &mother){
+                mother.print(os);
+                return os;
+            }
     };
 
     class Wheel: public Svg{
         private:
             float radius_;
             string innercolor_;
+
+            void print(ostream&) const;
         public:
             Wheel();
-            Wheel(Wheel &w);
-            Wheel(string);
+            Wheel(Wheel &);
+            Wheel(string, float = 0);
 
-            void   radius(float r);
+            void   radius(float);
             float  radius() const;
 
-            void   innercolor(string in);
+            void   innercolor(string);
             string innercolor() const;
 
             string svg() const;
@@ -90,15 +104,17 @@ namespace oselin{
         private:
             float width_;
             float height_;
+
+            void print(ostream&) const;
         public:
             Floor();
-            Floor (Floor &f);
-            Floor(string);
+            Floor (Floor &);
+            Floor(string, float = 0);
             
-            void  width(float w);
+            void  width(float);
             float width() const;
             
-            void  height(float h);
+            void  height(float);
             float height() const;
 
             string svg() const;
@@ -107,15 +123,17 @@ namespace oselin{
     class Joint: public Svg{
         private:
             float length_;
+
+            void print(ostream&) const;
         public:
             Joint();
-            Joint(Joint &j);
-            Joint(string);
+            Joint(Joint &);
+            Joint(string, float = 0);
 
             Floor body;
             Wheel head;
             
-            void  length(float l);
+            void  length(float);
             float length() const;
             
             string svg() const;
@@ -126,20 +144,22 @@ namespace oselin{
         private:
             float angle_;
             float point_[2];
+
+            void print(ostream&) const;
         public:
             Axis();
-            Axis (Axis &a);
-            Axis(string);
+            Axis (Axis &);
+            Axis(string, float = 0);
             
             Floor body;
             Wheel bottom_screw;
             Wheel top_screw;
             
-            void  angle(float a);
+            void  angle(float);
             float angle() const;
             
-            void point_x(float px);
-            void point_y(float py);
+            void point_x(float);
+            void point_y(float);
             float* point();
             
             string svg() const;
@@ -160,49 +180,50 @@ namespace oselin{
             Axis  rear_axis;    
             Axis  front_axis;   
 
-            Trailer(){}
-            Trailer(Parameters parameters, bool avoid_svg = 0);
-            Trailer (Trailer &t);
-            Trailer (Trailer *t);
-            Trailer (string s);
+            Trailer();
+            Trailer(Parameters, bool = 0);
+            Trailer (Trailer &);
+            Trailer (Trailer *);
+            Trailer (string);
 
-            //inline void  x(float &inp);
-            void  x(float inp);
+            void isempty(bool);
+            bool isempty() const;
+            void  x(float);
             float x() const;
-            //inline void  y(float &inp);
-            void  y(float inp);
+            void  y(float);
             float y() const;
-            //inline void  length(float &off);
-            void  length(float off);
+            void  length(float);
             float length() const;
-            
-            void   height(float h);
+            void   height(float);
             float  height() const;
-
-            void  offset(float off);
+            void  offset(float);
             float offset() const;
-            string svg(bool = false, bool = false) const;
-            void  parameters(Parameters p);
-            Parameters parameters() const;
-            void  svg_width(float nv);  
-            float svg_width() const;    
-            void  svg_height(float nv); 
-            float svg_height() const;
-            void  trailer_length(float nv); 
-            float trailer_length() const; 
-            void  trailer_height(float nv); 
-            float trailer_height() const; 
-            void  car_length(float nv); 
-            float car_length() const;   
-            void  car_height(float nv);  
-            float car_height() const;    
-            void  car_radius(float nv);  
-            float car_radius() const;   
-            void  n_cars(float nv);     
-            float n_cars() const;       
-            void  n_floors(float nv);   
-            float n_floors() const;
 
+            string svg(bool = false, bool = false) const;
+            void  parameters(Parameters);
+            Parameters parameters() const;
+
+            void  svg_width(float);  
+            float svg_width() const;    
+            void  svg_height(float); 
+            float svg_height() const;
+            void  trailer_length(float); 
+            float trailer_length() const; 
+            void  trailer_height(float); 
+            float trailer_height() const; 
+            void  car_length(float); 
+            float car_length() const;   
+            void  car_height(float);  
+            float car_height() const;    
+            void  car_radius(float);  
+            float car_radius() const;   
+            void  n_cars(float);     
+            float n_cars() const;       
+            void  n_floors(float);   
+            float n_floors() const;
+            void  margin(float);   
+            float margin() const;
+            void fromSvg2Param();
             void copy();
     };
 
@@ -212,15 +233,20 @@ namespace oselin{
         public:
     };
 
-    int trigonometry(Trailer *trailer, bool = 1);
+    int trigonometry(Trailer *, bool = 1);
 
     string checkpoint(int);
 
     string buffering(string, string, char);
 
     string measures();
+
+    void printParam(Parameters);
 };
 
-
+//ostream& operator<<(ostream& os, const oselin::Svg &mother){
+//    mother.print(os);
+//    return os;
+//}
 
 #endif //CAR_TRAILER_H

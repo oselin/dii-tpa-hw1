@@ -4,12 +4,7 @@
 #include <string>
 #include <cmath>
 #include <stdexcept>
-
-#define FRONT 1
-#define REAR  0
-#define UP    1 
-#define DOWN  0
-
+#include <ostream>
 
 using namespace std;
 
@@ -26,14 +21,16 @@ oselin::Joint::Joint(Joint &j): oselin::Svg(j){
 }
 
 //Constructor - PARSING
-oselin::Joint::Joint(string svg){
+oselin::Joint::Joint(string svg, float off){
+    this->offset_ = off;
     string rect = svg.substr(svg.find("<rect"),svg.find(">")-svg.find("<rect"));
     string circle = svg.substr(svg.find("<circle"),svg.find(">")-svg.find("<circle"));
 
-    //length
-    this->body = oselin::Floor(rect);
-    this->head = oselin::Wheel(circle);
+    this->body = oselin::Floor(rect,    this->offset_);
+    this->head = oselin::Wheel(circle,  this->offset_);
+    this->head.innercolor("");
 
+    this->length(this->body.width() + this->head.radius());
 }
 
 //Get-Set Methods for: length()
@@ -45,4 +42,13 @@ string oselin::Joint::svg() const{
     string str;
     str = this->body.svg() + this->head.svg();
     return str;
+}
+
+//Print Method
+void oselin::Joint::print(ostream& os) const{
+    this->Svg::print(os);
+    os << "LENGTH: " << this->length_ << endl;
+    os << this->body;
+    os << this->head;
+    os << endl;
 }

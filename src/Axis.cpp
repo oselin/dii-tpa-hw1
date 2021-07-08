@@ -4,6 +4,7 @@
 #include <string>
 #include <cmath>
 #include <stdexcept>
+#include <ostream>
 
 using namespace std;
 
@@ -23,7 +24,8 @@ oselin::Axis::Axis(Axis &a): oselin::Svg(a){
 }
 
 //Constructor - PARSING
-oselin::Axis::Axis(string svg){
+oselin::Axis::Axis(string svg, float off){
+    this->offset_ = off;
     string rect = svg.substr(svg.find("<rect"),svg.find(">")-svg.find("<rect"));
     int index = svg.find("<circle");
     int index2 = svg.find("<circle",index+1);
@@ -38,9 +40,13 @@ oselin::Axis::Axis(string svg){
         else    this->point_[i] = stof(oselin::buffering(svg, rotation, ')'));
         rotation += to_string(this->point_[i]) + ',';
     }
-    this->body         = oselin::Floor(rect);
-    this->bottom_screw = oselin::Wheel(circlebottom);
-    this->top_screw    = oselin::Wheel(circletop);
+    this->point_[0] -= this->offset_;
+    this->body         = oselin::Floor(rect, this->offset_);
+    this->bottom_screw = oselin::Wheel(circlebottom, this->offset_);
+    this->top_screw    = oselin::Wheel(circletop, this->offset_);
+
+    this->bottom_screw.innercolor("");
+    this->top_screw.innercolor("");
     
 }
 
@@ -64,4 +70,16 @@ string oselin::Axis::svg() const{
     str += this->bottom_screw.svg() + this->top_screw.svg();
     str += "\n</g>";
     return str;
+}
+
+//Print Method
+void oselin::Axis::print(ostream& os) const{
+    this->Svg::print(os);
+    os << "ANGLE: "   << this->angle_ << endl;
+    os << "POINT_X: " << this->point_[0] << endl;
+    os << "POINT_Y: " << this->point_[1] << endl;
+    os << this->body;
+    os << this->bottom_screw;
+    os << this->top_screw;
+    os << endl;
 }
