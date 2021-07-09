@@ -30,6 +30,8 @@ oselin::Joint::Joint(string svg, float off){
     this->head = oselin::Wheel(circle,  this->offset_);
     this->head.innercolor("");
 
+    this->x(this->body.x());
+    this->y(this->body.y());
     this->length(this->body.width() + this->head.radius());
 }
 
@@ -51,4 +53,38 @@ void oselin::Joint::print(ostream& os) const{
     os << this->body;
     os << this->head;
     os << endl;
+}
+
+//Method: dimensioning() [PUBLIC]
+string oselin::Joint::dimensioning() const{
+    oselin::Floor line;
+    line.color("black");
+    line.stroke(0);
+    line.strokecolor("");
+    line.offset(this->offset());
+
+    oselin::Floor limSX = line;
+    oselin::Floor limDX = line;
+
+    line.x(this->x());
+    line.y(this->y() + 1.5*this->length());
+    line.width(this->length());
+    line.height(4);
+
+    limSX.x(line.x());
+    limSX.y(line.y() -1.5 *this->length());
+    limSX.width(1);
+    limSX.height(1.8*this->length());
+
+    limDX.x(line.x()+ this->length());
+    limDX.y(line.y() -1.5 *this->length());
+    limDX.width(1);
+    limDX.height(1.8*this->length());
+
+    string measure = "\n" + line.svg()
+                   + "\n" + limSX.svg()
+                   + "\n" + limDX.svg()
+                   + oselin::textToSvg(line);
+
+    return measure;
 }

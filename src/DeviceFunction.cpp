@@ -88,7 +88,8 @@ oselin::Joint trigonometry_joint(oselin::Trailer *trailer, int mode){
         j.head.color("white");
 
         j.length(j.body.width() + j.head.radius());
-
+        j.x(j.body.x());
+        j.y(j.body.y());
         return j;
     }
     throw logic_error("Pointer is null");
@@ -121,7 +122,9 @@ oselin::Axis trigonometry_axis(oselin::Trailer *trailer, int mode){
         a.bottom_screw.y(-a.body.width()/2 + a.body.y() + a.body.height());
         a.point_x(a.body.x() + a.body.width()/2);
         a.point_y(a.body.y() + a.body.height()/2);
-              
+        
+        a.x(a.body.x());
+        a.y(a.body.y());
         return a;
     }
     throw logic_error("Pointer is null");
@@ -154,32 +157,24 @@ int oselin::trigonometry(oselin::Trailer *trailer, bool automaticoffset){
 }
 
 
-/**
- * @param element to measure
- * @param main_dimension
- * */
-string get_measures(){
-    string measures;
-
-    oselin::Floor line;
-    oselin::Floor SXlim;
-    oselin::Floor DXlim;
-
-
-    
-    return measures;
-}
-
-
-string oselin::measures(){
-    string measure;
-    for (int i=0; i<6; i++){
-        measure += " ";
+string oselin::textToSvg(oselin::Floor line){
+    float angle, val;
+    if (line.width() != 4){
+        angle = 0;
+        val = roundf(line.width() * 100) / 100;
     }
+    else{
+        angle = 90;
+        val = roundf(line.height() * 100) / 100;
+    }
+    string svg = "";
 
-    return measure;
+    svg += "<text x='" + to_string(line.offset() + line.x() + line.width()/2) + '\'';
+    svg += " y='" + to_string(line.y() + line.height()/2 - 10) + '\'';
+    svg += " fill='black' ";
+    svg += "dominant-baseline='middle' text-anchor='middle' ";
+    svg += "transform='rotate(" + to_string(angle) + ',' + to_string(line.offset() + line.x() + line.width()/2) +',' + to_string(line.y() + line.height()/2) +")'>";
+    svg += to_string(val);
+    svg += "</text>";
+    return svg;
 }
-
-
-
-

@@ -128,6 +128,8 @@ namespace oselin{
             
             virtual string svg() const = 0; // PURE VIRTUAL FUNCTION
 
+            virtual string dimensioning() const = 0;
+
             friend ostream& operator<<(ostream& os, const Svg &mother){
                 mother.print(os);
                 return os;
@@ -152,6 +154,7 @@ namespace oselin{
             string innercolor() const;
 
             string svg() const;
+            string dimensioning() const;
     };
 
     class Floor: public Svg{
@@ -172,6 +175,7 @@ namespace oselin{
             float height() const;
 
             string svg() const;
+            string dimensioning() const;
     };
 
     class Joint: public Svg{
@@ -191,6 +195,7 @@ namespace oselin{
             float length() const;
             
             string svg() const;
+            string dimensioning() const;
 
     };
 
@@ -217,6 +222,7 @@ namespace oselin{
             float* point();
             
             string svg() const;
+            string dimensioning() const;
     };
 
     class Trailer: public Parameters{
@@ -244,6 +250,8 @@ namespace oselin{
 
             void distributeOffset();
             Trailer* copy();
+
+            string measures() const;
     };
 
     int trigonometry(Trailer *, bool = 1);
@@ -252,7 +260,7 @@ namespace oselin{
 
     string buffering(string, string, char);
 
-    string measures();
+    string textToSvg(oselin::Floor);
 
     void printParam(Parameters);
 };

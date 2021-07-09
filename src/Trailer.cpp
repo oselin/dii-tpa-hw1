@@ -69,6 +69,50 @@ oselin::Trailer* oselin::Trailer::copy(){
     return acopyof;
 }
 
+//Method: measures()
+string oselin::Trailer::measures() const{
+    string measure;
+    if (this->n_floors() > 1){
+        oselin::Floor line;
+        line.color("black");
+        line.stroke(0);
+        line.strokecolor("");
+        line.offset(this->offset());
+
+        
+        oselin::Floor limSX = line;
+        oselin::Floor limDX = line;
+
+        line.x(this->x()-0.3*this->height());
+        line.y(this->y() - this->height() + this->downfloor.height()/2);
+        line.width(4);
+        line.height(this->height() - this->downfloor.height());
+
+        limSX.x(line.x() - 0.1*this->height());
+        limSX.y(line.y());
+        limSX.width(0.8*this->height());
+        limSX.height(1);
+
+        limDX.x(line.x() - 0.1*this->height());
+        limDX.y(line.y() + line.height());
+        limDX.width(0.8*this->height());
+        limDX.height(1);
+
+        measure += "\n" + line.svg()
+                + "\n" + limSX.svg()
+                + "\n" + limDX.svg()
+                + oselin::textToSvg(line)
+                + this->upfloor.dimensioning();
+    
+    }else measure += this->downfloor.dimensioning();
+
+
+    measure += this->rear_wheel.dimensioning()
+            +  this->front_joint.dimensioning();
+
+    return measure;
+}
+
 //Constructor
 oselin::Trailer::Trailer(){
     this->isempty(true);
@@ -205,7 +249,7 @@ string oselin::Trailer::svg(bool with_header, bool with_measures) const{
             svg += "\n" + this->front_axis.svg();
         }
         
-        if (with_measures) svg += oselin::measures();
+        if (with_measures) svg += this->measures();
 
             
         return svg;

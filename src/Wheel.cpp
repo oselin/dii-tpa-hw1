@@ -75,3 +75,38 @@ void oselin::Wheel::print(ostream& os) const{
     os << "INNERCOLOR: " << this->innercolor_ << endl;
     os << endl;
 }
+
+//Method: dimensioning() [PUBLIC]
+string oselin::Wheel::dimensioning() const{
+        
+    oselin::Floor line;
+    line.color("black");
+    line.stroke(0);
+    line.strokecolor("");
+    line.offset(this->offset());
+
+    oselin::Floor limSX = line;
+    oselin::Floor limDX = line;
+
+    line.x(this->x() - this->radius());
+    line.y(this->y() + 2*this->radius());
+    line.width(2*this->radius());
+    line.height(4);
+
+    limSX.x(line.x());
+    limSX.y(line.y() - 2*this->radius());
+    limSX.width(1);
+    limSX.height(2.2*this->radius());
+
+    limDX.x(line.x() + 2*this->radius());
+    limDX.y(line.y() - 2*this->radius());
+    limDX.width(1);
+    limDX.height(2.2*this->radius());
+
+    string measure = "\n" + line.svg()
+                   + "\n" + limSX.svg()
+                   + "\n" + limDX.svg()
+                   + oselin::textToSvg(line);
+
+    return measure;
+}

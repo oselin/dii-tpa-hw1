@@ -47,6 +47,8 @@ oselin::Axis::Axis(string svg, float off){
 
     this->bottom_screw.innercolor("");
     this->top_screw.innercolor("");
+    this->x(this->body.x());
+    this->y(this->body.y());
     
 }
 
@@ -82,4 +84,8 @@ void oselin::Axis::print(ostream& os) const{
     os << this->bottom_screw;
     os << this->top_screw;
     os << endl;
+}
+
+//Method: dimensioning() [PUBLIC]
+string oselin::Axis::dimensioning() const{
 }
