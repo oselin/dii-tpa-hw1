@@ -10,6 +10,8 @@
 #include <unordered_map>
 using namespace std;
 
+
+//UI supporting functions-------------------------
 string questions[] = {"SVG width: ", "SVG height: ","Car lenght: ","Car height: ", "Wheel radius [16,17,18]: ","Cars-per-trailer [1,2]: ","Number of floors [1,2]: "};
 
 void print(unordered_map<string,float> umap){
@@ -26,7 +28,7 @@ void displaymenu(){
     com += "[2] - create a new trailer\n";
     com += "[3] - save SVG drawing to file\n";
     com += "[4] - change a parameter\n";
-    com += "[5] - create a machine\n";
+    com += "[5] - machine mode\n";
     com += "[6] - create a machine from this trailer\n";
     com += "[7] - display Device Data\n";
     com += "[8] - display Machine Data\n";
@@ -60,29 +62,10 @@ void machine_displaymenu(){
     cout << com << endl;
 
 }
+//------------------------------------------------
 
-unordered_map<string, float> argv2umap(char * argv[]){
-    if (argv != NULL){
-        unordered_map<string,float> umap;
-        try{
-            umap["svg_width"] =  stof(argv[2]);
-            umap["svg_height"] = stof(argv[3]);
-            umap["car_length"] = stof(argv[4]);
-            umap["car_height"] = stof(argv[5]);
-            umap["car_radius"] = stof(argv[6]);
-            umap["n_cars"] =     stof(argv[7]);
-            umap["n_floors"] =   stof(argv[8]);
-        }catch (const exception &e){
-            throw e;
-        }
-
-        return umap;
-    }
-
-    throw std::invalid_argument("Something went wrong.");
-}
-
-oselin::Trailer* load(int argc = 0, char *argv[] = NULL){
+//Trailer managing functions----------------------
+oselin::Trailer* trailer_load(int argc = 0, char *argv[] = NULL){
     string s, filename;
     if (argv != NULL && argc >=2){
         filename = string(argv[2]);
@@ -105,7 +88,7 @@ oselin::Trailer* load(int argc = 0, char *argv[] = NULL){
     return t;
 }
 
-oselin::Trailer* create(oselin::Trailer *trailer){
+oselin::Trailer* trailer_create(oselin::Trailer *trailer){
     
     if (trailer->isempty()){
         oselin::Parameters p;
@@ -152,7 +135,7 @@ oselin::Trailer* create(oselin::Trailer *trailer){
 
 }
 
-string save(oselin::Trailer *trailer, int mode=0){
+void trailer_save(oselin::Trailer *trailer, int mode=0){
     char resp;
     string svg;
     if (!mode){
@@ -167,17 +150,19 @@ string save(oselin::Trailer *trailer, int mode=0){
         
     }
     else svg = trailer->svg();
+    if (svg == "") throw logic_error("An error occurred. [TRAILER SAVE]");
     string filename;
     cout << "File name for saving (with extension): ";
     cin >> filename;
     ofstream MyFile(filename);
     MyFile << (svg + "\n</svg>");
     MyFile.close();
-    return "SAVED!";
 }
 
-string change(oselin::Trailer *trailer){
-    if (trailer->isempty()) return "You might not have initialized a device. Aborting";
+oselin::Trailer* trailer_change(oselin::Trailer *trailer){
+    oselin::Trailer *t = new oselin::Trailer();
+
+    if (trailer->isempty()) return t;
     int choice; float newvalue;
     system("clear");
     string help = "Choose what to change:\n";
@@ -194,39 +179,70 @@ string change(oselin::Trailer *trailer){
     cout << "Your choice: ";
     cin >> choice;
 
-    if (choice >7 || choice <0) return "Aborting.";
+    if (choice >7 || choice <0) return trailer;
     cout << "New value: ";
     cin >> newvalue;
 
+    oselin::Parameters buffer = trailer;
     switch (choice)
     {
-    case 0: trailer->svg_width(newvalue); 
-    case 1: trailer->svg_height(newvalue);
-    case 2: trailer->car_length(newvalue);
-    case 3: trailer->car_height(newvalue);
-    case 4: trailer->car_radius(newvalue);
-    case 5: trailer->n_cars(newvalue);    
-    case 6: trailer->n_floors(newvalue);  
+    case 0: 
+        buffer.svg_width(newvalue); 
+        break;
+    case 1: 
+        buffer.svg_height(newvalue);
+        break;
+    case 2: 
+        buffer.car_length(newvalue);
+        break;
+    case 3: 
+        buffer.car_height(newvalue);
+        break;
+    case 4: 
+        buffer.car_radius(newvalue);
+        break;
+    case 5: 
+        buffer.n_cars(newvalue);
+        break;    
+    case 6: 
+        buffer.n_floors(newvalue);
+        break;  
     default:
         break;
     }
-    return "Parameter has been changed";
-}
+    
+    try
+    {
+        t = new oselin::Trailer(buffer);
+        return t;
 
+    }
+    catch(const std::exception& e)
+    {
+        cout << "New parameter is wrong";
+    }
+    return trailer;
+}
+//------------------------------------------------
+
+//Machine managing functions----------------------
 void machine_save(oselin::Machine *machine){
     if (machine != NULL){
         if (machine->isempty() == 0){
             string filename, svgmach;
+
             cout << "File name for saving (with extension): ";
             cin >> filename;
+
             ofstream MyFile(filename);
             svgmach =  machine->svg();
+            
             if (svgmach == "") throw range_error("Something went wrong.");
-            else{
-                MyFile << (svgmach + "\n</svg>");
-                MyFile.close();
-                cout << "Saved." << endl;
-            }
+            
+            MyFile << (svgmach + "\n</svg>");
+            MyFile.close();
+            cout << "Saved." << endl;
+            
         }
     }
     else throw logic_error("Pointer is null.");
@@ -284,9 +300,72 @@ oselin::Machine * machine_load(){
     return m;
 }
 
-/**
- * Sub loop for working in a machine environment
- **/
+
+oselin::Machine* machine_change(oselin::Machine *machine){
+    oselin::Machine *m = new oselin::Machine();
+
+    if (machine->isempty()) return m;
+    int choice; float newvalue;
+    system("clear");
+    string help = "Choose what to change:\n";
+    help += "[0] Set new car length\n";
+    help += "[1] Set new car height\n";
+    help += "[2] Set new radius\n";
+    help += "[3] Set new number of cars per trailer\n";
+    help += "[4] Set new number of floors\n";
+    help += "[5] Set new number of trailers\n";
+    help += "--- Any other number to go back\n";
+
+    cout << help << endl;
+    cout << "Your choice: ";
+    cin >> choice;
+
+    if (choice >8 || choice <0) return machine;
+    cout << "New value: ";
+    cin >> newvalue;
+
+    oselin::Parameters buffer = machine;
+    float n_trail = machine->n_trailers();
+    switch (choice)
+    {
+    case 0: 
+        buffer.car_length(newvalue);
+        break;
+    case 1: 
+        buffer.car_height(newvalue);
+        break;
+    case 2: 
+        buffer.car_radius(newvalue);
+        break;
+    case 3: 
+        buffer.n_cars(newvalue);
+        break;    
+    case 4: 
+        buffer.n_floors(newvalue);
+        break;  
+    case 5: 
+        n_trail = newvalue;
+        break; 
+    default:
+        break;
+    }
+    
+    try
+    {
+        m = new oselin::Machine(buffer, n_trail);
+        cout << "Machine changed successfully." << endl;
+        return m;
+
+    }
+    catch(const std::exception& e)
+    {
+        cout << "New parameter is wrong";
+    }
+    return machine;
+}
+//------------------------------------------------
+
+
 oselin::Machine * machine_mainloop(oselin::Machine *mach){
     system("clear");
     int inloop = 1, ntrailers;
@@ -306,19 +385,17 @@ oselin::Machine * machine_mainloop(oselin::Machine *mach){
         case '1':
             machine = machine_load();
             message = "Machine loaded successfully.";
-            cout << machine << endl;
             break;
         case '2':
             machine = machine_create();
-            message = "Machine created successfully.";
-            cout << machine << endl;
-            
+            message = "Machine created successfully.";            
             break;
         case '3':
             machine_save(machine);
             break;    
         case '4':
-            //message = machine_change(dev,mach);
+            machine = machine_change(machine);
+            message = "";
             break;
         case '5':
             system("clear");
@@ -355,19 +432,21 @@ void mainloop(oselin::Trailer *trailer, oselin::Machine *machine){
         switch (choice)
         {
         case '1':
-            trailer = load();
+            trailer = trailer_load();
             message = "File loaded successfully.";
             break;
         case '2':
             trailer->isempty(true);
-            trailer = create(trailer);
+            trailer = trailer_create(trailer);
             message = "Created successfully.";
             break;
         case '3':
-            message = save(trailer);
+            trailer_save(trailer);
+            message = "Saved successfully.";
             break;    
         case '4':
-            message = change(trailer);
+            trailer = trailer_change(trailer);
+            message = "Changed successfully.";
             break;
         case '5':
             machine = machine_mainloop(machine);
@@ -434,7 +513,7 @@ int main(int argc, char * argv[]) {
                 cout << "Too many parameters. Please check and try again." << endl;
             }
             else{
-                trailer = load(argc,argv);
+                trailer = trailer_load(argc,argv);
                 cout << "Trailer loaded successfully." << endl;
                 mainloop(trailer, machine);
             }

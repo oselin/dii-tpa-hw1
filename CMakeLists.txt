@@ -19,7 +19,7 @@ target_sources(main PRIVATE src/Svg.cpp)
 target_sources(main PRIVATE src/Wheel.cpp)
 target_sources(main PRIVATE src/DeviceFunction.cpp)
 target_sources(main PRIVATE src/Parameters.cpp)
-target_sources(main PRIVATE src/MachineCarTrailer.cpp)
+target_sources(main PRIVATE src/Machine.cpp)
 target_sources(main PRIVATE TpaHomework1/src/Car.cpp)
 target_link_libraries(main)
 

@@ -30,6 +30,7 @@ namespace oselin{
             Machine(const Machine &);
             Machine(Machine *);
             Machine(oselin::Parameters, float);
+            Machine(oselin::Parameters *, float);
             Machine(string);
             ~Machine();
 
@@ -37,6 +38,12 @@ namespace oselin{
 
             void  n_trailers(float);
             float n_trailers() const;
+
+            void trailer_array(vector<oselin::Trailer *>);
+            vector<oselin::Trailer *> trailer_array() const;
+            
+            void car_array(vector<coca_device*>);
+            vector<coca_device*> car_array() const;
 
             void copyParam(oselin::Parameters, float);
     };

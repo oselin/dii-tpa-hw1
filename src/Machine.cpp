@@ -23,6 +23,24 @@ void oselin::Machine::print(ostream& os) const{
     os <<  "n_trailers\t"       << this->n_trailers()               << endl;
 }
 
+//Get-Set Methods for: n_trailers() [PUBLIC]
+void  oselin::Machine::n_trailers(float nv){this->n_trailers_ = nv;}
+float oselin::Machine::n_trailers() const{return this->n_trailers_;}
+
+//Get-Set Methods for: trailer_array() [PUBLIC]
+void oselin::Machine::trailer_array(vector<oselin::Trailer *> ta){this->trailer_array_ = ta;}
+vector<oselin::Trailer *> oselin::Machine::trailer_array() const {return this->trailer_array_;}               
+
+//Get-Set Methods for: car_array() [PUBLIC]
+void oselin::Machine::car_array(vector<coca_device*> ca){this->car_array_ = ca;}
+vector<coca_device*> oselin::Machine::car_array() const {return this->car_array_;}   
+
+//Copy function [PUBLIC]
+void oselin::Machine::copyParam(oselin::Parameters p, float n_trail){
+    this->Parameters::copyParam(p);
+    this->n_trailers_ = n_trail;
+}
+
 //Function to adapt COCA library to this project
 coca_device * oselin_coca_init(oselin::Parameters *p, float newx, float newy){
     
@@ -42,20 +60,16 @@ coca_device * oselin_coca_init(oselin::Parameters *p, float newx, float newy){
     return dev;
 }
 
-//Copy function [PUBLIC]
-void oselin::Machine::copyParam(oselin::Parameters p, float n_trail){
-    this->Parameters::copyParam(p);
-    this->n_trailers_ = n_trail;
-}
-
 //Method: create() [PRIVATE]
 void oselin::Machine::create(oselin::Parameters p, float n_trail){
     
     this->n_trailers_ = n_trail;
     
     //If some parameters are wrong, Trailer Constructor will throw an exception
-    oselin::Trailer *trailer = new oselin::Trailer(p, true, false);
+    oselin::Trailer *trailer = new oselin::Trailer(p, true);
 
+    trailer->svg_height(3*trailer->height());
+    oselin::trigonometry(trailer, false);
     
     //After trigonometry processing, copying all parameters by using Polymorphism
     this->Parameters::copyParam(trailer);
@@ -66,9 +80,7 @@ void oselin::Machine::create(oselin::Parameters p, float n_trail){
     this->svg_height(3*this->height());
     this->svg_width((this->n_trailers() +1) * this->length());
     this->offset(this->length()*0.5);
-    this->y(this->y() + 2*this->car_length());
-
-
+    
     for (int i=0; i< this->n_trailers_; i++){
         this->trailer_array_.push_back(trailer->copy());
         this->trailer_array_[i]->offset((0.5 + i) * trailer->length());
@@ -94,6 +106,35 @@ void oselin::Machine::create(oselin::Parameters p, float n_trail){
     }
 }
 
+//Method: svg() [PUBLIC]
+string oselin::Machine::svg() const{
+    
+    string svg = "";
+    
+    svg += "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width='";
+    svg += to_string(this->svg_width()) + " '  height='";
+    svg += to_string(this->svg_height()) + "' >";
+    svg += "<rect  x='0.000000' y='0.000000' width='" + to_string(this->svg_width()) + "' height='" + to_string(this->svg_height()) + "' style='stroke-width:0.0; stroke:' fill='white' />";
+    
+ 
+    int len = this->n_trailers();
+
+    for (int i=0; i<this->n_floors(); i++){
+        for (int j=0; j < this->n_cars()*len; j++ ){
+            svg += "<!--COCADEVICECAR-->\n";
+            svg += coca_strg_device(this->car_array_[i*this->n_cars() * len + j],0,0);
+        }
+    }
+
+    for (int i=0; i< len; i++) {
+        svg += "<!--OSELINDEVICETRAILER-->\n";
+        this->trailer_array_[i]->distributeOffset();
+        svg += this->trailer_array_[i]->svg();
+    }
+    return svg;
+    
+}
+
 //Constructor
 oselin::Machine::Machine(){
 }
@@ -103,14 +144,23 @@ oselin::Machine::Machine(oselin::Parameters p, float n_trail): oselin::Parameter
     this->create(p,n_trail);
 }
 
+//Constructor from PARAMETERS
+oselin::Machine::Machine(oselin::Parameters *p, float n_trail): oselin::Parameters(p){
+    this->create(*p,n_trail);
+}
+
 //Copy Constructor
 oselin::Machine::Machine(const oselin::Machine &m): oselin::Parameters(m){
-    this->n_trailers_ = m.n_trailers();
+    this->n_trailers_ =    m.n_trailers();
+    this->trailer_array_ = m.trailer_array();
+    this->car_array_ =     m.car_array();
 }
 
 //Copy Constructor - by address
 oselin::Machine::Machine(oselin::Machine *m): oselin::Parameters(m){
-    this->n_trailers_ = m->n_trailers();
+    this->n_trailers_ =    m->n_trailers();
+    this->trailer_array_ = m->trailer_array();
+    this->car_array_ =     m->car_array();
 }
 
 //Constructor - PARSING
@@ -157,43 +207,6 @@ oselin::Machine::Machine(string svg){
         }
         else throw std::logic_error("String is empty.");
     }
-
-//Get-Set Methods for: n_trailers() [PUBLIC]
-void  oselin::Machine::n_trailers(float nv){this->n_trailers_ = nv;}
-float oselin::Machine::n_trailers() const{return this->n_trailers_;}
-
-//Method: svg() [PUBLIC]
-string oselin::Machine::svg() const{
-    
-    string svg = "";
-    
-    svg += "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width='";
-    svg += to_string(this->svg_width()) + " '  height='";
-    svg += to_string(this->svg_height()) + "' >";
-    svg += "<rect  x='0.000000' y='0.000000' width='" + to_string(this->svg_width()) + "' height='" + to_string(this->svg_height()) + "' style='stroke-width:0.0; stroke:' fill='white' />";
-    
-
- 
-    int len = this->n_trailers();
-    for (int i=0; i<this->n_floors(); i++){
-        for (int j=0; j < this->n_cars()*len; j++ ){
-            svg += "<!--COCADEVICECAR-->\n";
-            svg += coca_strg_device(this->car_array_[i*this->n_cars() * len + j],0,0);
-
-        }
-    }
-
-    
-
-    for (int i=0; i< len; i++) {
-        svg += "<!--OSELINDEVICETRAILER-->\n";
-        this->trailer_array_[i]->distributeOffset();
-        this->trailer_array_[i]->manage_y(2*this->car_length());
-        svg += this->trailer_array_[i]->svg();
-    }
-    return svg;
-    
-}
 
 //Deconstructor
 oselin::Machine::~Machine(){

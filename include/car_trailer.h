@@ -243,7 +243,6 @@ namespace oselin{
             void fromSvg2Param();
 
             void distributeOffset();
-            void manage_y(float);
             Trailer* copy();
     };
 

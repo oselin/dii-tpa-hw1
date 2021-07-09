@@ -86,7 +86,6 @@ oselin::Trailer::Trailer(Trailer *t): oselin::Parameters(t){
 
 //Constructor - PARAMETERS
 oselin::Trailer::Trailer(oselin::Parameters parameters, bool avoid_svg, bool automatic_offset){
-        
     if (parameters.car_radius() < 16 || parameters.car_radius() > 18){
         throw std::out_of_range("Radius value is wrong!");
     }
@@ -213,21 +212,3 @@ string oselin::Trailer::svg(bool with_header, bool with_measures) const{
     } return "";
 }
 
-//Method: manage_y() [PUBLIC]
-void oselin::Trailer::manage_y(float v){
-    this->downfloor.y(              this->downfloor.y(              )+v);            
-    this->upfloor.y(                this->upfloor.y(                )+v);        
-    this->front_wheel.y(            this->front_wheel.y(            )+v);            
-    this->rear_wheel.y(             this->rear_wheel.y(             )+v);        
-    this->rear_joint.body.y(        this->rear_joint.body.y(        )+v);        
-    this->rear_joint.head.y(        this->rear_joint.head.y(        )+v);        
-    this->front_joint.body.y(       this->front_joint.body.y(       )+v);        
-    this->front_joint.head.y(       this->front_joint.head.y(       )+v);        
-    this->rear_axis.body.y(         this->rear_axis.body.y(         )+v);        
-    this->rear_axis.bottom_screw.y( this->rear_axis.bottom_screw.y( )+v);        
-    this->rear_axis.top_screw.y(    this->rear_axis.top_screw.y(    )+v);        
-    this->front_axis.body.y(        this->front_axis.body.y(        )+v);    
-    this->front_axis.bottom_screw.y(this->front_axis.bottom_screw.y()+v);    
-    this->front_axis.top_screw.y(   this->front_axis.top_screw.y(   )+v);    
-
-}

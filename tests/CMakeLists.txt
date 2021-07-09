@@ -15,7 +15,7 @@ target_include_directories(catch2Test PRIVATE
 
 # Including sources
 target_sources(catch2Test PRIVATE
-        ../src/MachineCarTrailer.cpp
+        ../src/Machine.cpp
         ../src/Trailer.cpp
         ../src/Axis.cpp
         ../src/Floor.cpp
