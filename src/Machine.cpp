@@ -63,10 +63,14 @@ coca_device * oselin_coca_init(oselin::Parameters *p, float newx, float newy){
 //Method: create() [PRIVATE]
 void oselin::Machine::create(oselin::Parameters p, float n_trail){
     
-    this->n_trailers_ = n_trail;
+    if(n_trail < 1) throw std::out_of_range("Numbero of trailer must be a positive integer not null");
+
+    this->n_trailers_ = (int)n_trail;
     
     //If some parameters are wrong, Trailer Constructor will throw an exception
+
     oselin::Trailer *trailer = new oselin::Trailer(p, true);
+
 
     trailer->svg_height(3*trailer->height());
     oselin::trigonometry(trailer, false);
@@ -171,27 +175,29 @@ oselin::Machine::Machine(string svg){
         //Count number of trailers and cars
         int check = svg.find("<!--OSELINDEVICETRAILER-->",1);
         int counter[] = {0,0};
+        if (check> 0){
+            while (check>0){
+                check = svg.find("<!--OSELINDEVICETRAILER-->", check+30);
+                counter[0]++;
+                
+            }
 
-        while (check>0){
-            check = svg.find("<!--OSELINDEVICETRAILER-->", check+30);
-            counter[0]++;
-            
-        }
-
-        check = svg.find("<!--COCADEVICECAR-->",1);
-        while (check< svg.length()){
-            check = svg.find("<!--COCADEVICECAR-->", check+30);
-            counter[1]++;
+            check = svg.find("<!--COCADEVICECAR-->",1);
+            while (check< svg.length()){
+                check = svg.find("<!--COCADEVICECAR-->", check+30);
+                counter[1]++;
+            }
         }
         
-        
-        if (counter[1]/counter[0] < 3) {
-            this->n_cars(counter[1]/counter[0]);
-            this->n_floors(1);
-        }
-        else{
-            this->n_cars(counter[1]/counter[0]/2);
-            this->n_floors(2);
+        if (counter[0] != 0){
+            if (counter[1]/counter[0] < 3) {
+                this->n_cars(counter[1]/counter[0]);
+                this->n_floors(1);
+            }
+            else{
+                this->n_cars(counter[1]/counter[0]/2);
+                this->n_floors(2);
+            }
         }
 
 

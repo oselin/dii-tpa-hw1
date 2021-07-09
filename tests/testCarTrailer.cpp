@@ -5,40 +5,135 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include <stdexcept>
 
-//TEST_CASE("init should succeed with non zero value", "[oselin_init]") {
-//
-//    Parameters p;
-//    p.svgwidth = 0;
-//    p.svgheight = 0;
-//
-//    REQUIRE(oselin_init(p) == NULL);
-//    p.svgwidth = 800;
-//    p.svgheight = 600;
-//    p.ncars = 1;
-//    p.nfloors = 2;
-//    REQUIRE(oselin_init(p) == NULL);
-//
-//
-//}
-//
-//
-//TEST_CASE("oselin init copy should not return null value", "[oselin_init_acopyof]") {
-//
-//    REQUIRE(oselin_init_acopyof(NULL) == NULL);
-//
-//    Parameters p;
-//    p.svgwidth  = 800;
-//    p.svgheight = 600;
-//    p.length    = 100;
-//    p.height    = 50;
-//    p.radius    = 16;
-//    p.ncars     = 2;
-//    p.nfloors   = 2;
-//
-//    REQUIRE(oselin_init_acopyof(oselin_init(p)) != NULL);
-//
-//}
+using namespace std;
+TEST_CASE("Constructor should throw as svg-width is zero", "[Trailer]") {
+
+    oselin::Parameters p;
+    p.svg_width(0);
+    p.svg_height(600);
+    p.car_radius(17);
+    p.car_length(150);
+    p.car_height(50);
+    p.n_cars(2);
+    p.n_floors(2);
+    
+    REQUIRE_THROWS_AS(oselin::Trailer(p,0), invalid_argument);
+}
+
+TEST_CASE("Constructor should throw as svg-height is zero", "[Trailer]") {
+
+    oselin::Parameters p;
+    p.svg_width(800);
+    p.svg_height(-200);
+    p.car_radius(17);
+    p.car_length(150);
+    p.car_height(50);
+    p.n_cars(2);
+    p.n_floors(2);
+    
+    REQUIRE_THROWS_AS(oselin::Trailer(p,0), invalid_argument);
+}
+
+
+TEST_CASE("Constructor should throw as car_length is too much", "[Trailer]") {
+
+    oselin::Parameters p;
+    p.svg_width(800);
+    p.svg_height(600);
+    p.car_radius(17);
+    p.car_length(2000);
+    p.car_height(50);
+    p.n_cars(2);
+    p.n_floors(2);
+    
+    REQUIRE_THROWS_AS(oselin::Trailer(p,0), invalid_argument);
+}
+
+
+TEST_CASE("Constructor should throw as cars are too many", "[Trailer]") {
+
+    oselin::Parameters p;
+    p.svg_width(8000);
+    p.svg_height(600);
+    p.car_radius(17);
+    p.car_length(150);
+    p.car_height(50);
+    p.n_cars(4);
+    p.n_floors(2);
+    
+    REQUIRE_THROWS_AS(oselin::Trailer(p,0), out_of_range);
+}
+
+
+TEST_CASE("Constructor should throw as floors are too many", "[Trailer]") {
+
+    oselin::Parameters p;
+    p.svg_width(8000);
+    p.svg_height(600);
+    p.car_radius(17);
+    p.car_length(150);
+    p.car_height(50);
+    p.n_cars(2);
+    p.n_floors(6);
+    
+    REQUIRE_THROWS_AS(oselin::Trailer(p,0), out_of_range);
+}
+
+TEST_CASE("Constructor should throw as cars are too short", "[Trailer]") {
+
+    oselin::Parameters p;
+    p.svg_width(800);
+    p.svg_height(600);
+    p.car_radius(17);
+    p.car_length(20);
+    p.car_height(50);
+    p.n_cars(2);
+    p.n_floors(2);
+    
+    REQUIRE_THROWS_AS(oselin::Trailer(p,0), invalid_argument);
+}
+
+
+TEST_CASE("Constructor should throw as structural error", "[Trailer]") {
+
+    oselin::Parameters p;
+
+
+    p.svg_width(800);
+    p.svg_height(600);
+    p.car_radius(17);
+    p.car_length(150);
+    p.car_height(50);
+    p.n_cars(1);
+    p.n_floors(2);
+    REQUIRE_THROWS_AS(oselin::Trailer(p), invalid_argument);
+}
+TEST_CASE("Constructor should throw as radius error", "[Trailer]") {
+
+    oselin::Parameters p;
+    p.svg_width(800);
+    p.svg_height(600);
+    p.car_radius(2);
+    p.car_length(150);
+    p.car_height(50);
+    p.n_cars(1);
+    p.n_floors(2);
+    REQUIRE_THROWS_AS(oselin::Trailer(p,0), out_of_range);
+}
+
+
+TEST_CASE("Constructor by parsing should throw an error if the file is corrupted", "[Trailer]") {
+
+    REQUIRE_THROWS_AS(oselin::Trailer("bla bla bla"), logic_error);
+}
+
+TEST_CASE("Constructor by parsing should throw an error if the file is empty", "[Trailer]") {
+
+    REQUIRE_THROWS_AS(oselin::Trailer("<!--ch0--><!--cl0--><!--of0-->"), logic_error);
+}
+
 //
 //
 //TEST_CASE("tosvg should return 1 if some errors occur", "[oselin_to_svg]") {

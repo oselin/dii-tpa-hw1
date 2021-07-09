@@ -1,5 +1,26 @@
-# DII - TPA: Homework 1
+# DII - TPA: Homework 1 - UPDATED VERSION
 
+## OOP UPDATE
+This projects has been updated to an Object Oriented Programming Style.
+
+There are plenty of new features and overall improvements.
+
+For example
+
+* Now you can print every single object with the introduction of ad-hoc modified opereator <<
+* Use of polymorphism for several methods, such as print() and copy/conversion
+* Get-Set methods. No data are accessible by the user in a uncontrolled manner
+* Possibility to load a Device [Trailer] from a Machine
+* Possibility to upgrade a Device [Trailer] to a Machine
+* Possibility to dimension every single object due to dimensioning() method
+* Possibility to import any part as a Svg object (Base-Derived classes)
+* Possibility to generate a Machine from Device parameters
+* Auto-align feature
+
+
+
+
+## Old content
 First homework of the Advanced Programming Techniques course. Dealine 2021-04-27
 
 For usage, read below.

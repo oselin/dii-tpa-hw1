@@ -95,7 +95,7 @@ string oselin::Trailer::measures() const{
 
         limDX.x(line.x() - 0.1*this->height());
         limDX.y(line.y() + line.height());
-        limDX.width(0.8*this->height());
+        limDX.width(0.8 *this->height());
         limDX.height(1);
 
         measure += "\n" + line.svg()
@@ -156,6 +156,9 @@ oselin::Trailer::Trailer(oselin::Parameters parameters, bool avoid_svg, bool aut
     if (parameters.car_length() < (parameters.car_height()*4/5)){
         throw std::invalid_argument("INIT: CAR DIMENSIONS ERROR");
     }
+    if (parameters.car_length() > (parameters.car_height()*10)){
+        throw std::invalid_argument("INIT: CAR DIMENSIONS ERROR");
+    }
     if (parameters.n_cars() > 2){
         throw std::out_of_range("Too many cars!");
     }
@@ -179,11 +182,11 @@ oselin::Trailer::Trailer(string svg, int svg_bypass){
             pieces[i-1][0] = index+11;
             pieces[i-1][1] = len-11;
         }
-
-        this->offset(stof(oselin::buffering(svg.substr(0,pieces[0][0]), "<!--of", '>')));
-        this->car_length(stof(oselin::buffering(svg.substr(0,pieces[0][0]), "<!--cl", '>')));
-        this->car_height(stof(oselin::buffering(svg.substr(0,pieces[0][0]), "<!--ch", '>')));
-
+        try{
+            this->offset(stof(oselin::buffering(svg.substr(0,pieces[0][0]), "<!--of", '>')));
+            this->car_length(stof(oselin::buffering(svg.substr(0,pieces[0][0]), "<!--cl", '>')));
+            this->car_height(stof(oselin::buffering(svg.substr(0,pieces[0][0]), "<!--ch", '>')));
+        }catch(std::exception &e){throw std::domain_error("No data to convert.");}
 
         if (this->offset() == 0 || this->car_length() == 0 || this->car_height() == 0) throw std::logic_error("File seems corrupted.");
 
