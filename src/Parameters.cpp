@@ -14,7 +14,7 @@ using std::stof;
 using std::ostream;
 
 
-//Print function
+//Method: print() [PUBLIC]
 void oselin::Parameters::print(ostream& os) const{
     os <<  "isempty\t\t"      << this->isempty()              << endl;
     os <<  "x\t\t"            << this->x()                    << endl;
@@ -81,6 +81,7 @@ void oselin::Parameters::copyParam(oselin::Parameters *p){
 oselin::Parameters::Parameters(){
     //Default constructor
 }
+
 //Constructor from cli-input
 oselin::Parameters::Parameters(char * argv[]){
     if (argv != NULL){
@@ -109,55 +110,55 @@ oselin::Parameters::Parameters(oselin::Parameters *p){
     this->copyParam(p);
 }
 
-//Get-Set Methods for: isempty()
+//Get-Set Methods for: isempty() [PUBLIC]
 void   oselin::Parameters::isempty(bool inp){this->isempty_ = inp;}
 bool   oselin::Parameters::isempty() const{return this->isempty_ ;}
 
-//Get-Set Methods for: x()
+//Get-Set Methods for: x() [PUBLIC]
 void   oselin::Parameters::x(float inp){this->x_ = inp;}
 float  oselin::Parameters::x() const{return this->x_;}
 
-//Get-Set Methods for: y()
+//Get-Set Methods for: y() [PUBLIC]
 void   oselin::Parameters::y(float inp){this->y_ = inp;}
 float  oselin::Parameters::y() const{return this->y_;}
 
-//Get-Set Methods for: length()
+//Get-Set Methods for: length() [PUBLIC]
 void   oselin::Parameters::length(float l){this->length_ = l;}
 float  oselin::Parameters::length() const{return this->length_;}
 
-//Get-Set Methods for: height()
+//Get-Set Methods for: height() [PUBLIC]
 void   oselin::Parameters::height(float h){this->height_ = h;}
 float  oselin::Parameters::height() const{return this->height_;}
 
-//Get-Set Methods for: offset()
+//Get-Set Methods for: offset() [PUBLIC]
 void   oselin::Parameters::offset(float off){this->offset_ = off;}
 float  oselin::Parameters::offset() const{return this->offset_;}
 
-//Get-Set Methods for: svg_width()
+//Get-Set Methods for: svg_width() [PUBLIC]
 void  oselin::Parameters::svg_width(float nv){this->svg_width_ = nv;}
 float oselin::Parameters::svg_width() const{return this->svg_width_;} 
 
-//Get-Set Methods for: svg_height()
+//Get-Set Methods for: svg_height() [PUBLIC]
 void  oselin::Parameters::svg_height(float nv){this->svg_height_ = nv;}
 float oselin::Parameters::svg_height() const{return this->svg_height_;}
 
-//Get-Set Methods for: trailer_length()
+//Get-Set Methods for: trailer_length() [PUBLIC]
 void  oselin::Parameters::trailer_length(float nv){this->trailer_length_ = nv;}
 float oselin::Parameters::trailer_length() const{return this->trailer_length_;}
 
-//Get-Set Methods for: trailer_height()
+//Get-Set Methods for: trailer_height() [PUBLIC]
 void  oselin::Parameters::trailer_height(float nv){this->trailer_height_ = nv;}
 float oselin::Parameters::trailer_height() const{return this->trailer_height_;}
 
-//Get-Set Methods for: car_length()
+//Get-Set Methods for: car_length() [PUBLIC]
 void  oselin::Parameters::car_length(float nv){this->car_length_ = nv;}
 float oselin::Parameters::car_length() const{return this->car_length_;}
 
-//Get-Set Methods for: car_height()
+//Get-Set Methods for: car_height() [PUBLIC]
 void  oselin::Parameters::car_height(float nv){this->car_height_ = nv;}
 float oselin::Parameters::car_height() const{return this->car_height_;}
 
-//Get-Set Methods for: car_radius()
+//Get-Set Methods for: car_radius() [PUBLIC]
 void  oselin::Parameters::car_radius(float nv){this->car_radius_ = nv;}
 float oselin::Parameters::car_radius() const{return this->car_radius_;}
 

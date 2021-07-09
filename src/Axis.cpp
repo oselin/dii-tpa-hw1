@@ -50,16 +50,16 @@ oselin::Axis::Axis(string svg, float off){
     
 }
 
-//Get-Set Methods for: angle()
+//Get-Set Methods for: angle() [PUBLIC]
 void   oselin::Axis::angle(float a){this->angle_ = a;}
 float  oselin::Axis::angle() const{return this->angle_;}
 
-//Get-Set Methods for: point()
+//Get-Set Methods for: point() [PUBLIC]
 void   oselin::Axis::point_x(float px){this->point_[0] = px;}
 void   oselin::Axis::point_y(float py){this->point_[1] = py;}
 float* oselin::Axis::point() {return this->point_;}
 
-//TO_SVG METHOD
+//Method: svg() [PUBLIC]
 string oselin::Axis::svg() const{
 
     string str = "\n<g transform='rotate(";
@@ -72,7 +72,7 @@ string oselin::Axis::svg() const{
     return str;
 }
 
-//Print Method
+//Method: print() [PUBLIC]
 void oselin::Axis::print(ostream& os) const{
     this->Svg::print(os);
     os << "ANGLE: "   << this->angle_ << endl;

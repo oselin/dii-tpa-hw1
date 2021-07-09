@@ -78,8 +78,6 @@ unordered_map<string, float> argv2umap(char * argv[]){
     throw std::invalid_argument("Something went wrong.");
 }
 
-
-
 oselin::Trailer* load(int argc = 0, char *argv[] = NULL){
     string s, filename;
     if (argv != NULL && argc >=2){
@@ -211,7 +209,6 @@ string change(oselin::Trailer *trailer){
     return "Parameter has been changed";
 }
 
-
 void machine_save(oselin::Machine *machine){
     if (machine != NULL){
         if (machine->isempty() == 0){
@@ -231,8 +228,6 @@ void machine_save(oselin::Machine *machine){
     else throw logic_error("Pointer is null.");
     
 }
-
-
 
 oselin::Machine * machine_create(){
     //PARAM
@@ -257,7 +252,22 @@ oselin::Machine * machine_create(){
     return m;
 }
 
+oselin::Machine * machine_load(){
+    string filename;
+    cout << "path/file [with extension]: ";
+    cin >> filename;
+    
+    oselin::Machine *m;
+    try{
+        ifstream file(filename);
+        stringstream buffer;
+        buffer << file.rdbuf();
+        string s = buffer.str();
+        m = new oselin::Machine(s);
+    }catch(exception &e){throw invalid_argument("The file does not exist.");}
 
+    return m;
+}
 /**
  * Sub loop for working in a machine environment
  **/
@@ -278,12 +288,14 @@ void machine_mainloop(oselin::Machine *machine){
         switch (choice)
         {
         case '1':
-            //message = machine_load(mach);
-            //message = "This feature will come soon.";
+            machine = machine_load();
+            message = "Machine loaded successfully.";
+            cout << machine << endl;
             break;
         case '2':
             machine = machine_create();
             message = "Machine created successfully.";
+            cout << machine << endl;
             
             break;
         case '3':
@@ -300,7 +312,7 @@ void machine_mainloop(oselin::Machine *machine){
             message = "Command not found.";
             break;
         }
-        system("clear");
+        //system("clear");
         cout << message << " What's next?" << endl;
     }while(inloop);
 

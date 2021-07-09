@@ -33,18 +33,18 @@ oselin::Joint::Joint(string svg, float off){
     this->length(this->body.width() + this->head.radius());
 }
 
-//Get-Set Methods for: length()
+//Get-Set Methods for: length() [PUBLIC]
 void   oselin::Joint::length(float l){this->length_ = l;}
 float  oselin::Joint::length() const{return this->length_;}
 
-//TO_SVG METHOD
+//Method: svg() [PUBLIC]
 string oselin::Joint::svg() const{
     string str;
     str = this->body.svg() + this->head.svg();
     return str;
 }
 
-//Print Method
+//Method: print() [PUBLIC]
 void oselin::Joint::print(ostream& os) const{
     this->Svg::print(os);
     os << "LENGTH: " << this->length_ << endl;

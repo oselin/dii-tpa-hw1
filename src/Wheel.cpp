@@ -35,15 +35,15 @@ oselin::Wheel::Wheel(string svg, float off){
     this->innercolor(oselin::buffering(svg, "fill= '",'\''));
 }
 
-//Get-Set Methods for: radius()
+//Get-Set Methods for: radius() [PUBLIC]
 void   oselin::Wheel::radius(float r){this->radius_ = r;}
 float  oselin::Wheel::radius() const{return this->radius_;}
 
-//Get-Set Methods for: innercolor()
+//Get-Set Methods for: innercolor() [PUBLIC]
 void   oselin::Wheel::innercolor(string in){this->innercolor_ = in;}
 string oselin::Wheel::innercolor() const{return this->innercolor_;}
 
-//TO_SVG METHOD
+//Method: svg() [PUBLIC]
 string oselin::Wheel::svg() const{
     string str;
     str += "\n<circle";
@@ -68,7 +68,7 @@ string oselin::Wheel::svg() const{
     return str;
 }
 
-//Print Method
+//Method: print() [PUBLIC]
 void oselin::Wheel::print(ostream& os) const{
     this->Svg::print(os);
     os << "RADIUS: "     << this->radius_ << endl;

@@ -15,7 +15,9 @@ using std::to_string;
 
 
 
+//Method: distributeOffset() [PUBLIC]
 void oselin::Trailer::distributeOffset(){
+
     this->downfloor.offset(this->offset());
     this->upfloor.offset(this->offset());
     this->front_wheel.offset(this->offset());
@@ -37,6 +39,7 @@ void oselin::Trailer::distributeOffset(){
     
 }
 
+//Method: fromSvg2Param() [PUBLIC]
 void oselin::Trailer::fromSvg2Param(){
     this->isempty(0);
     this->distributeOffset();
@@ -54,7 +57,7 @@ void oselin::Trailer::fromSvg2Param(){
     this->length(this->trailer_length()+ 2*this->rear_joint.length() - 2* this->rear_joint.head.radius());
 }
 
-//Method for the machine part
+//Method: copy() [PUBLIC]
 oselin::Trailer* oselin::Trailer::copy(){
 
     oselin::Parameters buffer(this);
@@ -87,7 +90,6 @@ oselin::Trailer::Trailer(Trailer *t): oselin::Parameters(t){
 //Constructor - PARAMETERS
 oselin::Trailer::Trailer(oselin::Parameters parameters, bool avoid_svg, bool automatic_offset){
     cout << "Constructor has been invoked" << endl;
-    
     
     if (parameters.car_radius() < 16 || parameters.car_radius() > 18){
         throw std::out_of_range("Radius value is wrong!");
@@ -123,15 +125,15 @@ oselin::Trailer::Trailer(oselin::Parameters parameters, bool avoid_svg, bool aut
     }
     
     this->copyParam(parameters);
-
     oselin::trigonometry(this, automatic_offset);
     this->distributeOffset();   
 }
 
 //Constructor - PARSING
-oselin::Trailer::Trailer(string svg){
+oselin::Trailer::Trailer(string svg, int svg_bypass){
 
     if (svg != ""){
+        cout << "HERE WE GO" << endl;
         int pieces[7][2];
         for (int i=1;i<9;i++){
             int index = svg.find(oselin::checkpoint(i));
@@ -139,18 +141,24 @@ oselin::Trailer::Trailer(string svg){
             pieces[i-1][0] = index+11;
             pieces[i-1][1] = len-11;
         }
+
         this->offset(stof(oselin::buffering(svg.substr(0,pieces[0][0]), "<!--of", '>')));
         this->car_length(stof(oselin::buffering(svg.substr(0,pieces[0][0]), "<!--cl", '>')));
         this->car_height(stof(oselin::buffering(svg.substr(0,pieces[0][0]), "<!--ch", '>')));
 
-        this->svg_width   (stof(oselin::buffering(svg.substr(0,pieces[0][0]),"width='", '\'')));
-        this->svg_height  (stof(oselin::buffering(svg.substr(0,pieces[0][0]),"height='",'\'')));
+
+        if (this->offset() == 0 || this->car_length() == 0 || this->car_height() == 0) throw std::logic_error("File seems corrupted.");
+
+        if (!svg_bypass){
+            this->svg_width   (stof(oselin::buffering(svg.substr(0,pieces[0][0]),"width='", '\'')));
+            this->svg_height  (stof(oselin::buffering(svg.substr(0,pieces[0][0]),"height='",'\'')));
+        }
        
         this->rear_joint      = oselin::Joint(svg.substr(pieces[0][0], pieces[0][1]), this->offset());
         this->front_joint     = oselin::Joint(svg.substr(pieces[1][0], pieces[1][1]), this->offset());
         this->downfloor       = oselin::Floor(svg.substr(pieces[2][0], pieces[2][1]), this->offset());
-        this->front_wheel     = oselin::Wheel(svg.substr(pieces[3][0], pieces[3][1]), this->offset());//double color
-        this->rear_wheel      = oselin::Wheel(svg.substr(pieces[4][0], pieces[4][1]), this->offset()); //double color
+        this->front_wheel     = oselin::Wheel(svg.substr(pieces[3][0], pieces[3][1]), this->offset());
+        this->rear_wheel      = oselin::Wheel(svg.substr(pieces[4][0], pieces[4][1]), this->offset());
 
         if (pieces[5][1] > 0){
             this->upfloor    = oselin::Floor(svg.substr(pieces[5][0], pieces[5][1]), this->offset());
@@ -166,11 +174,11 @@ oselin::Trailer::Trailer(string svg){
     else throw std::range_error("File is empty!");
 }
 
-//TO_SVG METHOD
+//Method: svg() [PUBLIC]
 string oselin::Trailer::svg(bool with_header, bool with_measures) const{
     
     string svg;
-    //if (device!=NULL){// CHOOSE HOW TO TEST IF IT EXISTS
+    if (this->isempty() == 0){
         if (with_header){
             svg += "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n<svg xmlns='http://www.w3.org/2000/svg' width='";
             svg += to_string(this->svg_width()) + " '  height='";
@@ -178,6 +186,7 @@ string oselin::Trailer::svg(bool with_header, bool with_measures) const{
             svg += "<rect  x='0.000000' y='0.000000' width='" + to_string(this->svg_width()) + "' height='" + to_string(this->svg_height()) + "' style='stroke-width:0.0; stroke:' fill='white' />";
         }
 
+        //Save some data straight into the file
         svg += "<!--of" + to_string(this->offset()) + "-->\n";
         svg += "<!--cl" + to_string(this->car_length()) + "-->\n";
         svg += "<!--ch" + to_string(this->car_height()) + "-->\n";
@@ -204,10 +213,12 @@ string oselin::Trailer::svg(bool with_header, bool with_measures) const{
         
         if (with_measures) svg += oselin::measures();
 
-        
-    return svg;
+            
+        return svg;
+    } return "";
 }
 
+//Method: manage_y() [PUBLIC]
 void oselin::Trailer::manage_y(float v){
     this->downfloor.y(              this->downfloor.y(              )+v);            
     this->upfloor.y(                this->upfloor.y(                )+v);        

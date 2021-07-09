@@ -17,13 +17,13 @@ using std::ostream;
 
 
 
-//Print function
+//Print function [PUBLIC]
 void oselin::Machine::print(ostream& os) const{
     this->Parameters::print(os);
     os <<  "n_trailers\t"       << this->n_trailers()               << endl;
 }
 
-
+//Function to adapt COCA library to this project
 coca_device * oselin_coca_init(oselin::Parameters *p, float newx, float newy){
     
     parametri arrayparam;
@@ -42,21 +42,17 @@ coca_device * oselin_coca_init(oselin::Parameters *p, float newx, float newy){
     return dev;
 }
 
-//Copy function
+//Copy function [PUBLIC]
 void oselin::Machine::copyParam(oselin::Parameters p, float n_trail){
     this->Parameters::copyParam(p);
     this->n_trailers_ = n_trail;
 }
 
-//Constructor
-oselin::Machine::Machine(){
-    //ToDo
-}
-
-//Constructor from PARAMETERS
-oselin::Machine::Machine(oselin::Parameters p, float n_trail): oselin::Parameters(p){
+//Method: create() [PRIVATE]
+void oselin::Machine::create(oselin::Parameters p, float n_trail){
     
     this->n_trailers_ = n_trail;
+    
     //If some parameters are wrong, Trailer Constructor will throw an exception
     oselin::Trailer *trailer = new oselin::Trailer(p, true, false);
 
@@ -76,7 +72,7 @@ oselin::Machine::Machine(oselin::Parameters p, float n_trail): oselin::Parameter
     for (int i=0; i< this->n_trailers_; i++){
         this->trailer_array_.push_back(trailer->copy());
         this->trailer_array_[i]->offset((0.5 + i) * trailer->length());
-        this->trailer_array_[i]->manage_y(2*this->car_length());
+        this->trailer_array_[i]->isempty(false);
     }
 
 
@@ -98,6 +94,16 @@ oselin::Machine::Machine(oselin::Parameters p, float n_trail): oselin::Parameter
     }
 }
 
+//Constructor
+oselin::Machine::Machine(){
+    cout << "Machine::Default constructor has been invoked" << endl;
+}
+
+//Constructor from PARAMETERS
+oselin::Machine::Machine(oselin::Parameters p, float n_trail): oselin::Parameters(p){
+    this->create(p,n_trail);
+}
+
 //Copy Constructor
 oselin::Machine::Machine(const oselin::Machine &m): oselin::Parameters(m){
     this->n_trailers_ = m.n_trailers();
@@ -105,15 +111,54 @@ oselin::Machine::Machine(const oselin::Machine &m): oselin::Parameters(m){
 
 //Constructor - PARSING
 oselin::Machine::Machine(string svg){
-    
+    if (svg!=""){
 
-}
+        
+        //Count number of trailers and cars
+        int check = svg.find("<!--OSELINDEVICETRAILER-->",1);
+        int counter[] = {0,0};
 
-//Get-Set Methods for: n_trailers()
+        while (check>0){
+            check = svg.find("<!--OSELINDEVICETRAILER-->", check+30);
+            counter[0]++;
+            
+        }
+
+        check = svg.find("<!--COCADEVICECAR-->",1);
+        while (check< svg.length()){
+            check = svg.find("<!--COCADEVICECAR-->", check+30);
+            counter[1]++;
+        }
+        
+        
+        if (counter[1]/counter[0] < 3) {
+            this->n_cars(counter[1]/counter[0]);
+            this->n_floors(1);
+        }
+        else{
+            this->n_cars(counter[1]/counter[0]/2);
+            this->n_floors(2);
+        }
+
+
+        int pos = svg.find("<!--OSELINDEVICETRAILER-->", 0);
+        int len = svg.find("<!--OSELINDEVICETRAILER-->", pos+30) - pos;
+
+
+        oselin::Trailer trailer(svg.substr(pos,len), 1);
+  
+        //Creation
+        this->create(trailer, counter[0]);
+
+        }
+        else throw std::logic_error("String is empty.");
+    }
+
+//Get-Set Methods for: n_trailers() [PUBLIC]
 void  oselin::Machine::n_trailers(float nv){this->n_trailers_ = nv;}
 float oselin::Machine::n_trailers() const{return this->n_trailers_;}
 
-//TO_SVG function
+//Method: svg() [PUBLIC]
 string oselin::Machine::svg() const{
     
     string svg = "";
@@ -139,9 +184,9 @@ string oselin::Machine::svg() const{
     for (int i=0; i< len; i++) {
         svg += "<!--OSELINDEVICETRAILER-->\n";
         this->trailer_array_[i]->distributeOffset();
+        this->trailer_array_[i]->manage_y(2*this->car_length());
         svg += this->trailer_array_[i]->svg();
     }
-    //mach->svg = svg;
     return svg;
     
 }

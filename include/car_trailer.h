@@ -235,7 +235,7 @@ namespace oselin{
             Trailer(Parameters, bool = 1, bool = 1);
             Trailer (Trailer &);
             Trailer (Trailer *);
-            Trailer (string);
+            Trailer (string, int = 0);
 
 
             string svg(bool = false, bool = false) const;

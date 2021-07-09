@@ -20,17 +20,15 @@ namespace oselin{
     class Machine: public oselin::Parameters{
         private:
             vector<oselin::Trailer *> trailer_array_;
-            vector<coca_device*>    car_array_;
-            float                   n_trailers_;
+            vector<coca_device*>      car_array_;
+            float                     n_trailers_;
 
             void print(ostream&) const;
-
+            void create(oselin::Parameters, float);
         public:
             Machine();
-
             Machine(const Machine &);
             Machine(oselin::Parameters, float);
-
             Machine(string);
 
             string svg() const;
@@ -40,8 +38,6 @@ namespace oselin{
 
             void copyParam(oselin::Parameters, float);
     };
-
-    //coca_device * oselin_coca_init(oselin::Parameters *, float, float);
 };
 
 #endif //MACHINE_CAR_TRAILER_H   
