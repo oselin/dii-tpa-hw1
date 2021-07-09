@@ -71,26 +71,22 @@ oselin::Trailer* oselin::Trailer::copy(){
 
 //Constructor
 oselin::Trailer::Trailer(){
-    cout << "Default constructor has been invoked." << endl;
     this->isempty(true);
 }
 
 //Copy Constructor by reference
 oselin::Trailer::Trailer(Trailer &t): oselin::Parameters(t){
-    cout << "Reference constructor has been invoked" << endl;
     this->distributeOffset();
 }
 
 //Copy Constructor by address
 oselin::Trailer::Trailer(Trailer *t): oselin::Parameters(t){
-    cout << "Pointer constructor has been invoked" << endl;
     this->distributeOffset();
 }
 
 //Constructor - PARAMETERS
 oselin::Trailer::Trailer(oselin::Parameters parameters, bool avoid_svg, bool automatic_offset){
-    cout << "Constructor has been invoked" << endl;
-    
+        
     if (parameters.car_radius() < 16 || parameters.car_radius() > 18){
         throw std::out_of_range("Radius value is wrong!");
     }
@@ -133,7 +129,6 @@ oselin::Trailer::Trailer(oselin::Parameters parameters, bool avoid_svg, bool aut
 oselin::Trailer::Trailer(string svg, int svg_bypass){
 
     if (svg != ""){
-        cout << "HERE WE GO" << endl;
         int pieces[7][2];
         for (int i=1;i<9;i++){
             int index = svg.find(oselin::checkpoint(i));

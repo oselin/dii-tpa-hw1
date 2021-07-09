@@ -20,15 +20,17 @@ void print(unordered_map<string,float> umap){
 
 void displaymenu(){
     string com = "";
-    com += "----------------------------------\n";
+    com += "----------------------------------------\n";
     com += "Here's what you can do:\n";
     com += "[1] - load SVG drawing from file\n";
     com += "[2] - create a new trailer\n";
     com += "[3] - save SVG drawing to file\n";
     com += "[4] - change a parameter\n";
     com += "[5] - create a machine\n";
-    com += "[6] - display Device Data\n";
-    com += "[7] - exit";
+    com += "[6] - create a machine from this trailer\n";
+    com += "[7] - display Device Data\n";
+    com += "[8] - display Machine Data\n";
+    com += "[9] - exit";
 
     cout << com << endl;
 
@@ -45,13 +47,15 @@ void help(){
 
 void machine_displaymenu(){
     string com = "";
-    com += "----------------------------------\n";
+    com += "--------------MACHINE MODE--------------\n";
+    com += "----------------------------------------\n";
     com += "Here's what you can do:\n";
     com += "[1] - load machine SVG drawing from file\n";
     com += "[2] - create a new machine\n";
     com += "[3] - save machine SVG drawing to file\n";
     com += "[4] - change a parameter\n";
-    com += "[5] - return";
+    com += "[5] - display Machine Data\n";
+    com += "[6] - return";
 
     cout << com << endl;
 
@@ -229,10 +233,21 @@ void machine_save(oselin::Machine *machine){
     
 }
 
+oselin::Machine * convertFromTrailer(oselin::Trailer *trailer){
+    oselin::Machine *machine = new oselin::Machine(); //worst case: return a brand new machine
+    if (!trailer->isempty()){
+        int ntrailers;
+        cout << "How many trailers? ";
+        cin >> ntrailers;
+        if (ntrailers > 0){
+            machine = new oselin::Machine(trailer, ntrailers);
+        }
+    }
+    return machine;
+}
+
 oselin::Machine * machine_create(){
-    //PARAM
-    //Car lenght | Car height | Car radius | n_cars | n_floors | n_trailers
-    
+
     int ntrailers;
     float parameters[5];
     for (int i=0; i<5; i++){
@@ -268,16 +283,17 @@ oselin::Machine * machine_load(){
 
     return m;
 }
+
 /**
  * Sub loop for working in a machine environment
  **/
-void machine_mainloop(oselin::Machine *machine){
+oselin::Machine * machine_mainloop(oselin::Machine *mach){
     system("clear");
     int inloop = 1, ntrailers;
     string message;
     float f[5];
-    
-    cout << "MACHINE MODE" << endl;
+
+    oselin::Machine *machine = new oselin::Machine(mach);
     do{
         
         machine_displaymenu();
@@ -305,19 +321,23 @@ void machine_mainloop(oselin::Machine *machine){
             //message = machine_change(dev,mach);
             break;
         case '5':
+            system("clear");
+            cout << machine << endl;
+            getchar();getchar();
+            break;
+        case '6':
             inloop = 0;
-            message = "Closing.";
             break;
         default:
             message = "Command not found.";
             break;
         }
-        //system("clear");
-        cout << message << " What's next?" << endl;
+        system("clear");
+        if (inloop) cout << message << " What's next?" << endl;
     }while(inloop);
-
+    
+    return machine;
 }
-
 
 
 void mainloop(oselin::Trailer *trailer, oselin::Machine *machine){
@@ -350,37 +370,44 @@ void mainloop(oselin::Trailer *trailer, oselin::Machine *machine){
             message = change(trailer);
             break;
         case '5':
-            machine_mainloop(machine);
+            machine = machine_mainloop(machine);
             message = "";
+            break;
         case '6':
+            machine = convertFromTrailer(trailer);
+            break;
+        case '7':
             system("clear");
             cout << trailer;
             getchar(); getchar();
             break;
-        case '7':
+        case '8':
+            system("clear");
+            cout << machine;
+            getchar(); getchar();
+            break;
+        case '9':
             inloop = 0;
             break;
         default:
             cout << "Command not found." << endl;
             break;
         }
-        //system("clear");
-        cout << message << " What's next?" << endl;
+        system("clear");
+        if (inloop) cout << message << " What's next?" << endl;
 
     }while(inloop);
 
 }
 
-/**
- * Sub loop for working in a machine environment
- **/
+
 int main(int argc, char * argv[]) {
 
-    oselin::Trailer *trailer;
-    oselin::Machine *machine;
+    oselin::Trailer *trailer = new oselin::Trailer();
+    oselin::Machine *machine = new oselin::Machine();
     
     if (argc==1){
-        cout <<"Welcolme to the trailer-to-svg tool. Use '-h' to display commands.\n" << endl;
+        cout << "Welcolme to the trailer-to-svg tool. Use '-h' to display commands.\n" << endl;
     }
     else{
         
@@ -395,6 +422,7 @@ int main(int argc, char * argv[]) {
             else{
                 
                 trailer = new oselin::Trailer(oselin::Parameters(argv),0);
+                cout << "Trailer created successfully." << endl;
                 mainloop(trailer, machine);
             }
         }
@@ -407,18 +435,21 @@ int main(int argc, char * argv[]) {
             }
             else{
                 trailer = load(argc,argv);
+                cout << "Trailer loaded successfully." << endl;
                 mainloop(trailer, machine);
             }
         }
-        else if (string(argv[1]) == "-m" || string(argv[1]) == "--machine"){
-            machine_mainloop(machine);
+        else if (string(argv[1]) == "-m" || string(argv[1]) == "--machine"){;
+            machine = machine_mainloop(machine);
             mainloop(trailer, machine);
         }
         else if (string(argv[1]) == "-i" || string(argv[1]) == "--interface"){
-            trailer = new oselin::Trailer();
             mainloop(trailer, machine);
         }
     }
+
+    delete trailer;
+    delete machine;
 
     return 0;
 }

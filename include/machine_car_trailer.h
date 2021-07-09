@@ -28,8 +28,10 @@ namespace oselin{
         public:
             Machine();
             Machine(const Machine &);
+            Machine(Machine *);
             Machine(oselin::Parameters, float);
             Machine(string);
+            ~Machine();
 
             string svg() const;
 

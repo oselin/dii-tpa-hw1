@@ -96,7 +96,6 @@ void oselin::Machine::create(oselin::Parameters p, float n_trail){
 
 //Constructor
 oselin::Machine::Machine(){
-    cout << "Machine::Default constructor has been invoked" << endl;
 }
 
 //Constructor from PARAMETERS
@@ -107,6 +106,11 @@ oselin::Machine::Machine(oselin::Parameters p, float n_trail): oselin::Parameter
 //Copy Constructor
 oselin::Machine::Machine(const oselin::Machine &m): oselin::Parameters(m){
     this->n_trailers_ = m.n_trailers();
+}
+
+//Copy Constructor - by address
+oselin::Machine::Machine(oselin::Machine *m): oselin::Parameters(m){
+    this->n_trailers_ = m->n_trailers();
 }
 
 //Constructor - PARSING
@@ -191,4 +195,17 @@ string oselin::Machine::svg() const{
     
 }
 
+//Deconstructor
+oselin::Machine::~Machine(){
+    for (int i=this->trailer_array_.size()-1; i>=0; i--){
+        delete this->trailer_array_[i];
+        this->trailer_array_.pop_back();
 
+    }
+
+    for (int j=this->car_array_.size()-1; j>=0; j--){
+        delete this->trailer_array_[j];
+        this->car_array_.pop_back();
+
+    }
+}
